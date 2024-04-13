@@ -58,7 +58,7 @@ fun GreetingPreview() {
                 .background(color = colorBackground),
             contentAlignment = Alignment.Center
         ) {
-            NavGraph(startDestination = "")
+            NavGraph(startDestination = Route.MainSubGraph.route)
         }
     }
 }
