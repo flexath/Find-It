@@ -50,13 +50,14 @@ fun MainSubGraph() {
         }
     ) {
         val bottomPadding = it.calculateBottomPadding()
+        val topPadding = it.calculateTopPadding()
 
         NavHost(
             navController = navHostController,
             startDestination = Route.HomeScreen.route,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = bottomPadding)
+                .padding(bottom = bottomPadding,top=topPadding)
         ) {
             composable(
                 route = Route.HomeScreen.route

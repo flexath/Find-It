@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Find It</string>
 
+    <string name="lbl_search_hint">Search Product Name</string>
+    <string name="lbl_categories">Categories</string>
+    <string name="lbl_see_all">See All</string>
 </resources>

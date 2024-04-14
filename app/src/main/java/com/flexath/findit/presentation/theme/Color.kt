@@ -9,3 +9,5 @@ val colorBackground = Color(0xFFFFFCFE)
 val textColorPrimary = Color(0xFF0C1A30)
 
 val shadowColor = Color(0x0D000000)
+val searchBarBackgroundColor = Color(0xFFFAFAFA)
+val hintColor = Color(0xFFC4C5C4)
