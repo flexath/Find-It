@@ -29,11 +29,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.flexath.findit.R
 import com.flexath.findit.presentation.ui.main.common.SearchBar
+import com.flexath.findit.presentation.ui.main.home.components.BannerSection
+import com.flexath.findit.presentation.ui.main.home.components.ProductCategoryList
 import com.flexath.findit.presentation.ui.main.home.components.TitleSection
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
 import com.flexath.findit.presentation.utils.Dimens.LargePadding5
 import com.flexath.findit.presentation.utils.Dimens.MediumPadding2
 import com.flexath.findit.presentation.utils.Dimens.MediumPadding3
+import com.flexath.findit.presentation.utils.Dimens.SmallPadding4_1
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -66,33 +69,21 @@ fun HomeScreen() {
 
         Spacer(modifier = Modifier.height(LargePadding2))
 
-        HorizontalPager(
-            state = pagerState,
-            pageSpacing = MediumPadding2,
-            contentPadding = PaddingValues(
-                horizontal = LargePadding2
-            ),
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.img_banner),
-                contentDescription = "Banner Image",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .aspectRatio(21f / 10f)
-                    .clip(RoundedCornerShape(MediumPadding3))
-
-            )
-        }
+        BannerSection(pagerState = pagerState)
 
         Spacer(modifier = Modifier.height(LargePadding5))
 
         TitleSection(title = stringResource(R.string.lbl_categories)) {
             // add SeeAll text button clicking codes
-            Toast.makeText(context,"SeeAll is clicked",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "SeeAll is clicked", Toast.LENGTH_SHORT).show()
         }
 
+        ProductCategoryList(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
 
-
+        }
     }
 }
 
