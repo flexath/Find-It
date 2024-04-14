@@ -30,7 +30,7 @@ fun BannerSection(
         Image(
             painter = painterResource(id = R.drawable.img_banner),
             contentDescription = "Banner Image",
-            contentScale = ContentScale.FillBounds,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .aspectRatio(21f / 10f)
                 .clip(RoundedCornerShape(Dimens.MediumPadding3))

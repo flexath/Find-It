@@ -3,5 +3,11 @@
 
     <string name="lbl_search_hint">Search Product Name</string>
     <string name="lbl_categories">Categories</string>
+    <string name="lbl_featured_product">Featured Product</string>
+    <string name="lbl_best_sellers">Best Sellers</string>
+    <string name="lbl_new_arrivals">New Arrivals</string>
+    <string name="lbl_top_rated_product">Top Rated Product</string>
+    <string name="lbl_special_offers">Special Offers</string>
+    <string name="lbl_latest_news">Latest News</string>
     <string name="lbl_see_all">See All</string>
 </resources>

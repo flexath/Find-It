@@ -25,6 +25,7 @@ import com.flexath.findit.presentation.utils.Dimens.ExtraLargePadding4
 import com.flexath.findit.presentation.utils.Dimens.MediumPadding1
 import com.flexath.findit.presentation.utils.Dimens.MediumPadding3
 import com.flexath.findit.presentation.utils.Dimens.MediumPadding5
+import com.flexath.findit.presentation.utils.Dimens.SmallPadding4
 
 @Composable
 fun ProductCategory(
@@ -32,7 +33,12 @@ fun ProductCategory(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(MediumPadding3)
+        modifier = Modifier.padding(
+            start = MediumPadding3,
+            end = MediumPadding3,
+            top = MediumPadding3,
+            bottom = SmallPadding4,
+        )
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -65,7 +71,7 @@ fun ProductCategory(
             style = MaterialTheme.typography.bodyMedium
         )
 
-        Spacer(modifier = Modifier.height(MediumPadding5))
+        Spacer(modifier = Modifier.height(SmallPadding4))
     }
 }
 
