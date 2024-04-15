@@ -14,4 +14,8 @@
     <string name="lbl_news">News</string>
     <string name="lbl_detail_news">Detail News</string>
     <string name="lbl_other_news">Other News</string>
+    <string name="lbl_search">Search</string>
+    <string name="lbl_recent_search">Recent Search</string>
+    <string name="lbl_category">Category</string>
+    <string name="lbl_filter_sorting"><![CDATA[Filter & Sorting]]></string>
 </resources>

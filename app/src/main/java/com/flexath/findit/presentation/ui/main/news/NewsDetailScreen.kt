@@ -42,6 +42,7 @@ fun NewsDetailScreen(
     ) {
         DetailTopAppBarWithOneAction(
             title = stringResource(R.string.lbl_detail_news),
+            actionIcon = R.drawable.ic_share,
             onClickBackButton = {
                 onClickBackButton()
             },

@@ -35,23 +35,24 @@ import com.flexath.findit.R
 import com.flexath.findit.presentation.theme.colorBackground
 import com.flexath.findit.presentation.theme.textColorPrimary
 import com.flexath.findit.presentation.ui.main.common.CustomOutlinedButton
+import com.flexath.findit.presentation.ui.main.common.ProductItemSection
 import com.flexath.findit.presentation.ui.main.common.SearchBar
 import com.flexath.findit.presentation.ui.main.home.components.BannerSection
-import com.flexath.findit.presentation.ui.main.home.components.ProductCardList
 import com.flexath.findit.presentation.ui.main.home.components.ProductCategoryList
 import com.flexath.findit.presentation.ui.main.home.components.TitleSection
 import com.flexath.findit.presentation.ui.main.home.components.articleCardList
 import com.flexath.findit.presentation.utils.Dimens
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
 import com.flexath.findit.presentation.utils.Dimens.LargePadding5
-import com.flexath.findit.presentation.utils.Dimens.SmallPadding4
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     context: Context,
+    onClickCategory: () -> Unit,
     onClickArticleCard: () -> Unit,
-    onClickSeeAllNewsButton: () -> Unit
+    onClickSeeAllNewsButton: () -> Unit,
+    onClickSearchBar: () -> Unit
 ) {
     val pagerState = rememberPagerState { 3 }
 
@@ -73,10 +74,18 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .padding(horizontal = LargePadding2),
                     isEnabled = false,
-                    query = query
-                ) {
-                    query = it
-                }
+                    query = query,
+                    isClickable = true,
+                    onClickSearchBar = {
+                        onClickSearchBar()
+                    },
+                    onQueryChange = {
+                        query = it
+                    },
+                    onSearch = {
+
+                    }
+                )
 
                 Spacer(modifier = Modifier.height(LargePadding2))
 
@@ -93,7 +102,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-
+                    onClickCategory()
                 }
 
                 Column(
@@ -103,22 +112,9 @@ fun HomeScreen(
                 ) {
                     Spacer(modifier = Modifier.height(LargePadding2))
 
-                    TitleSection(title = stringResource(R.string.lbl_featured_product)) {
-                        // add SeeAll text button clicking codes
-                        Toast.makeText(context, "SeeAll is clicked", Toast.LENGTH_SHORT).show()
-                    }
-
-                    Spacer(modifier = Modifier.height(SmallPadding4))
-
-                    ProductCardList(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        onClickProductCard = {
-
-                        },
-                        onClickVerticalDots = {
-
-                        }
+                    ProductItemSection(
+                        context = context,
+                        title = stringResource(R.string.lbl_featured_product)
                     )
 
                     Spacer(modifier = Modifier.height(LargePadding2))
@@ -136,22 +132,9 @@ fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(LargePadding2))
 
-                    TitleSection(title = stringResource(R.string.lbl_best_sellers)) {
-                        // add SeeAll text button clicking codes
-                        Toast.makeText(context, "SeeAll is clicked", Toast.LENGTH_SHORT).show()
-                    }
-
-                    Spacer(modifier = Modifier.height(SmallPadding4))
-
-                    ProductCardList(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        onClickProductCard = {
-
-                        },
-                        onClickVerticalDots = {
-
-                        }
+                    ProductItemSection(
+                        context = context,
+                        title = stringResource(R.string.lbl_best_sellers)
                     )
 
                     Spacer(modifier = Modifier.height(LargePadding2))
@@ -169,62 +152,23 @@ fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(LargePadding2))
 
-                    TitleSection(title = stringResource(R.string.lbl_new_arrivals)) {
-                        // add SeeAll text button clicking codes
-                        Toast.makeText(context, "SeeAll is clicked", Toast.LENGTH_SHORT).show()
-                    }
-
-                    Spacer(modifier = Modifier.height(SmallPadding4))
-
-                    ProductCardList(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        onClickProductCard = {
-
-                        },
-                        onClickVerticalDots = {
-
-                        }
+                    ProductItemSection(
+                        context = context,
+                        title = stringResource(R.string.lbl_new_arrivals)
                     )
 
                     Spacer(modifier = Modifier.height(LargePadding2))
 
-                    TitleSection(title = stringResource(R.string.lbl_top_rated_product)) {
-                        // add SeeAll text button clicking codes
-                        Toast.makeText(context, "SeeAll is clicked", Toast.LENGTH_SHORT).show()
-                    }
-
-                    Spacer(modifier = Modifier.height(SmallPadding4))
-
-                    ProductCardList(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        onClickProductCard = {
-
-                        },
-                        onClickVerticalDots = {
-
-                        }
+                    ProductItemSection(
+                        context = context,
+                        title = stringResource(R.string.lbl_top_rated_product)
                     )
 
                     Spacer(modifier = Modifier.height(LargePadding2))
 
-                    TitleSection(title = stringResource(R.string.lbl_special_offers)) {
-                        // add SeeAll text button clicking codes
-                        Toast.makeText(context, "SeeAll is clicked", Toast.LENGTH_SHORT).show()
-                    }
-
-                    Spacer(modifier = Modifier.height(SmallPadding4))
-
-                    ProductCardList(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        onClickProductCard = {
-
-                        },
-                        onClickVerticalDots = {
-
-                        }
+                    ProductItemSection(
+                        context = context,
+                        title = stringResource(R.string.lbl_special_offers)
                     )
                 }
             }
@@ -250,7 +194,9 @@ fun HomeScreen(
         item {
             CustomOutlinedButton(
                 text = stringResource(R.string.lbl_sell_all_news),
-                modifier = Modifier.fillMaxWidth().padding(LargePadding2)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(LargePadding2)
             ) {
                 onClickSeeAllNewsButton()
             }
@@ -263,10 +209,16 @@ fun HomeScreen(
 private fun HomeScreenPreview() {
     HomeScreen(
         context = LocalContext.current,
+        onClickCategory = {
+
+        },
         onClickArticleCard = {
 
         },
         onClickSeeAllNewsButton = {
+
+        },
+        onClickSearchBar = {
 
         }
     )

@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.flexath.findit.R
+import com.flexath.findit.presentation.theme.colorPrimary
 import com.flexath.findit.presentation.theme.shadowColor
 import com.flexath.findit.presentation.theme.textColorPrimary
 import com.flexath.findit.presentation.utils.Dimens
@@ -22,6 +23,7 @@ import com.flexath.findit.presentation.utils.Dimens
 @Composable
 fun DetailTopAppBarWithOneAction(
     title: String,
+    actionIcon: Int,
     onClickBackButton: () -> Unit,
     onClickActionButton: () -> Unit
 ) {
@@ -54,8 +56,8 @@ fun DetailTopAppBarWithOneAction(
                 }
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_share),
-                    contentDescription = "Share Button"
+                    painter = painterResource(id = actionIcon),
+                    contentDescription = "Action Button"
                 )
             }
         },
@@ -70,9 +72,16 @@ fun DetailTopAppBarWithOneAction(
 
 @Preview
 @Composable
-private fun DetailTopBarPreview() {
-    DetailTopAppBar(
-        title = "News"
-    ) {}
+private fun DetailTopAppBarWithOneActionPreview() {
+    DetailTopAppBarWithOneAction(
+        title = "News",
+        actionIcon = R.drawable.ic_share,
+        onClickBackButton = {
+
+        },
+        onClickActionButton = {
+
+        }
+    )
 
 }

@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.flexath.findit.R
 import com.flexath.findit.presentation.theme.hintColor
@@ -29,7 +32,10 @@ fun SearchBar(
     modifier: Modifier = Modifier,
     isEnabled: Boolean,
     query: String,
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
+    isClickable: Boolean,
+    onClickSearchBar: () -> Unit,
+    onSearch: () -> Unit
 ) {
 
     TextField(
@@ -38,6 +44,14 @@ fun SearchBar(
             onQueryChange(it)
         },
         enabled = isEnabled,
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Search
+        ),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                onSearch()
+            }
+        ),
         trailingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_search),
@@ -56,6 +70,7 @@ fun SearchBar(
         colors = TextFieldDefaults.colors(
             focusedContainerColor = searchBarBackgroundColor,
             unfocusedContainerColor = searchBarBackgroundColor,
+            disabledContainerColor = searchBarBackgroundColor,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
@@ -67,8 +82,10 @@ fun SearchBar(
         modifier = modifier
             .clip(RoundedCornerShape(SmallPadding5))
             .background(color = searchBarBackgroundColor)
-            .clickable { 
-
+            .clickable {
+                if (isClickable) {
+                    onClickSearchBar()
+                }
             }
     )
 }
@@ -81,7 +98,15 @@ private fun SearchBarPreview() {
         isEnabled = false,
         modifier = Modifier,
         query = "aung thiha",
-    ) {
+        isClickable = false,
+        onClickSearchBar = {
 
-    }
+        },
+        onQueryChange = {
+
+        },
+        onSearch = {
+
+        }
+    )
 }

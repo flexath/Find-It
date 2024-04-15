@@ -14,11 +14,13 @@ import androidx.navigation.compose.rememberNavController
 import com.flexath.findit.presentation.nav_graph.Route
 import com.flexath.findit.presentation.ui.main.MainBottomBar
 import com.flexath.findit.presentation.ui.main.MainTopBar
+import com.flexath.findit.presentation.ui.main.category.CategoryScreen
 import com.flexath.findit.presentation.ui.main.home.HomeScreen
 import com.flexath.findit.presentation.ui.main.news.NewsDetailScreen
 import com.flexath.findit.presentation.ui.main.news.NewsListScreen
 import com.flexath.findit.presentation.ui.main.order.OrderScreen
 import com.flexath.findit.presentation.ui.main.profile.ProfileScreen
+import com.flexath.findit.presentation.ui.main.search.SearchScreen
 import com.flexath.findit.presentation.ui.main.wishlist.WishlistScreen
 
 @Composable
@@ -68,11 +70,17 @@ fun MainSubGraph() {
             ) {
                 HomeScreen(
                     context = context,
+                    onClickCategory = {
+                        navHostController.navigate(Route.CategoryScreen.route)
+                    },
                     onClickArticleCard = {
                         navHostController.navigate(Route.NewsDetailScreen.route)
                     },
                     onClickSeeAllNewsButton = {
                         navHostController.navigate(Route.NewsListScreen.route)
+                    },
+                    onClickSearchBar = {
+                        navHostController.navigate(Route.SearchScreen.route)
                     }
                 )
             }
@@ -93,6 +101,31 @@ fun MainSubGraph() {
                 route = Route.ProfileScreen.route
             ) {
                 ProfileScreen()
+            }
+
+            composable(
+                route = Route.SearchScreen.route
+            ) {
+                SearchScreen(
+                    context = context,
+                    modifier = Modifier.fillMaxSize(),
+                    onClickBackButton = {
+                        navHostController.popBackStack()
+                    }
+                )
+            }
+
+            composable(
+                route = Route.CategoryScreen.route
+            ) {
+                // Need to adjust for nested scrolling
+                CategoryScreen(
+                    context = context,
+                    modifier = Modifier.fillMaxSize(),
+                    onClickBackButton = {
+                        navHostController.popBackStack()
+                    }
+                )
             }
 
             composable(

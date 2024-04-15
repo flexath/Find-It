@@ -53,10 +53,16 @@ fun NewsListScreen(
                         .fillMaxWidth()
                         .padding(horizontal = Dimens.LargePadding2),
                     query = query,
-                    isEnabled = true
-                ) {
-                    query = it
-                }
+                    isEnabled = true,
+                    isClickable = false,
+                    onClickSearchBar = {},
+                    onQueryChange = {
+                        query = it
+                    },
+                    onSearch = {
+
+                    }
+                )
             }
 
             articleCardList {

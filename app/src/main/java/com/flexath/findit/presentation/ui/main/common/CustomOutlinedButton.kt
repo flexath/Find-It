@@ -1,6 +1,7 @@
 package com.flexath.findit.presentation.ui.main.common
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,10 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.flexath.findit.presentation.theme.colorBackground
 import com.flexath.findit.presentation.theme.textColorPrimary
-import com.flexath.findit.presentation.utils.Dimens.LargePadding2
 import com.flexath.findit.presentation.utils.Dimens.MediumPadding1
-import com.flexath.findit.presentation.utils.Dimens.MediumPadding3
 import com.flexath.findit.presentation.utils.Dimens.SmallPadding0
 import com.flexath.findit.presentation.utils.Dimens.SmallPadding5
 
@@ -33,6 +33,7 @@ fun CustomOutlinedButton(
         shape = RoundedCornerShape(corner = CornerSize(SmallPadding5)),
         modifier = modifier
             .clip(RoundedCornerShape(SmallPadding5))
+            .background(color = colorBackground)
     ) {
         Text(
             text = text,
