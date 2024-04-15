@@ -56,7 +56,7 @@ fun TitleSection(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun TitleSectionPreview() {
-    TitleSection("See more"){
+    TitleSection("All Products"){
 
     }
 }

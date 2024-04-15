@@ -34,7 +34,6 @@ fun BannerSection(
             modifier = Modifier
                 .aspectRatio(21f / 10f)
                 .clip(RoundedCornerShape(Dimens.MediumPadding3))
-
         )
     }
 }

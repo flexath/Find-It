@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 object Dimens {
+    val SmallPadding0 = 1.dp
     val SmallPadding1 = 2.dp
     val SmallPadding2 = 4.dp
     val SmallPadding3 = 6.dp

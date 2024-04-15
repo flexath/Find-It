@@ -19,6 +19,27 @@ val DmSans = FontFamily(
 )
 
 val Typography = Typography(
+    headlineLarge = TextStyle(
+        fontFamily = DmSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 30.sp,
+        lineHeight = 26.04.sp,
+        letterSpacing = 0.sp
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = DmSans,
+        fontWeight = FontWeight.Medium,
+        fontSize = 26.sp,
+        lineHeight = 26.04.sp,
+        letterSpacing = 0.sp
+    ),
+    headlineSmall = TextStyle(
+        fontFamily = DmSans,
+        fontWeight = FontWeight.Medium,
+        fontSize = 24.sp,
+        lineHeight = 26.04.sp,
+        letterSpacing = 0.sp
+    ),
     titleLarge = TextStyle(
         fontFamily = DmSans,
         fontWeight = FontWeight.Bold,

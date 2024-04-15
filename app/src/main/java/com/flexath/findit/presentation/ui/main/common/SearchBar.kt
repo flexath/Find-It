@@ -2,6 +2,7 @@ package com.flexath.findit.presentation.ui.main.common
 
 import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +27,7 @@ import com.flexath.findit.presentation.utils.Dimens.SmallPadding5
 fun SearchBar(
     context: Context,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean,
     query: String,
     onQueryChange: (String) -> Unit
 ) {
@@ -35,6 +37,7 @@ fun SearchBar(
         onValueChange = {
             onQueryChange(it)
         },
+        enabled = isEnabled,
         trailingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_search),
@@ -55,6 +58,8 @@ fun SearchBar(
             unfocusedContainerColor = searchBarBackgroundColor,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+            errorIndicatorColor = Color.Transparent,
             focusedTextColor = textColorPrimary
         ),
         singleLine = true,
@@ -62,12 +67,21 @@ fun SearchBar(
         modifier = modifier
             .clip(RoundedCornerShape(SmallPadding5))
             .background(color = searchBarBackgroundColor)
+            .clickable { 
 
+            }
     )
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun SearchBarPreview() {
-    SearchBar(LocalContext.current,Modifier, "aung thiha", {})
+    SearchBar(
+        LocalContext.current,
+        isEnabled = false,
+        modifier = Modifier,
+        query = "aung thiha",
+    ) {
+
+    }
 }

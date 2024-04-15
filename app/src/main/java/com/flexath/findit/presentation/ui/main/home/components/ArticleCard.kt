@@ -1,7 +1,7 @@
 package com.flexath.findit.presentation.ui.main.home.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,15 +20,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.flexath.findit.R
-import com.flexath.findit.presentation.theme.alertColor
 import com.flexath.findit.presentation.theme.textColorPrimary
 import com.flexath.findit.presentation.theme.textColorSecondary
 import com.flexath.findit.presentation.utils.Dimens
 import com.flexath.findit.presentation.utils.Dimens.ArticleCardWidth
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
-import com.flexath.findit.presentation.utils.Dimens.MediumPadding5
 import com.flexath.findit.presentation.utils.Dimens.SmallPadding4
 import com.flexath.findit.presentation.utils.Dimens.SmallPadding5
 
@@ -41,6 +40,9 @@ fun ArticleCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(LargePadding2)
+            .clickable {
+                onClick(1)
+            }
     ) {
         Column(
             modifier = Modifier.weight(3f).padding(end = SmallPadding4)
@@ -51,7 +53,8 @@ fun ArticleCard(
                     fontWeight = FontWeight.Medium
                 ),
                 color = textColorPrimary,
-                maxLines = 2
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
 
             Spacer(modifier = Modifier.height(SmallPadding5))
@@ -60,7 +63,8 @@ fun ArticleCard(
                 text = "Agar tetap kinclong, bodi motor ten",
                 style = MaterialTheme.typography.bodySmall,
                 color = textColorPrimary,
-                maxLines = 1
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             Spacer(modifier = Modifier.height(SmallPadding5))

@@ -1,5 +1,6 @@
 package com.flexath.findit.presentation.ui.main.home
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -33,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.flexath.findit.R
 import com.flexath.findit.presentation.theme.colorBackground
 import com.flexath.findit.presentation.theme.textColorPrimary
+import com.flexath.findit.presentation.ui.main.common.CustomOutlinedButton
 import com.flexath.findit.presentation.ui.main.common.SearchBar
 import com.flexath.findit.presentation.ui.main.home.components.BannerSection
 import com.flexath.findit.presentation.ui.main.home.components.ProductCardList
@@ -46,9 +48,12 @@ import com.flexath.findit.presentation.utils.Dimens.SmallPadding4
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    context: Context,
+    onClickArticleCard: () -> Unit,
+    onClickSeeAllNewsButton: () -> Unit
+) {
     val pagerState = rememberPagerState { 3 }
-    val context = LocalContext.current
 
     var query by remember {
         mutableStateOf("")
@@ -67,6 +72,7 @@ fun HomeScreen() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = LargePadding2),
+                    isEnabled = false,
                     query = query
                 ) {
                     query = it
@@ -237,12 +243,31 @@ fun HomeScreen() {
             )
         }
 
-        articleCardList {}
+        articleCardList {
+            onClickArticleCard()
+        }
+
+        item {
+            CustomOutlinedButton(
+                text = stringResource(R.string.lbl_sell_all_news),
+                modifier = Modifier.fillMaxWidth().padding(LargePadding2)
+            ) {
+                onClickSeeAllNewsButton()
+            }
+        }
     }
 }
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(
+        context = LocalContext.current,
+        onClickArticleCard = {
+
+        },
+        onClickSeeAllNewsButton = {
+
+        }
+    )
 }

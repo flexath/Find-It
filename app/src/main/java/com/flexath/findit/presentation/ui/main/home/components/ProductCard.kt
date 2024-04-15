@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flexath.findit.R
@@ -47,8 +48,8 @@ fun ProductCard(
     Surface(
         color = colorBackground,
         shape = RoundedCornerShape(MediumPadding3),
-        tonalElevation = SmallPadding2,
-        shadowElevation = SmallPadding2,
+        tonalElevation = SmallPadding1,
+        shadowElevation = SmallPadding1,
         modifier = Modifier
             .requiredWidth(width = ProductCardWidth)
             .aspectRatio(156f / 242f)
@@ -80,7 +81,8 @@ fun ProductCard(
                     fontWeight = FontWeight.Medium
                 ),
                 color = textColorPrimary,
-                maxLines = 1
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             Spacer(modifier = Modifier.height(SmallPadding2))
@@ -91,7 +93,8 @@ fun ProductCard(
                     fontWeight = FontWeight.Bold
                 ),
                 color = alertColor,
-                maxLines = 1
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             Spacer(modifier = Modifier.height(SmallPadding5))

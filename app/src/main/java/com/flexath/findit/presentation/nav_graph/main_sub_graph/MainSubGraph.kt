@@ -6,6 +6,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -14,6 +15,8 @@ import com.flexath.findit.presentation.nav_graph.Route
 import com.flexath.findit.presentation.ui.main.MainBottomBar
 import com.flexath.findit.presentation.ui.main.MainTopBar
 import com.flexath.findit.presentation.ui.main.home.HomeScreen
+import com.flexath.findit.presentation.ui.main.news.NewsDetailScreen
+import com.flexath.findit.presentation.ui.main.news.NewsListScreen
 import com.flexath.findit.presentation.ui.main.order.OrderScreen
 import com.flexath.findit.presentation.ui.main.profile.ProfileScreen
 import com.flexath.findit.presentation.ui.main.wishlist.WishlistScreen
@@ -51,18 +54,27 @@ fun MainSubGraph() {
     ) {
         val bottomPadding = it.calculateBottomPadding()
         val topPadding = it.calculateTopPadding()
+        val context = LocalContext.current
 
         NavHost(
             navController = navHostController,
             startDestination = Route.HomeScreen.route,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = bottomPadding,top=topPadding)
+                .padding(bottom = bottomPadding, top = topPadding)
         ) {
             composable(
                 route = Route.HomeScreen.route
             ) {
-                HomeScreen()
+                HomeScreen(
+                    context = context,
+                    onClickArticleCard = {
+                        navHostController.navigate(Route.NewsDetailScreen.route)
+                    },
+                    onClickSeeAllNewsButton = {
+                        navHostController.navigate(Route.NewsListScreen.route)
+                    }
+                )
             }
 
             composable(
@@ -81,6 +93,38 @@ fun MainSubGraph() {
                 route = Route.ProfileScreen.route
             ) {
                 ProfileScreen()
+            }
+
+            composable(
+                route = Route.NewsListScreen.route
+            ) {
+                NewsListScreen(
+                    context = context,
+                    modifier = Modifier.fillMaxSize(),
+                    onClickBackButton = {
+                        navHostController.popBackStack()
+                    },
+                    onClickArticleCard = {
+                        navHostController.navigate(Route.NewsDetailScreen.route)
+                    }
+                )
+            }
+
+            composable(
+                route = Route.NewsDetailScreen.route
+            ) {
+                NewsDetailScreen(
+                    modifier = Modifier.fillMaxSize(),
+                    onClickBackButton = {
+                        navHostController.popBackStack()
+                    },
+                    onClickSeeAllNewsButton = {
+                        navHostController.navigate(Route.NewsListScreen.route)
+                    },
+                    onClickArticleCard = {
+                        navHostController.navigate(Route.NewsDetailScreen.route)
+                    }
+                )
             }
         }
     }
