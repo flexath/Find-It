@@ -101,7 +101,9 @@ fun ProductCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Row{
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ){
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_star),
                         contentDescription = "Rating Star",

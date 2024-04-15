@@ -3,7 +3,7 @@
 
     <string name="lbl_search_hint">Search Product Name</string>
     <string name="lbl_categories">Categories</string>
-    <string name="lbl_featured_product">Featured Product</string>
+    <string name="lbl_featured_product">Featured Products</string>
     <string name="lbl_best_sellers">Best Sellers</string>
     <string name="lbl_new_arrivals">New Arrivals</string>
     <string name="lbl_top_rated_product">Top Rated Product</string>
@@ -18,4 +18,9 @@
     <string name="lbl_recent_search">Recent Search</string>
     <string name="lbl_category">Category</string>
     <string name="lbl_filter_sorting"><![CDATA[Filter & Sorting]]></string>
+    <string name="lbl_add_to_cart">Add to Cart</string>
+    <string name="lbl_added">Added</string>
+    <string name="lbl_detail_product">Detail Product</string>
+    <string name="lbl_product_description">Product Description</string>
+    <string name="lbl_see_all_review">See All Reviews</string>
 </resources>

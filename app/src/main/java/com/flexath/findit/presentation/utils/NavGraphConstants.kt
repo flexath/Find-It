@@ -11,6 +11,7 @@ object NavGraphConstants {
     const val PROFILE_SCREEN = "profileScreen"
     const val SEARCH_SCREEN = "searchScreen"
     const val CATEGORY_SCREEN = "categoryScreen"
+    const val PRODUCT_DETAIL_SCREEN = "productDetailScreen"
     const val NEWS_LIST_SCREEN = "newsListScreen"
     const val NEWS_DETAIL_SCREEN = "newsDetailScreen"
 

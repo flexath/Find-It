@@ -21,6 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.flexath.findit.R
+import com.flexath.findit.presentation.theme.colorPrimary
+import com.flexath.findit.presentation.theme.textColorPrimary
 import com.flexath.findit.presentation.ui.main.common.CustomOutlinedButton
 import com.flexath.findit.presentation.ui.main.common.DetailTopAppBarWithOneAction
 import com.flexath.findit.presentation.ui.main.common.ProductCardGrid
@@ -59,6 +61,7 @@ fun CategoryScreen(
                 style = MaterialTheme.typography.headlineMedium.copy(
                     fontWeight = FontWeight.Bold
                 ),
+                color = textColorPrimary,
                 modifier = Modifier.padding(horizontal = LargePadding2)
             )
 

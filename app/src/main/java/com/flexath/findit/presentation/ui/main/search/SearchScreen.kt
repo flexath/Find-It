@@ -35,6 +35,7 @@ fun SearchScreen(
     context: Context,
     modifier: Modifier = Modifier,
     onClickBackButton: () -> Unit,
+    onClickProductCard: () -> Unit
 ) {
     var query by remember {
         mutableStateOf("")
@@ -118,7 +119,10 @@ fun SearchScreen(
 
                 ProductItemSection(
                     context = context,
-                    title = stringResource(id = R.string.lbl_featured_product)
+                    title = stringResource(id = R.string.lbl_featured_product),
+                    onClickProductCard = {
+                        onClickProductCard()
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(LargePadding2))
@@ -132,7 +136,11 @@ fun SearchScreen(
 private fun SearchScreenPreview() {
     SearchScreen(
         context = LocalContext.current,
-    ) {
+        onClickProductCard = {
 
-    }
+        },
+        onClickBackButton = {
+
+        }
+    )
 }

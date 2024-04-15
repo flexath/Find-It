@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.flexath.findit.R
 import com.flexath.findit.presentation.ui.main.common.DetailTopAppBar
 import com.flexath.findit.presentation.ui.main.common.SearchBar
-import com.flexath.findit.presentation.ui.main.home.components.articleCardList
+import com.flexath.findit.presentation.ui.main.common.articleCardList
 import com.flexath.findit.presentation.utils.Dimens
 
 @Composable

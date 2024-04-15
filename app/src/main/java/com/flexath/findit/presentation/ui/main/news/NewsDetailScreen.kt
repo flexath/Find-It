@@ -26,7 +26,7 @@ import com.flexath.findit.presentation.theme.textColorPrimary
 import com.flexath.findit.presentation.theme.textColorSecondary
 import com.flexath.findit.presentation.ui.main.common.CustomOutlinedButton
 import com.flexath.findit.presentation.ui.main.common.DetailTopAppBarWithOneAction
-import com.flexath.findit.presentation.ui.main.home.components.articleCardList
+import com.flexath.findit.presentation.ui.main.common.articleCardList
 import com.flexath.findit.presentation.utils.Dimens
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
 

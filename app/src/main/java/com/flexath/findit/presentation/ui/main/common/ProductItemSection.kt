@@ -15,7 +15,8 @@ import com.flexath.findit.presentation.utils.Dimens
 @Composable
 fun ProductItemSection(
     context: Context,
-    title: String
+    title: String,
+    onClickProductCard: () -> Unit
 ) {
     Column {
         TitleSection(title = title) {
@@ -29,7 +30,7 @@ fun ProductItemSection(
             modifier = Modifier
                 .fillMaxWidth(),
             onClickProductCard = {
-
+                onClickProductCard()
             },
             onClickVerticalDots = {
 

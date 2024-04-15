@@ -40,7 +40,7 @@ import com.flexath.findit.presentation.ui.main.common.SearchBar
 import com.flexath.findit.presentation.ui.main.home.components.BannerSection
 import com.flexath.findit.presentation.ui.main.home.components.ProductCategoryList
 import com.flexath.findit.presentation.ui.main.home.components.TitleSection
-import com.flexath.findit.presentation.ui.main.home.components.articleCardList
+import com.flexath.findit.presentation.ui.main.common.articleCardList
 import com.flexath.findit.presentation.utils.Dimens
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
 import com.flexath.findit.presentation.utils.Dimens.LargePadding5
@@ -50,6 +50,7 @@ import com.flexath.findit.presentation.utils.Dimens.LargePadding5
 fun HomeScreen(
     context: Context,
     onClickCategory: () -> Unit,
+    onClickProductCard: () -> Unit,
     onClickArticleCard: () -> Unit,
     onClickSeeAllNewsButton: () -> Unit,
     onClickSearchBar: () -> Unit
@@ -114,7 +115,10 @@ fun HomeScreen(
 
                     ProductItemSection(
                         context = context,
-                        title = stringResource(R.string.lbl_featured_product)
+                        title = stringResource(R.string.lbl_featured_product),
+                        onClickProductCard = {
+                            onClickProductCard()
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(LargePadding2))
@@ -134,7 +138,10 @@ fun HomeScreen(
 
                     ProductItemSection(
                         context = context,
-                        title = stringResource(R.string.lbl_best_sellers)
+                        title = stringResource(R.string.lbl_best_sellers),
+                        onClickProductCard = {
+                            onClickProductCard()
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(LargePadding2))
@@ -154,21 +161,30 @@ fun HomeScreen(
 
                     ProductItemSection(
                         context = context,
-                        title = stringResource(R.string.lbl_new_arrivals)
+                        title = stringResource(R.string.lbl_new_arrivals),
+                        onClickProductCard = {
+                            onClickProductCard()
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(LargePadding2))
 
                     ProductItemSection(
                         context = context,
-                        title = stringResource(R.string.lbl_top_rated_product)
+                        title = stringResource(R.string.lbl_top_rated_product),
+                        onClickProductCard = {
+                            onClickProductCard()
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(LargePadding2))
 
                     ProductItemSection(
                         context = context,
-                        title = stringResource(R.string.lbl_special_offers)
+                        title = stringResource(R.string.lbl_special_offers),
+                        onClickProductCard = {
+                            onClickProductCard()
+                        }
                     )
                 }
             }
@@ -210,6 +226,9 @@ private fun HomeScreenPreview() {
     HomeScreen(
         context = LocalContext.current,
         onClickCategory = {
+
+        },
+        onClickProductCard = {
 
         },
         onClickArticleCard = {

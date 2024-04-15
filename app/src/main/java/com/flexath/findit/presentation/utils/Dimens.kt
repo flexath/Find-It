@@ -34,9 +34,11 @@ object Dimens {
     val ExtraLargePadding3 = 46.dp
     val ExtraLargePadding4 = 48.dp
     val ExtraLargePadding5 = 50.dp
+    val ExtraLargePadding5_2x = 100.dp
 
     val ProductCardWidth = 156.dp
     val ArticleCardWidth = 156.dp
+    val SellerProfileWidth = 40.dp
 
     val SmallText1 = 2.sp
     val SmallText2 = 4.sp

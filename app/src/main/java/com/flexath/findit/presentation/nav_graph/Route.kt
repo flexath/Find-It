@@ -13,6 +13,7 @@ sealed class Route(val route: String) {
     data object ProfileScreen: Route(NavGraphConstants.PROFILE_SCREEN)
     data object SearchScreen: Route(NavGraphConstants.SEARCH_SCREEN)
     data object CategoryScreen: Route(NavGraphConstants.CATEGORY_SCREEN)
+    data object ProductDetailScreen: Route(NavGraphConstants.PRODUCT_DETAIL_SCREEN)
     data object NewsListScreen: Route(NavGraphConstants.NEWS_LIST_SCREEN)
     data object NewsDetailScreen: Route(NavGraphConstants.NEWS_DETAIL_SCREEN)
 

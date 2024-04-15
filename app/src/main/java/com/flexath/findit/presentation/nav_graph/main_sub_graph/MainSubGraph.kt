@@ -16,6 +16,7 @@ import com.flexath.findit.presentation.ui.main.MainBottomBar
 import com.flexath.findit.presentation.ui.main.MainTopBar
 import com.flexath.findit.presentation.ui.main.category.CategoryScreen
 import com.flexath.findit.presentation.ui.main.home.HomeScreen
+import com.flexath.findit.presentation.ui.main.home.ProductDetailScreen
 import com.flexath.findit.presentation.ui.main.news.NewsDetailScreen
 import com.flexath.findit.presentation.ui.main.news.NewsListScreen
 import com.flexath.findit.presentation.ui.main.order.OrderScreen
@@ -73,6 +74,9 @@ fun MainSubGraph() {
                     onClickCategory = {
                         navHostController.navigate(Route.CategoryScreen.route)
                     },
+                    onClickProductCard = {
+                        navHostController.navigate(Route.ProductDetailScreen.route)
+                    },
                     onClickArticleCard = {
                         navHostController.navigate(Route.NewsDetailScreen.route)
                     },
@@ -111,6 +115,9 @@ fun MainSubGraph() {
                     modifier = Modifier.fillMaxSize(),
                     onClickBackButton = {
                         navHostController.popBackStack()
+                    },
+                    onClickProductCard = {
+                        navHostController.navigate(Route.ProductDetailScreen.route)
                     }
                 )
             }
@@ -120,6 +127,18 @@ fun MainSubGraph() {
             ) {
                 // Need to adjust for nested scrolling
                 CategoryScreen(
+                    context = context,
+                    modifier = Modifier.fillMaxSize(),
+                    onClickBackButton = {
+                        navHostController.popBackStack()
+                    }
+                )
+            }
+
+            composable(
+                route = Route.ProductDetailScreen.route
+            ) {
+                ProductDetailScreen(
                     context = context,
                     modifier = Modifier.fillMaxSize(),
                     onClickBackButton = {
