@@ -21,7 +21,10 @@ import com.flexath.findit.presentation.ui.main.news.NewsDetailScreen
 import com.flexath.findit.presentation.ui.main.news.NewsListScreen
 import com.flexath.findit.presentation.ui.main.order.OrderScreen
 import com.flexath.findit.presentation.ui.main.profile.ProfileScreen
+import com.flexath.findit.presentation.ui.main.review.ReviewProductScreen
 import com.flexath.findit.presentation.ui.main.search.SearchScreen
+import com.flexath.findit.presentation.ui.main.seller.SearchInStoreScreen
+import com.flexath.findit.presentation.ui.main.seller.SellerInfoScreen
 import com.flexath.findit.presentation.ui.main.wishlist.WishlistScreen
 
 @Composable
@@ -140,6 +143,59 @@ fun MainSubGraph() {
             ) {
                 ProductDetailScreen(
                     context = context,
+                    modifier = Modifier.fillMaxSize(),
+                    onClickBackButton = {
+                        navHostController.popBackStack()
+                    },
+                    onClickSellerProfile = {
+                        navHostController.navigate(Route.SellerInfoScreen.route)
+                    },
+                    onClickSeeAllReviewButton = {
+                        navHostController.navigate(Route.ReviewProductScreen.route)
+                    },
+                    onClickProductCard = {
+                        navHostController.navigate(Route.ProductDetailScreen.route)
+                    }
+                )
+            }
+
+            composable(
+                route = Route.SellerInfoScreen.route
+            ) {
+                SellerInfoScreen(
+                    context = context,
+                    modifier = Modifier.fillMaxSize(),
+                    onClickProductCard = {
+                        navHostController.navigate(Route.ProductDetailScreen.route)
+                    },
+                    onClickBackButton = {
+                        navHostController.popBackStack()
+                    },
+                    onClickSearchButton = {
+                        navHostController.navigate(Route.SearchInStoreScreen.route)
+                    }
+                )
+            }
+
+            composable(
+                route = Route.SearchInStoreScreen.route
+            ) {
+                SearchInStoreScreen(
+                    context = context,
+                    modifier = Modifier.fillMaxSize(),
+                    onClickBackButton = {
+                        navHostController.popBackStack()
+                    },
+                    onClickProductCard = {
+                        navHostController.navigate(Route.ProductDetailScreen.route)
+                    }
+                )
+            }
+
+            composable(
+                route = Route.ReviewProductScreen.route
+            ) {
+                ReviewProductScreen(
                     modifier = Modifier.fillMaxSize(),
                     onClickBackButton = {
                         navHostController.popBackStack()

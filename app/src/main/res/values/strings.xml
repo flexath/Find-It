@@ -23,4 +23,8 @@
     <string name="lbl_detail_product">Detail Product</string>
     <string name="lbl_product_description">Product Description</string>
     <string name="lbl_see_all_review">See All Reviews</string>
+    <string name="lbl_follow">Follow</string>
+    <string name="lbl_sorting">Sorting</string>
+    <string name="lbl_search_in_store">Search in Store</string>
+    <string name="lbl_review_product">Review Product</string>
 </resources>

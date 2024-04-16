@@ -14,6 +14,9 @@ sealed class Route(val route: String) {
     data object SearchScreen: Route(NavGraphConstants.SEARCH_SCREEN)
     data object CategoryScreen: Route(NavGraphConstants.CATEGORY_SCREEN)
     data object ProductDetailScreen: Route(NavGraphConstants.PRODUCT_DETAIL_SCREEN)
+    data object SellerInfoScreen: Route(NavGraphConstants.SELLER_INFO_SCREEN)
+    data object SearchInStoreScreen: Route(NavGraphConstants.SEARCH_IN_STORE_SCREEN)
+    data object ReviewProductScreen: Route(NavGraphConstants.REVIEW_PRODUCT_SCREEN)
     data object NewsListScreen: Route(NavGraphConstants.NEWS_LIST_SCREEN)
     data object NewsDetailScreen: Route(NavGraphConstants.NEWS_DETAIL_SCREEN)
 

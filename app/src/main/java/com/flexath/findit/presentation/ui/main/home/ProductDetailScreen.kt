@@ -3,6 +3,7 @@ package com.flexath.findit.presentation.ui.main.home
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,11 +49,11 @@ import com.flexath.findit.presentation.ui.main.common.CustomFilledButtonWithIcon
 import com.flexath.findit.presentation.ui.main.common.CustomOutlinedButton
 import com.flexath.findit.presentation.ui.main.common.DetailTopAppBarWithTwoActions
 import com.flexath.findit.presentation.ui.main.common.ProductItemSection
+import com.flexath.findit.presentation.ui.main.common.RatingTextWithIcon
 import com.flexath.findit.presentation.ui.main.common.reviewCardList
 import com.flexath.findit.presentation.utils.Dimens
 import com.flexath.findit.presentation.utils.Dimens.ExtraLargePadding5_2x
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
-import com.flexath.findit.presentation.utils.Dimens.MediumPadding3
 import com.flexath.findit.presentation.utils.Dimens.MediumPadding5
 import com.flexath.findit.presentation.utils.Dimens.SellerProfileWidth
 import com.flexath.findit.presentation.utils.Dimens.SmallPadding3
@@ -63,6 +64,9 @@ fun ProductDetailScreen(
     context: Context,
     modifier: Modifier = Modifier,
     onClickBackButton: () -> Unit,
+    onClickSellerProfile: () -> Unit,
+    onClickSeeAllReviewButton: () -> Unit,
+    onClickProductCard: () -> Unit,
 ) {
     Box(
         modifier = modifier.background(color = colorBackground)
@@ -177,6 +181,9 @@ fun ProductDetailScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = LargePadding2)
+                            .clickable {
+                                onClickSellerProfile()
+                            }
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.dummy_seller_profile),
@@ -227,7 +234,7 @@ fun ProductDetailScreen(
 
                         IconButton(
                             onClick = {
-
+                                onClickSellerProfile()
                             }
                         ) {
                             Icon(
@@ -288,25 +295,7 @@ fun ProductDetailScreen(
                             color = textColorPrimary
                         )
 
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_star),
-                                contentDescription = "Rating Star",
-                                tint = Color(0xFFFFC120),
-                                modifier = Modifier.size(MediumPadding3)
-                            )
-
-                            Text(
-                                text = "4.6",
-                                style = MaterialTheme.typography.titleSmall,
-                                color = textColorPrimary,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.padding(start = Dimens.SmallPadding1)
-                            )
-                        }
+                        RatingTextWithIcon(rating = 4.7f)
                     }
                 }
 
@@ -323,7 +312,7 @@ fun ProductDetailScreen(
                             .padding(horizontal = LargePadding2),
                         text = stringResource(R.string.lbl_see_all_review)
                     ) {
-
+                        onClickSeeAllReviewButton()
                     }
 
                     Spacer(modifier = Modifier.height(LargePadding2))
@@ -337,7 +326,7 @@ fun ProductDetailScreen(
                             context = context,
                             title = stringResource(id = R.string.lbl_featured_product)
                         ) {
-
+                            onClickProductCard()
                         }
 
                         Spacer(modifier = Modifier.height(ExtraLargePadding5_2x))
@@ -380,6 +369,15 @@ private fun ProductDetailScreenPreview() {
         context = LocalContext.current,
         modifier = Modifier.fillMaxSize(),
         onClickBackButton = {
+
+        },
+        onClickSellerProfile = {
+
+        },
+        onClickSeeAllReviewButton = {
+
+        },
+        onClickProductCard = {
 
         }
     )

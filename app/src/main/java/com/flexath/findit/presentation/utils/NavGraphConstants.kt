@@ -12,6 +12,9 @@ object NavGraphConstants {
     const val SEARCH_SCREEN = "searchScreen"
     const val CATEGORY_SCREEN = "categoryScreen"
     const val PRODUCT_DETAIL_SCREEN = "productDetailScreen"
+    const val SELLER_INFO_SCREEN = "sellerInfoScreen"
+    const val SEARCH_IN_STORE_SCREEN = "searchInStoreScreen"
+    const val REVIEW_PRODUCT_SCREEN = "reviewProductScreen"
     const val NEWS_LIST_SCREEN = "newsListScreen"
     const val NEWS_DETAIL_SCREEN = "newsDetailScreen"
 

@@ -1,12 +1,14 @@
 package com.flexath.findit.presentation.ui.main.category
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,13 +23,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.flexath.findit.R
+import com.flexath.findit.presentation.theme.colorBackground
 import com.flexath.findit.presentation.theme.colorPrimary
 import com.flexath.findit.presentation.theme.textColorPrimary
 import com.flexath.findit.presentation.ui.main.common.CustomOutlinedButton
 import com.flexath.findit.presentation.ui.main.common.DetailTopAppBarWithOneAction
 import com.flexath.findit.presentation.ui.main.common.ProductCardGrid
 import com.flexath.findit.presentation.ui.main.common.SearchBar
+import com.flexath.findit.presentation.utils.Dimens
+import com.flexath.findit.presentation.utils.Dimens.ExtraLargePadding5_2x
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
+import com.flexath.findit.presentation.utils.Dimens.LargePadding5
 
 @Composable
 fun CategoryScreen(
@@ -40,68 +46,79 @@ fun CategoryScreen(
     }
 
     Box(
-        modifier = modifier
+        modifier = modifier.background(colorBackground)
     ) {
-        Column{
-            DetailTopAppBarWithOneAction(
-                title = stringResource(R.string.lbl_category),
-                actionIcon = R.drawable.ic_cart,
-                onClickBackButton = {
-                    onClickBackButton()
-                },
-                onClickActionButton = {
-                    // Share news article code
-                }
-            )
+        LazyColumn{
 
-            Spacer(modifier = Modifier.height(LargePadding2))
+            item {
+                DetailTopAppBarWithOneAction(
+                    title = stringResource(R.string.lbl_category),
+                    actionIcon = R.drawable.ic_cart,
+                    onClickBackButton = {
+                        onClickBackButton()
+                    },
+                    onClickActionButton = {
+                        // Share news article code
+                    }
+                )
 
-            Text(
-                text = "Gadget",
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Bold
-                ),
-                color = textColorPrimary,
-                modifier = Modifier.padding(horizontal = LargePadding2)
-            )
+                Spacer(modifier = Modifier.height(LargePadding2))
 
-            Spacer(modifier = Modifier.height(LargePadding2))
+                Text(
+                    text = "Gadget",
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = textColorPrimary,
+                    modifier = Modifier.padding(horizontal = LargePadding2)
+                )
 
-            SearchBar(
-                context = context,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = LargePadding2),
-                query = query,
-                isEnabled = true,
-                isClickable = false,
-                onClickSearchBar = {
+                Spacer(modifier = Modifier.height(LargePadding2))
 
-                },
-                onQueryChange = {
-                    query = it
-                },
-                onSearch = {
+                SearchBar(
+                    context = context,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = LargePadding2),
+                    query = query,
+                    isEnabled = true,
+                    isClickable = false,
+                    onClickSearchBar = {
 
-                }
-            )
+                    },
+                    onQueryChange = {
+                        query = it
+                    },
+                    onSearch = {
 
-            Spacer(modifier = Modifier.height(LargePadding2))
+                    }
+                )
 
-            ProductCardGrid(
-                modifier = Modifier.fillMaxWidth(),
-                onClickVerticalDots = {
+                Spacer(modifier = Modifier.height(LargePadding2))
+            }
 
-                },
-                onClickProductCard = {
+            item {
 
-                }
-            )
+                ProductCardGrid(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClickVerticalDots = {
+
+                    },
+                    onClickProductCard = {
+
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(ExtraLargePadding5_2x))
+            }
         }
 
         CustomOutlinedButton(
             text = stringResource(R.string.lbl_filter_sorting),
-            modifier = Modifier.fillMaxWidth().padding(LargePadding2).align(Alignment.BottomCenter)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(LargePadding2)
+                .align(Alignment.BottomCenter)
         ) {
 
         }
