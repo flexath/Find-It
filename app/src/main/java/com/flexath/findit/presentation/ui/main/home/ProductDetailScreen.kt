@@ -324,10 +324,14 @@ fun ProductDetailScreen(
 
                         ProductItemSection(
                             context = context,
-                            title = stringResource(id = R.string.lbl_featured_product)
-                        ) {
-                            onClickProductCard()
-                        }
+                            title = stringResource(id = R.string.lbl_featured_product),
+                            onClickSeeAll = {
+
+                            },
+                            onClickProductCard = {
+                                onClickProductCard()
+                            }
+                        )
 
                         Spacer(modifier = Modifier.height(ExtraLargePadding5_2x))
                     }

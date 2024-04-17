@@ -24,7 +24,6 @@ import com.flexath.findit.R
 import com.flexath.findit.presentation.utils.Dimens.ExtraLargePadding4
 import com.flexath.findit.presentation.utils.Dimens.MediumPadding1
 import com.flexath.findit.presentation.utils.Dimens.MediumPadding3
-import com.flexath.findit.presentation.utils.Dimens.MediumPadding5
 import com.flexath.findit.presentation.utils.Dimens.SmallPadding4
 
 @Composable
@@ -37,7 +36,7 @@ fun ProductCategory(
             start = MediumPadding3,
             end = MediumPadding3,
             top = MediumPadding3,
-            bottom = SmallPadding4,
+            bottom = SmallPadding4
         )
     ) {
         Box(

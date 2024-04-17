@@ -120,6 +120,9 @@ fun SearchScreen(
                 ProductItemSection(
                     context = context,
                     title = stringResource(id = R.string.lbl_featured_product),
+                    onClickSeeAll = {
+
+                    },
                     onClickProductCard = {
                         onClickProductCard()
                     }

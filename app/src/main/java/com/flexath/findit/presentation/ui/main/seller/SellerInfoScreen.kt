@@ -69,7 +69,7 @@ fun SellerInfoScreen(
 
         Column {
             DetailTopAppBarWithTwoActions(
-                title = stringResource(R.string.lbl_detail_product),
+                title = stringResource(R.string.lbl_seller_info),
                 firstActionIcon = R.drawable.ic_search,
                 secondActionIcon = R.drawable.ic_cart,
                 onClickBackButton = {

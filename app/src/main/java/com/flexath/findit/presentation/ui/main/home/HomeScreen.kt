@@ -1,7 +1,6 @@
 package com.flexath.findit.presentation.ui.main.home
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,10 +36,11 @@ import com.flexath.findit.presentation.theme.textColorPrimary
 import com.flexath.findit.presentation.ui.main.common.CustomOutlinedButton
 import com.flexath.findit.presentation.ui.main.common.ProductItemSection
 import com.flexath.findit.presentation.ui.main.common.SearchBar
+import com.flexath.findit.presentation.ui.main.common.articleCardList
 import com.flexath.findit.presentation.ui.main.home.components.BannerSection
+import com.flexath.findit.presentation.ui.main.home.components.CategoryContentBottomSheet
 import com.flexath.findit.presentation.ui.main.home.components.ProductCategoryList
 import com.flexath.findit.presentation.ui.main.home.components.TitleSection
-import com.flexath.findit.presentation.ui.main.common.articleCardList
 import com.flexath.findit.presentation.utils.Dimens
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
 import com.flexath.findit.presentation.utils.Dimens.LargePadding5
@@ -57,9 +57,24 @@ fun HomeScreen(
 ) {
     val pagerState = rememberPagerState { 3 }
 
+    var bottomSheetShow by remember {
+        mutableStateOf(false)
+    }
+
     var query by remember {
         mutableStateOf("")
     }
+
+    CategoryContentBottomSheet(
+        bottomSheetShow = bottomSheetShow,
+        onSheetShowChange = {
+            bottomSheetShow = it
+        },
+        onClick = {
+            onClickCategory()
+            bottomSheetShow = false
+        }
+    )
 
     LazyColumn(
         modifier = Modifier.background(colorBackground)
@@ -95,8 +110,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(LargePadding5))
 
                 TitleSection(title = stringResource(R.string.lbl_categories)) {
-                    // add SeeAll text button clicking codes
-                    Toast.makeText(context, "SeeAll is clicked", Toast.LENGTH_SHORT).show()
+                    bottomSheetShow = true
                 }
 
                 ProductCategoryList(
@@ -116,6 +130,9 @@ fun HomeScreen(
                     ProductItemSection(
                         context = context,
                         title = stringResource(R.string.lbl_featured_product),
+                        onClickSeeAll = {
+
+                        },
                         onClickProductCard = {
                             onClickProductCard()
                         }
@@ -139,6 +156,9 @@ fun HomeScreen(
                     ProductItemSection(
                         context = context,
                         title = stringResource(R.string.lbl_best_sellers),
+                        onClickSeeAll = {
+
+                        },
                         onClickProductCard = {
                             onClickProductCard()
                         }
@@ -162,6 +182,9 @@ fun HomeScreen(
                     ProductItemSection(
                         context = context,
                         title = stringResource(R.string.lbl_new_arrivals),
+                        onClickSeeAll = {
+
+                        },
                         onClickProductCard = {
                             onClickProductCard()
                         }
@@ -172,6 +195,9 @@ fun HomeScreen(
                     ProductItemSection(
                         context = context,
                         title = stringResource(R.string.lbl_top_rated_product),
+                        onClickSeeAll = {
+
+                        },
                         onClickProductCard = {
                             onClickProductCard()
                         }
@@ -182,6 +208,9 @@ fun HomeScreen(
                     ProductItemSection(
                         context = context,
                         title = stringResource(R.string.lbl_special_offers),
+                        onClickSeeAll = {
+
+                        },
                         onClickProductCard = {
                             onClickProductCard()
                         }

@@ -16,12 +16,12 @@ import com.flexath.findit.presentation.utils.Dimens
 fun ProductItemSection(
     context: Context,
     title: String,
+    onClickSeeAll: () -> Unit,
     onClickProductCard: () -> Unit
 ) {
     Column {
         TitleSection(title = title) {
-            // add SeeAll text button clicking codes
-            Toast.makeText(context, "SeeAll is clicked", Toast.LENGTH_SHORT).show()
+            onClickSeeAll()
         }
 
         Spacer(modifier = Modifier.height(Dimens.SmallPadding4))
