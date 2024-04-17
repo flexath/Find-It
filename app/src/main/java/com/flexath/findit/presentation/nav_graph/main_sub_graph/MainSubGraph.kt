@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -32,11 +34,23 @@ fun MainSubGraph() {
     val navHostController = rememberNavController()
     val backStackEntry = navHostController.currentBackStackEntryAsState().value
 
-    val bottomBarVisibility = remember(key1 = backStackEntry) {
-        backStackEntry?.destination?.route == Route.HomeScreen.route ||
-                backStackEntry?.destination?.route == Route.WishlistScreen.route ||
-                backStackEntry?.destination?.route == Route.OrderScreen.route ||
-                backStackEntry?.destination?.route == Route.ProfileScreen.route
+//    val bottomBarVisibility = remember(key1 = backStackEntry) {
+//        backStackEntry?.destination?.route == Route.HomeScreen.route ||
+//                backStackEntry?.destination?.route == Route.WishlistScreen.route ||
+//                backStackEntry?.destination?.route == Route.OrderScreen.route ||
+//                backStackEntry?.destination?.route == Route.ProfileScreen.route
+//    }
+
+    val bottomBarVisibility by remember(key1 = backStackEntry?.destination?.route) {
+        derivedStateOf {
+            when(backStackEntry?.destination?.route) {
+                Route.HomeScreen.route -> true
+                Route.WishlistScreen.route -> true
+                Route.OrderScreen.route -> true
+                Route.ProfileScreen.route -> true
+                else -> false
+            }
+        }
     }
 
     Scaffold(
@@ -163,7 +177,6 @@ fun MainSubGraph() {
                 route = Route.SellerInfoScreen.route
             ) {
                 SellerInfoScreen(
-                    context = context,
                     modifier = Modifier.fillMaxSize(),
                     onClickProductCard = {
                         navHostController.navigate(Route.ProductDetailScreen.route)

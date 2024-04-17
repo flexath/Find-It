@@ -1,6 +1,5 @@
 package com.flexath.findit.presentation.ui.main.seller
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,16 +21,16 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -46,23 +45,37 @@ import com.flexath.findit.presentation.ui.main.common.CustomOutlinedButton
 import com.flexath.findit.presentation.ui.main.common.DetailTopAppBarWithTwoActions
 import com.flexath.findit.presentation.ui.main.common.ProductCardGrid
 import com.flexath.findit.presentation.ui.main.common.RatingTextWithIcon
+import com.flexath.findit.presentation.ui.main.home.components.SortingContentBottomSheet
 import com.flexath.findit.presentation.utils.Dimens
 import com.flexath.findit.presentation.utils.Dimens.ExtraLargePadding5_2x
 import com.flexath.findit.presentation.utils.Dimens.LargePadding10
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
-import com.flexath.findit.presentation.utils.Dimens.LargePadding5
 import com.flexath.findit.presentation.utils.Dimens.MediumPadding5
 import com.flexath.findit.presentation.utils.Dimens.SmallPadding3
 import com.flexath.findit.presentation.utils.Dimens.SmallPadding5
 
 @Composable
 fun SellerInfoScreen(
-    context: Context,
     modifier: Modifier = Modifier,
     onClickBackButton: () -> Unit,
     onClickProductCard: () -> Unit,
     onClickSearchButton: () -> Unit
 ) {
+
+    var sortingBottomSheetShow by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    SortingContentBottomSheet(
+        bottomSheetShow = sortingBottomSheetShow,
+        onSheetShowChange = {
+            sortingBottomSheetShow = it
+        },
+        onClickApplyButton = {
+            sortingBottomSheetShow = false
+        }
+    )
+
     Box(
         modifier = modifier.background(color = colorBackground)
     ) {
@@ -114,14 +127,14 @@ fun SellerInfoScreen(
                                 color = textColorPrimary,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.padding(start = Dimens.MediumPadding5)
+                                modifier = Modifier.padding(start = MediumPadding5)
                             )
 
-                            Spacer(modifier = Modifier.height(Dimens.SmallPadding3))
+                            Spacer(modifier = Modifier.height(SmallPadding3))
 
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(start = Dimens.MediumPadding5)
+                                modifier = Modifier.padding(start = MediumPadding5)
                             ) {
                                 Text(
                                     text = "Official Store",
@@ -131,7 +144,7 @@ fun SellerInfoScreen(
                                     overflow = TextOverflow.Ellipsis,
                                 )
 
-                                Spacer(modifier = Modifier.width(Dimens.SmallPadding3))
+                                Spacer(modifier = Modifier.width(SmallPadding3))
 
                                 Image(
                                     painter = painterResource(id = R.drawable.ic_shield),
@@ -309,17 +322,17 @@ fun SellerInfoScreen(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Dimens.LargePadding2)
+                .padding(LargePadding2)
                 .align(Alignment.BottomCenter)
         ) {
             CustomOutlinedButton(
                 text = stringResource(R.string.lbl_sorting),
                 modifier = Modifier.weight(1f)
             ) {
-
+                sortingBottomSheetShow = true
             }
 
-            Spacer(modifier = Modifier.width(Dimens.MediumPadding5))
+            Spacer(modifier = Modifier.width(MediumPadding5))
 
             CustomFilledButton(
                 text = stringResource(R.string.lbl_follow),
@@ -335,7 +348,6 @@ fun SellerInfoScreen(
 @Composable
 private fun SellerInfoScreenPreview() {
     SellerInfoScreen(
-        context = LocalContext.current,
         modifier = Modifier.fillMaxSize(),
         onClickBackButton = {
 

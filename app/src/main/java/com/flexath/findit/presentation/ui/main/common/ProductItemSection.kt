@@ -17,7 +17,8 @@ fun ProductItemSection(
     context: Context,
     title: String,
     onClickSeeAll: () -> Unit,
-    onClickProductCard: () -> Unit
+    onClickProductCard: () -> Unit,
+    onClickVerticalDots: () -> Unit
 ) {
     Column {
         TitleSection(title = title) {
@@ -33,7 +34,7 @@ fun ProductItemSection(
                 onClickProductCard()
             },
             onClickVerticalDots = {
-
+                onClickVerticalDots()
             }
         )
     }

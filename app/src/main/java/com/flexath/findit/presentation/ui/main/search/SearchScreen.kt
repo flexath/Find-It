@@ -15,6 +15,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -27,6 +28,7 @@ import com.flexath.findit.presentation.theme.textColorPrimary
 import com.flexath.findit.presentation.ui.main.common.DetailTopAppBar
 import com.flexath.findit.presentation.ui.main.common.ProductItemSection
 import com.flexath.findit.presentation.ui.main.common.SearchBar
+import com.flexath.findit.presentation.ui.main.home.components.ProductContentBottomSheet
 import com.flexath.findit.presentation.ui.main.search.components.historySearchList
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
 
@@ -50,6 +52,23 @@ fun SearchScreen(
             query.isNotEmpty()
         }.value
     }
+
+    var productActionBottomSheetShow by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    ProductContentBottomSheet(
+        bottomSheetShow = productActionBottomSheetShow,
+        onSheetShowChange = {
+            productActionBottomSheetShow = it
+        },
+        onClickCloseButton = {
+            productActionBottomSheetShow = false
+        },
+        onClickAddToCardButton = {
+            productActionBottomSheetShow = false
+        }
+    )
 
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
@@ -125,6 +144,9 @@ fun SearchScreen(
                     },
                     onClickProductCard = {
                         onClickProductCard()
+                    },
+                    onClickVerticalDots = {
+                        productActionBottomSheetShow = true
                     }
                 )
 

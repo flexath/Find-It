@@ -19,7 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,6 +40,7 @@ import com.flexath.findit.presentation.ui.main.common.articleCardList
 import com.flexath.findit.presentation.ui.main.home.components.BannerSection
 import com.flexath.findit.presentation.ui.main.home.components.CategoryContentBottomSheet
 import com.flexath.findit.presentation.ui.main.home.components.ProductCategoryList
+import com.flexath.findit.presentation.ui.main.home.components.ProductContentBottomSheet
 import com.flexath.findit.presentation.ui.main.home.components.TitleSection
 import com.flexath.findit.presentation.utils.Dimens
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
@@ -57,22 +58,39 @@ fun HomeScreen(
 ) {
     val pagerState = rememberPagerState { 3 }
 
-    var bottomSheetShow by remember {
+    var categoryBottomSheetShow by rememberSaveable {
         mutableStateOf(false)
     }
 
-    var query by remember {
+    var productActionBottomSheetShow by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    var query by rememberSaveable {
         mutableStateOf("")
     }
 
     CategoryContentBottomSheet(
-        bottomSheetShow = bottomSheetShow,
+        bottomSheetShow = categoryBottomSheetShow,
         onSheetShowChange = {
-            bottomSheetShow = it
+            categoryBottomSheetShow = it
         },
         onClick = {
             onClickCategory()
-            bottomSheetShow = false
+            categoryBottomSheetShow = false
+        }
+    )
+
+    ProductContentBottomSheet(
+        bottomSheetShow = productActionBottomSheetShow,
+        onSheetShowChange = {
+            productActionBottomSheetShow = it
+        },
+        onClickCloseButton = {
+            productActionBottomSheetShow = false
+        },
+        onClickAddToCardButton = {
+            productActionBottomSheetShow = false
         }
     )
 
@@ -110,7 +128,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(LargePadding5))
 
                 TitleSection(title = stringResource(R.string.lbl_categories)) {
-                    bottomSheetShow = true
+                    categoryBottomSheetShow = true
                 }
 
                 ProductCategoryList(
@@ -135,6 +153,9 @@ fun HomeScreen(
                         },
                         onClickProductCard = {
                             onClickProductCard()
+                        },
+                        onClickVerticalDots = {
+                            productActionBottomSheetShow = true
                         }
                     )
 
@@ -161,6 +182,9 @@ fun HomeScreen(
                         },
                         onClickProductCard = {
                             onClickProductCard()
+                        },
+                        onClickVerticalDots = {
+                            productActionBottomSheetShow = true
                         }
                     )
 
@@ -187,6 +211,9 @@ fun HomeScreen(
                         },
                         onClickProductCard = {
                             onClickProductCard()
+                        },
+                        onClickVerticalDots = {
+                            productActionBottomSheetShow = true
                         }
                     )
 
@@ -200,6 +227,9 @@ fun HomeScreen(
                         },
                         onClickProductCard = {
                             onClickProductCard()
+                        },
+                        onClickVerticalDots = {
+                            productActionBottomSheetShow = true
                         }
                     )
 
@@ -213,6 +243,9 @@ fun HomeScreen(
                         },
                         onClickProductCard = {
                             onClickProductCard()
+                        },
+                        onClickVerticalDots = {
+                            productActionBottomSheetShow = true
                         }
                     )
                 }

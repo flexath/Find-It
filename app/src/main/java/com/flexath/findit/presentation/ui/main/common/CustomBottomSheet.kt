@@ -33,6 +33,7 @@ import com.flexath.findit.presentation.utils.Dimens.MediumPadding5
 
 @Composable
 fun BottomSheetUtil(
+    modifier: Modifier = Modifier,
     title: String,
     bottomSheetShow: Boolean,
     onSheetShowChange: (Boolean) -> Unit,
@@ -40,6 +41,7 @@ fun BottomSheetUtil(
 ) {
     if (bottomSheetShow) {
         CustomBottomSheet(
+            modifier = modifier,
             title = title,
             onClickCloseButton = {
                 onSheetShowChange(false)
@@ -74,7 +76,7 @@ fun CustomBottomSheet(
         },
         containerColor = colorBackground,
         contentColor = textColorPrimary,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
     ) {
 
         Row(
@@ -112,8 +114,6 @@ fun CustomBottomSheet(
             thickness = Dimens.SmallPadding0,
             color = dividerColor
         )
-
-        Spacer(modifier = Modifier.height(MediumPadding5))
 
         content()
 

@@ -25,6 +25,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,6 +55,8 @@ import com.flexath.findit.presentation.ui.main.common.DetailTopAppBarWithTwoActi
 import com.flexath.findit.presentation.ui.main.common.ProductItemSection
 import com.flexath.findit.presentation.ui.main.common.RatingTextWithIcon
 import com.flexath.findit.presentation.ui.main.common.reviewCardList
+import com.flexath.findit.presentation.ui.main.home.components.AddToCartContentBottomSheet
+import com.flexath.findit.presentation.ui.main.home.components.ProductContentBottomSheet
 import com.flexath.findit.presentation.utils.Dimens
 import com.flexath.findit.presentation.utils.Dimens.ExtraLargePadding5_2x
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
@@ -68,6 +74,37 @@ fun ProductDetailScreen(
     onClickSeeAllReviewButton: () -> Unit,
     onClickProductCard: () -> Unit,
 ) {
+    var productActionBottomSheetShow by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    var addToCartBottomSheetShow by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    AddToCartContentBottomSheet(
+        bottomSheetShow = addToCartBottomSheetShow,
+        onSheetShowChange = {
+            addToCartBottomSheetShow = it
+        },
+        onClickAddToCardButton = {
+            addToCartBottomSheetShow = false
+        }
+    )
+
+    ProductContentBottomSheet(
+        bottomSheetShow = productActionBottomSheetShow,
+        onSheetShowChange = {
+            productActionBottomSheetShow = it
+        },
+        onClickCloseButton = {
+            productActionBottomSheetShow = false
+        },
+        onClickAddToCardButton = {
+            productActionBottomSheetShow = false
+        }
+    )
+
     Box(
         modifier = modifier.background(color = colorBackground)
     ) {
@@ -330,6 +367,9 @@ fun ProductDetailScreen(
                             },
                             onClickProductCard = {
                                 onClickProductCard()
+                            },
+                            onClickVerticalDots = {
+                                productActionBottomSheetShow = true
                             }
                         )
 
@@ -360,7 +400,7 @@ fun ProductDetailScreen(
                 text = stringResource(R.string.lbl_add_to_cart),
                 modifier = Modifier.weight(1f)
             ) {
-
+                addToCartBottomSheetShow = true
             }
         }
     }

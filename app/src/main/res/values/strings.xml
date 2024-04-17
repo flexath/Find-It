@@ -29,4 +29,12 @@
     <string name="lbl_review_product">Product Review</string>
     <string name="lbl_seller_info">Seller Info</string>
     <string name="lbl_all_categories">All Categories</string>
+    <string name="lbl_product_action">Product Action</string>
+    <string name="lbl_share_product">Share Product</string>
+    <string name="lbl_add_to_wishlist">Add to Wishlist</string>
+    <string name="lbl_quantity">Quantity</string>
+    <string name="lbl_variant">Variant</string>
+    <string name="lbl_total_price">Total Price</string>
+    <string name="lbl_reset">Reset</string>
+    <string name="lbl_apply">Apply</string>
 </resources>
