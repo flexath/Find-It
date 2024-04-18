@@ -1,19 +1,14 @@
-package com.flexath.findit.presentation.ui.main.home.components
+package com.flexath.findit.presentation.ui.main.common.bottom_sheet
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -25,9 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -39,13 +34,11 @@ import com.flexath.findit.R
 import com.flexath.findit.presentation.theme.colorBackground
 import com.flexath.findit.presentation.theme.colorPrimary
 import com.flexath.findit.presentation.theme.dividerColor
-import com.flexath.findit.presentation.theme.searchBarBackgroundColor
 import com.flexath.findit.presentation.theme.textColorPrimary
 import com.flexath.findit.presentation.theme.textColorSecondary
 import com.flexath.findit.presentation.theme.variantSelectedBackgroundColor
 import com.flexath.findit.presentation.ui.main.common.BottomSheetUtil
 import com.flexath.findit.presentation.ui.main.common.CustomFilledButton
-import com.flexath.findit.presentation.utils.Dimens
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
 import com.flexath.findit.presentation.utils.Dimens.MediumPadding5
 import com.flexath.findit.presentation.utils.Dimens.SmallPadding0
@@ -128,7 +121,7 @@ fun AddToCartContentBottomSheet(
             Spacer(modifier = Modifier.height(MediumPadding5))
 
             HorizontalDivider(
-                thickness = Dimens.SmallPadding0,
+                thickness = SmallPadding0,
                 color = dividerColor,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -163,7 +156,7 @@ fun AddToCartContentBottomSheet(
             Spacer(modifier = Modifier.height(MediumPadding5))
 
             HorizontalDivider(
-                thickness = Dimens.SmallPadding0,
+                thickness = SmallPadding0,
                 color = dividerColor,
                 modifier = Modifier
                     .fillMaxWidth()

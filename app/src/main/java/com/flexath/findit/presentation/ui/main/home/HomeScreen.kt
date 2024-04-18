@@ -38,9 +38,9 @@ import com.flexath.findit.presentation.ui.main.common.ProductItemSection
 import com.flexath.findit.presentation.ui.main.common.SearchBar
 import com.flexath.findit.presentation.ui.main.common.articleCardList
 import com.flexath.findit.presentation.ui.main.home.components.BannerSection
-import com.flexath.findit.presentation.ui.main.home.components.CategoryContentBottomSheet
+import com.flexath.findit.presentation.ui.main.common.bottom_sheet.CategoryContentBottomSheet
 import com.flexath.findit.presentation.ui.main.home.components.ProductCategoryList
-import com.flexath.findit.presentation.ui.main.home.components.ProductContentBottomSheet
+import com.flexath.findit.presentation.ui.main.common.bottom_sheet.ProductContentBottomSheet
 import com.flexath.findit.presentation.ui.main.home.components.TitleSection
 import com.flexath.findit.presentation.utils.Dimens
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2

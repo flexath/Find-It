@@ -1,4 +1,4 @@
-package com.flexath.findit.presentation.ui.main.home.components
+package com.flexath.findit.presentation.ui.main.common.bottom_sheet
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flexath.findit.R
 import com.flexath.findit.presentation.ui.main.common.BottomSheetUtil
+import com.flexath.findit.presentation.ui.main.home.components.ProductCategory
 import com.flexath.findit.presentation.utils.Dimens
 
 @Composable

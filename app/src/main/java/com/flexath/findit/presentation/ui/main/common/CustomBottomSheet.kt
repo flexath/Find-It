@@ -37,6 +37,7 @@ fun BottomSheetUtil(
     title: String,
     bottomSheetShow: Boolean,
     onSheetShowChange: (Boolean) -> Unit,
+    isVisibleHorizontalDivider: Boolean = true,
     content: @Composable ColumnScope.() -> Unit
 ) {
     if (bottomSheetShow) {
@@ -48,7 +49,8 @@ fun BottomSheetUtil(
             },
             onDismissRequest = {
                 onSheetShowChange(false)
-            }
+            },
+            isVisibleHorizontalDivider = isVisibleHorizontalDivider
         ) {
             content()
         }
@@ -62,6 +64,7 @@ fun CustomBottomSheet(
     title: String,
     onClickCloseButton: () -> Unit,
     onDismissRequest: () -> Unit,
+    isVisibleHorizontalDivider: Boolean,
     content: @Composable ColumnScope.() -> Unit
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
@@ -108,12 +111,14 @@ fun CustomBottomSheet(
             )
         }
 
-        Spacer(modifier = Modifier.height(MediumPadding5))
+        if(isVisibleHorizontalDivider) {
+            Spacer(modifier = Modifier.height(MediumPadding5))
 
-        HorizontalDivider(
-            thickness = Dimens.SmallPadding0,
-            color = dividerColor
-        )
+            HorizontalDivider(
+                thickness = Dimens.SmallPadding0,
+                color = dividerColor
+            )
+        }
 
         content()
 
@@ -133,6 +138,7 @@ private fun CustomBottomSheetPreview() {
         onDismissRequest = {
 
         },
+        isVisibleHorizontalDivider = true,
         content = {
 
         }

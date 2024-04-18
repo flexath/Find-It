@@ -2,6 +2,7 @@ package com.flexath.findit.presentation.ui.main.seller
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,7 +46,8 @@ import com.flexath.findit.presentation.ui.main.common.CustomOutlinedButton
 import com.flexath.findit.presentation.ui.main.common.DetailTopAppBarWithTwoActions
 import com.flexath.findit.presentation.ui.main.common.ProductCardGrid
 import com.flexath.findit.presentation.ui.main.common.RatingTextWithIcon
-import com.flexath.findit.presentation.ui.main.home.components.SortingContentBottomSheet
+import com.flexath.findit.presentation.ui.main.common.bottom_sheet.ShippingSupportContentBottomSheet
+import com.flexath.findit.presentation.ui.main.common.bottom_sheet.SortingContentBottomSheet
 import com.flexath.findit.presentation.utils.Dimens
 import com.flexath.findit.presentation.utils.Dimens.ExtraLargePadding5_2x
 import com.flexath.findit.presentation.utils.Dimens.LargePadding10
@@ -66,6 +68,10 @@ fun SellerInfoScreen(
         mutableStateOf(false)
     }
 
+    var shippingSupportBottomSheetShow by rememberSaveable {
+        mutableStateOf(false)
+    }
+
     SortingContentBottomSheet(
         bottomSheetShow = sortingBottomSheetShow,
         onSheetShowChange = {
@@ -73,6 +79,13 @@ fun SellerInfoScreen(
         },
         onClickApplyButton = {
             sortingBottomSheetShow = false
+        }
+    )
+
+    ShippingSupportContentBottomSheet(
+        bottomSheetShow = shippingSupportBottomSheetShow,
+        onSheetShowChange = {
+            shippingSupportBottomSheetShow = it
         }
     )
 
@@ -268,10 +281,13 @@ fun SellerInfoScreen(
                     Spacer(modifier = Modifier.height(LargePadding10))
 
                     Row(
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable {
+                            shippingSupportBottomSheetShow = true
+                        }
                     ) {
                         Text(
-                            text = "Dukungan Pengiriman",
+                            text = stringResource(R.string.lbl_shipping_support),
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontWeight = FontWeight.Medium
                             ),

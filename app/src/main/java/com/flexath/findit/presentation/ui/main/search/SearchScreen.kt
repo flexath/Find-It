@@ -28,7 +28,7 @@ import com.flexath.findit.presentation.theme.textColorPrimary
 import com.flexath.findit.presentation.ui.main.common.DetailTopAppBar
 import com.flexath.findit.presentation.ui.main.common.ProductItemSection
 import com.flexath.findit.presentation.ui.main.common.SearchBar
-import com.flexath.findit.presentation.ui.main.home.components.ProductContentBottomSheet
+import com.flexath.findit.presentation.ui.main.common.bottom_sheet.ProductContentBottomSheet
 import com.flexath.findit.presentation.ui.main.search.components.historySearchList
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
 

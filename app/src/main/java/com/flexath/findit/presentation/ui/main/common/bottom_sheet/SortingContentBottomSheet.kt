@@ -1,4 +1,4 @@
-package com.flexath.findit.presentation.ui.main.home.components
+package com.flexath.findit.presentation.ui.main.common.bottom_sheet
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

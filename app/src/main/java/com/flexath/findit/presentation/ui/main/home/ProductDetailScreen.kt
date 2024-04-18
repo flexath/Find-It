@@ -55,8 +55,8 @@ import com.flexath.findit.presentation.ui.main.common.DetailTopAppBarWithTwoActi
 import com.flexath.findit.presentation.ui.main.common.ProductItemSection
 import com.flexath.findit.presentation.ui.main.common.RatingTextWithIcon
 import com.flexath.findit.presentation.ui.main.common.reviewCardList
-import com.flexath.findit.presentation.ui.main.home.components.AddToCartContentBottomSheet
-import com.flexath.findit.presentation.ui.main.home.components.ProductContentBottomSheet
+import com.flexath.findit.presentation.ui.main.common.bottom_sheet.AddToCartContentBottomSheet
+import com.flexath.findit.presentation.ui.main.common.bottom_sheet.ProductContentBottomSheet
 import com.flexath.findit.presentation.utils.Dimens
 import com.flexath.findit.presentation.utils.Dimens.ExtraLargePadding5_2x
 import com.flexath.findit.presentation.utils.Dimens.LargePadding2
@@ -217,10 +217,10 @@ fun ProductDetailScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = LargePadding2)
                             .clickable {
                                 onClickSellerProfile()
                             }
+                            .padding(horizontal = LargePadding2)
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.dummy_seller_profile),
