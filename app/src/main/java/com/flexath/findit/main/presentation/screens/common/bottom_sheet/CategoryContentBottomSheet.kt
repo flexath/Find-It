@@ -10,15 +10,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flexath.findit.R
+import com.flexath.findit.core.utils.Dimens
 import com.flexath.findit.main.presentation.screens.common.BottomSheetUtil
 import com.flexath.findit.main.presentation.screens.home.components.ProductCategory
-import com.flexath.findit.core.utils.Dimens
 
 @Composable
 fun CategoryContentBottomSheet(
     bottomSheetShow: Boolean,
     onSheetShowChange: (Boolean) -> Unit,
     onClick: () -> Unit,
+    categoryList: List<String>,
 ) {
     BottomSheetUtil(
         modifier = Modifier.fillMaxWidth().wrapContentHeight(),
@@ -33,11 +34,12 @@ fun CategoryContentBottomSheet(
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Fixed(4)
             ) {
-                items(count = 8) {
+                items(count = categoryList.size) {index ->
                     ProductCategory(
                         onClick = {
                             onClick()
-                        }
+                        },
+                        category = categoryList[index]
                     )
                 }
             }

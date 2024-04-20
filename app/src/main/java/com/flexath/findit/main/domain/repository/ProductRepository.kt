@@ -12,4 +12,6 @@ interface ProductRepository {
     fun getProduct(
         productId: Int
     ): Flow<Resource<ProductVO>>
+
+    fun getAllCategories(): Flow<Resource<List<String>>>
 }

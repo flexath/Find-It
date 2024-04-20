@@ -2,6 +2,7 @@ package com.flexath.findit.main.data.remote.api
 
 import com.flexath.findit.core.data.ApiConstants.PATH_PRODUCT_ID
 import com.flexath.findit.core.data.ApiConstants.QUERY_LIMIT
+import com.flexath.findit.main.data.remote.dto.ProductCategoryListResponse
 import com.flexath.findit.main.data.remote.dto.ProductDto
 import com.flexath.findit.main.data.remote.dto.ProductListResponseDto
 import retrofit2.http.GET
@@ -19,4 +20,7 @@ interface ProductApi {
     suspend fun getProduct(
         @Path(PATH_PRODUCT_ID) productId:Int
     ): ProductDto
+
+    @GET("products/categories")
+    suspend fun getAllCategories(): ProductCategoryListResponse
 }

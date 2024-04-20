@@ -1,12 +1,18 @@
 package com.flexath.findit.main.presentation.nav_graph
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -15,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.flexath.findit.core.presentation.Route
+import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.presentation.screens.MainBottomBar
 import com.flexath.findit.main.presentation.screens.MainTopBar
 import com.flexath.findit.main.presentation.screens.category.CategoryScreen
@@ -30,7 +37,9 @@ import com.flexath.findit.main.presentation.screens.seller.SearchInStoreScreen
 import com.flexath.findit.main.presentation.screens.seller.SellerInfoScreen
 import com.flexath.findit.main.presentation.screens.wishlist.WishlistScreen
 import com.flexath.findit.main.presentation.view_model.ProductViewModel
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainSubGraph() {
     val navHostController = rememberNavController()
@@ -78,6 +87,12 @@ fun MainSubGraph() {
         val topPadding = it.calculateTopPadding()
         val context = LocalContext.current
 
+        val productViewModel: ProductViewModel = hiltViewModel()
+
+        val featureProductList: MutableState<List<ProductVO>> = rememberSaveable {
+            mutableStateOf(listOf())
+        }
+
         NavHost(
             navController = navHostController,
             startDestination = Route.HomeScreen.route,
@@ -88,7 +103,18 @@ fun MainSubGraph() {
             composable(
                 route = Route.HomeScreen.route
             ) {
-                val productViewModel: ProductViewModel = hiltViewModel()
+
+                productViewModel.fetchAllProductCategories()
+                productViewModel.fetchAllProducts()
+
+//                LaunchedEffect(key1 = Unit) {
+//                    featureProductList.value = if (productViewModel.productListState.value.productList.isNotEmpty()) {
+//                        productViewModel.productListState.value.productList.subList(0, 5)
+//                    } else {
+//                        emptyList()
+//                    }
+//                }
+
                 HomeScreen(
                     viewModel = productViewModel,
                     context = context,
@@ -159,7 +185,33 @@ fun MainSubGraph() {
             composable(
                 route = Route.ProductDetailScreen.route
             ) {
+                var product by remember {
+                    mutableStateOf(
+                        ProductVO(
+                            title = "Product Title",
+                            price = 1,
+                            rating = 0.0,
+                            stock = 1,
+                            brand = "Product Brand",
+                            thumbnail = "Product Image Url",
+                            images = emptyList()
+                        )
+                    )
+                }
+
+                productViewModel.fetchProduct(6)
+
+                LaunchedEffect(key1 = Unit) { // Ensures launch only on first composition
+                    launch {
+                        productViewModel.productSharedFlow.collect { productResource ->
+                            product = productResource
+                        }
+                    }
+                }
+
                 ProductDetailScreen(
+                    product = product,
+                    featuredProductList = listOf(),
                     context = context,
                     modifier = Modifier.fillMaxSize(),
                     onClickBackButton = {

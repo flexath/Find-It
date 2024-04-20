@@ -74,6 +74,7 @@ fun HomeScreen(
     }
 
     CategoryContentBottomSheet(
+        categoryList = viewModel.productCategoryListState.value.productCategoryList,
         bottomSheetShow = categoryBottomSheetShow,
         onSheetShowChange = {
             categoryBottomSheetShow = it
@@ -135,11 +136,13 @@ fun HomeScreen(
                 }
 
                 ProductCategoryList(
+                    categoryList = viewModel.productCategoryListState.value.productCategoryList,
                     modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    onClickCategory()
-                }
+                        .fillMaxWidth(),
+                    onClick = {
+                        onClickCategory()
+                    }
+                )
 
                 Column(
                     modifier = Modifier
@@ -170,12 +173,12 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(LargePadding2))
 
                     Image(
-                        painter = painterResource(id = R.drawable.img_banner_4),
+                        painter = painterResource(id = R.drawable.img_banner),
                         contentDescription = "Banner Image",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .padding(horizontal = LargePadding2)
                             .fillMaxWidth()
+                            .padding(horizontal = LargePadding2)
                             .aspectRatio(21f / 10f)
                             .clip(RoundedCornerShape(Dimens.MediumPadding3))
                     )

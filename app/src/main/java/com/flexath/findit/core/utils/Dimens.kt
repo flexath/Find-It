@@ -39,6 +39,7 @@ object Dimens {
     val ProductCardWidth = 160.dp
     val ArticleCardWidth = 156.dp
     val SellerProfileWidth = 40.dp
+    val CategoryTextWidth = 60.dp
 
     val SmallText1 = 2.sp
     val SmallText2 = 4.sp

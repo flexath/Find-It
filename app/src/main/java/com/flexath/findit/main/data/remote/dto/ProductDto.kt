@@ -18,10 +18,13 @@ data class ProductDto(
     fun toProductVO(): ProductVO {
         return ProductVO(
             title = title,
+            description = description,
             price = price,
             rating = rating,
             stock = stock,
-            thumbnail = thumbnail
+            brand = brand,
+            thumbnail = thumbnail,
+            images = images
         )
     }
 }

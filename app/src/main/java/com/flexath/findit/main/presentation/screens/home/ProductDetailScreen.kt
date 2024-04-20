@@ -1,6 +1,7 @@
 package com.flexath.findit.main.presentation.screens.home
 
 import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
@@ -42,6 +45,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens
 import com.flexath.findit.core.utils.Dimens.ExtraLargePadding5_2x
@@ -50,6 +55,7 @@ import com.flexath.findit.core.utils.Dimens.MediumPadding5
 import com.flexath.findit.core.utils.Dimens.SellerProfileWidth
 import com.flexath.findit.core.utils.Dimens.SmallPadding3
 import com.flexath.findit.core.utils.Dimens.SmallPadding5
+import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.presentation.screens.common.CustomFilledButton
 import com.flexath.findit.main.presentation.screens.common.CustomFilledButtonWithIcon
 import com.flexath.findit.main.presentation.screens.common.CustomOutlinedButton
@@ -65,6 +71,7 @@ import com.flexath.findit.theme.dividerColor
 import com.flexath.findit.theme.searchBarBackgroundColor
 import com.flexath.findit.theme.textColorPrimary
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductDetailScreen(
     context: Context,
@@ -73,6 +80,8 @@ fun ProductDetailScreen(
     onClickSellerProfile: () -> Unit,
     onClickSeeAllReviewButton: () -> Unit,
     onClickProductCard: () -> Unit,
+    product: ProductVO?,
+    featuredProductList: List<ProductVO>
 ) {
     var productActionBottomSheetShow by rememberSaveable {
         mutableStateOf(false)
@@ -80,6 +89,10 @@ fun ProductDetailScreen(
 
     var addToCartBottomSheetShow by rememberSaveable {
         mutableStateOf(false)
+    }
+
+    val pagerState = rememberPagerState {
+        product?.images?.size ?: 1
     }
 
     AddToCartContentBottomSheet(
@@ -129,23 +142,26 @@ fun ProductDetailScreen(
                 item {
                     Spacer(modifier = Modifier.height(LargePadding2))
 
-                    Image(
-                        painter = painterResource(id = R.drawable.dummy_earphone),
-                        contentDescription = "Product Cover",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = LargePadding2)
-                            .aspectRatio(325f / 300f)
-                            .clip(RoundedCornerShape(SmallPadding5))
-                            .background(color = searchBarBackgroundColor)
-                            .padding(SmallPadding5)
-                    )
+                    HorizontalPager(state = pagerState) {index ->
+                        AsyncImage(
+                            model = ImageRequest.Builder(context).data(product?.images?.get(index)).build(),
+                            contentDescription = "Product Cover",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = LargePadding2)
+                                .aspectRatio(325f / 300f)
+                                .clip(RoundedCornerShape(SmallPadding5))
+                                .background(color = searchBarBackgroundColor)
+                                .padding(MediumPadding5)
+                                .clip(RoundedCornerShape(SmallPadding5))
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(LargePadding2))
 
                     Text(
-                        text = "TMA-2HD Wireless",
+                        text = product?.title ?: "Product Title",
                         style = MaterialTheme.typography.headlineMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),
@@ -160,7 +176,7 @@ fun ProductDetailScreen(
                     Spacer(modifier = Modifier.height(SmallPadding5))
 
                     Text(
-                        text = "Rp 1.500.000",
+                        text = "${product?.price}$",
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Medium,
                         ),
@@ -185,7 +201,7 @@ fun ProductDetailScreen(
                         )
 
                         Text(
-                            text = "4.6",
+                            text = product?.rating.toString(),
                             style = MaterialTheme.typography.bodyMedium,
                             color = textColorPrimary,
                             maxLines = 1,
@@ -194,7 +210,11 @@ fun ProductDetailScreen(
                         )
 
                         Text(
-                            text = "86 Reviews",
+                            text = if ((product?.stock ?: 0) <= 1) {
+                                "${product?.stock} stock left"
+                            } else {
+                                "${product?.stock} stocks left"
+                            },
                             style = MaterialTheme.typography.bodyMedium,
                             color = textColorPrimary,
                             maxLines = 1,
@@ -222,8 +242,8 @@ fun ProductDetailScreen(
                             }
                             .padding(horizontal = LargePadding2)
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.dummy_seller_profile),
+                        AsyncImage(
+                            model = ImageRequest.Builder(context).data(product?.thumbnail.orEmpty()).build(),
                             contentDescription = "Seller Cover",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -236,7 +256,7 @@ fun ProductDetailScreen(
                             modifier = Modifier.weight(3f)
                         ) {
                             Text(
-                                text = "Shop Larson Electronic",
+                                text = product?.brand ?: "Brand Name",
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     fontWeight = FontWeight.Medium
                                 ),
@@ -307,7 +327,7 @@ fun ProductDetailScreen(
                     Spacer(modifier = Modifier.height(LargePadding2))
 
                     Text(
-                        text = "The speaker unit contains a diaphragm that is precision-grown from NAC Audio bio-cellulose, making it stiffer, lighter and stronger than regular PET speaker units, and allowing the sound-producing diaphragm to vibrate without the levels of distortion found in other speakers. \n\nThe speaker unit contains a diaphragm that is precision-grown from NAC Audio bio-cellulose, making it stiffer, lighter and stronger than regular PET speaker units, and allowing the sound-producing diaphragm to vibrate without the levels of distortion found in other speakers. \n\nThe speaker unit contains a diaphragm that is precision-grown from NAC Audio bio-cellulose, making it stiffer, lighter and stronger than regular PET speaker units, and allowing the sound-producing diaphragm to vibrate without the levels of distortion found in other speakers. \n\nThe speaker unit contains a diaphragm that is precision-grown from NAC Audio bio-cellulose, making it stiffer, lighter and stronger than regular PET speaker units, and allowing the sound-producing diaphragm to vibrate without the levels of distortion found in other speakers. ",
+                        text = product?.description ?: "There is no description.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = textColorPrimary,
                         modifier = Modifier.padding(horizontal = LargePadding2)
@@ -407,6 +427,7 @@ fun ProductDetailScreen(
     }
 }
 
+
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 private fun ProductDetailScreenPreview() {
@@ -424,6 +445,16 @@ private fun ProductDetailScreenPreview() {
         },
         onClickProductCard = {
 
-        }
+        },
+        product = ProductVO(
+            title = "",
+            price = 1,
+            rating = 0.0,
+            stock = 1,
+            brand = "",
+            thumbnail = "",
+            images = emptyList()
+        ),
+        featuredProductList = emptyList()
     )
 }

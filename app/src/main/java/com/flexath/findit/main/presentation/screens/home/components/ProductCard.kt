@@ -23,14 +23,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -56,8 +54,6 @@ fun ProductCard(
     onClickVerticalDots: () -> Unit,
     product: ProductVO?
 ) {
-    val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 2)
-
     Surface(
         color = colorBackground,
         shape = RoundedCornerShape(MediumPadding3),
@@ -136,10 +132,10 @@ fun ProductCard(
                     )
 
                     Text(
-                        text = if (product?.stock!! <= 1) {
-                            "${product.stock} stock left"
+                        text = if ((product?.stock ?: 0) <= 1) {
+                            "${product?.stock} stock left"
                         } else {
-                            "${product.stock} stocks left"
+                            "${product?.stock} stocks left"
                         },
                         style = MaterialTheme.typography.labelSmall,
                         color = textColorPrimary,
@@ -177,7 +173,9 @@ private fun ProductCardPreview() {
             price = 1,
             rating = 0.0,
             stock = 1,
-            thumbnail = ""
+            brand = "",
+            thumbnail = "",
+            images = emptyList()
         )
     )
 }

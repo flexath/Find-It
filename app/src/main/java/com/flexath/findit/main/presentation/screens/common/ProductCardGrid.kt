@@ -40,7 +40,9 @@ fun ProductCardGrid(
                     price = 1,
                     rating = 0.0,
                     stock = 1,
-                    thumbnail = ""
+                    brand = "",
+                    thumbnail = "",
+                    images = emptyList()
                 )
             )
         }

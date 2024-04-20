@@ -37,6 +37,44 @@ class ProductRepositoryImpl @Inject constructor(
 
     override fun getProduct(productId: Int): Flow<Resource<ProductVO>> = flow {
         emit(Resource.Loading())
+
+        try {
+            val product = productApi.getProduct(productId = productId).toProductVO()
+            emit(Resource.Success(
+                data = product
+            ))
+        } catch(e: HttpException) {
+            emit(Resource.Error(
+                message = "Oops, something went wrong!",
+                data = null
+            ))
+        } catch(e: IOException) {
+            emit(Resource.Error(
+                message = "Couldn't reach server, check your internet connection.",
+                data = null
+            ))
+        }
+    }
+
+    override fun getAllCategories(): Flow<Resource<List<String>>> = flow {
+        emit(Resource.Loading())
+
+        try {
+            val productList = productApi.getAllCategories().toList()
+            emit(Resource.Success(
+                data = productList
+            ))
+        } catch(e: HttpException) {
+            emit(Resource.Error(
+                message = "Oops, something went wrong!",
+                data = emptyList()
+            ))
+        } catch(e: IOException) {
+            emit(Resource.Error(
+                message = "Couldn't reach server, check your internet connection.",
+                data = emptyList()
+            ))
+        }
     }
 
 }

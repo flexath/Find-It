@@ -20,15 +20,20 @@ import com.flexath.findit.core.utils.Dimens
 fun BannerSection(
     pagerState: PagerState
 ) {
+    val bannerImageList = listOf(
+        R.drawable.img_banner_1,
+        R.drawable.img_banner_6,
+        R.drawable.img_banner_5
+    )
     HorizontalPager(
         state = pagerState,
         pageSpacing = Dimens.MediumPadding2,
         contentPadding = PaddingValues(
             horizontal = Dimens.LargePadding2
         ),
-    ) {
+    ) {index ->
         Image(
-            painter = painterResource(id = R.drawable.img_banner),
+            painter = painterResource(id = bannerImageList[index]),
             contentDescription = "Banner Image",
             contentScale = ContentScale.Crop,
             modifier = Modifier
