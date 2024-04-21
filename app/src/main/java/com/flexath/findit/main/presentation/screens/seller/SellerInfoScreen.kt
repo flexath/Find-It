@@ -44,6 +44,7 @@ import com.flexath.findit.core.utils.Dimens.LargePadding2
 import com.flexath.findit.core.utils.Dimens.MediumPadding5
 import com.flexath.findit.core.utils.Dimens.SmallPadding3
 import com.flexath.findit.core.utils.Dimens.SmallPadding5
+import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.presentation.screens.common.CustomFilledButton
 import com.flexath.findit.main.presentation.screens.common.CustomOutlinedButton
 import com.flexath.findit.main.presentation.screens.common.DetailTopAppBarWithTwoActions
@@ -60,8 +61,9 @@ import com.flexath.findit.theme.textColorSecondary
 fun SellerInfoScreen(
     modifier: Modifier = Modifier,
     onClickBackButton: () -> Unit,
-    onClickProductCard: () -> Unit,
-    onClickSearchButton: () -> Unit
+    onClickProductCard: (Int) -> Unit,
+    onClickSearchButton: () -> Unit,
+    productList: List<ProductVO>
 ) {
 
     var sortingBottomSheetShow by rememberSaveable {
@@ -319,12 +321,13 @@ fun SellerInfoScreen(
 
                         ProductCardGridList(
                             modifier = Modifier.fillMaxWidth(),
+                            onClickProductCard = { id ->
+                                onClickProductCard(id)
+                            },
                             onClickVerticalDots = {
 
                             },
-                            onClickProductCard = {
-                                onClickProductCard()
-                            }
+                            productList = productList
                         )
 
                         Spacer(modifier = Modifier.height(ExtraLargePadding5_2x))
@@ -373,6 +376,7 @@ private fun SellerInfoScreenPreview() {
         },
         onClickSearchButton = {
 
-        }
+        },
+        productList = listOf()
     )
 }

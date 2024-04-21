@@ -1,5 +1,6 @@
 package com.flexath.findit.main.presentation.screens.common
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,8 +22,10 @@ import com.flexath.findit.main.presentation.screens.home.components.ProductCardG
 fun ProductCardGridList(
     modifier: Modifier = Modifier,
     onClickProductCard: (id: Int) -> Unit,
-    onClickVerticalDots: () -> Unit
+    onClickVerticalDots: () -> Unit,
+    productList: List<ProductVO>
 ) {
+    Log.i("ProductCount","Size: ${productList.size}")
     FlowColumn(
         verticalArrangement = Arrangement.Center,
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -52,29 +55,19 @@ fun ProductCardGridList(
         SimpleGridView(
             modifier = Modifier.fillMaxWidth(),
             columns = 2,
-            countOfItems = 6,
+            countOfItems = productList.size,
         ) { index ->
-//            listOfItems.getOrNull(index)?.let {
-//
-//            }
-
-            ProductCardGrid(
-                onClickProductCard = {
-                    onClickProductCard(it)
-                },
-                onClickVerticalDots = {
-                    onClickVerticalDots()
-                },
-                product = ProductVO(
-                    title = "",
-                    price = 1,
-                    rating = 0.0,
-                    stock = 1,
-                    brand = "",
-                    thumbnail = "",
-                    images = emptyList()
+            productList.getOrNull(index)?.let {
+                ProductCardGrid(
+                    onClickProductCard = { id ->
+                        onClickProductCard(id)
+                    },
+                    onClickVerticalDots = {
+                        onClickVerticalDots()
+                    },
+                    product = it
                 )
-            )
+            }
         }
     }
 }
@@ -111,6 +104,7 @@ private fun ProductCardGridPreview() {
         },
         onClickVerticalDots = {
 
-        }
+        },
+        productList = listOf()
     )
 }

@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens
+import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.presentation.screens.common.DetailTopAppBar
 import com.flexath.findit.main.presentation.screens.common.ProductItemSection
 import com.flexath.findit.main.presentation.screens.common.RatingTextWithIcon
@@ -50,7 +51,8 @@ fun SearchInStoreScreen(
     context: Context,
     modifier: Modifier = Modifier,
     onClickBackButton: () -> Unit,
-    onClickProductCard: () -> Unit
+    onClickProductCard: (Int) -> Unit,
+    productList: List<ProductVO>
 ) {
     var query by remember {
         mutableStateOf("")
@@ -215,13 +217,13 @@ fun SearchInStoreScreen(
                     onClickSeeAll = {
 
                     },
-                    onClickProductCard = {
-                        onClickProductCard()
+                    onClickProductCard = { id ->
+                        onClickProductCard(id)
                     },
                     onClickVerticalDots = {
                         productActionBottomSheetShow = true
                     },
-                    productItemList = emptyList()
+                    productItemList = productList
                 )
 
                 Spacer(modifier = Modifier.height(Dimens.LargePadding2))
@@ -235,11 +237,12 @@ fun SearchInStoreScreen(
 private fun SearchInStoreScreenPreview() {
     SearchInStoreScreen(
         context = LocalContext.current,
+        onClickBackButton = {
+
+        },
         onClickProductCard = {
 
         },
-        onClickBackButton = {
-
-        }
+        productList = listOf()
     )
 }

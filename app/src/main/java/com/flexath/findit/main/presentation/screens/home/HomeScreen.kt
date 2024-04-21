@@ -52,7 +52,7 @@ import com.flexath.findit.theme.textColorPrimary
 @Composable
 fun HomeScreen(
     context: Context,
-    onClickCategory: () -> Unit,
+    onClickCategory: (String) -> Unit,
     onClickProductCard: (Int) -> Unit,
     onClickArticleCard: () -> Unit,
     onClickSeeAllNewsButton: () -> Unit,
@@ -80,7 +80,7 @@ fun HomeScreen(
             categoryBottomSheetShow = it
         },
         onClick = {
-            onClickCategory()
+            onClickCategory(it)
             categoryBottomSheetShow = false
         }
     )
@@ -140,7 +140,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth(),
                     onClick = {
-                        onClickCategory()
+                        onClickCategory(it)
                     }
                 )
 

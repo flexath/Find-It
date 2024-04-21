@@ -1,8 +1,9 @@
 package com.flexath.findit.main.data.remote.api
 
+import com.flexath.findit.core.data.ApiConstants.PATH_CATEGORY_NAME
 import com.flexath.findit.core.data.ApiConstants.PATH_PRODUCT_ID
 import com.flexath.findit.core.data.ApiConstants.QUERY_LIMIT
-import com.flexath.findit.main.data.remote.dto.ProductCategoryListResponse
+import com.flexath.findit.main.data.remote.dto.ProductCategoryListDto
 import com.flexath.findit.main.data.remote.dto.ProductDto
 import com.flexath.findit.main.data.remote.dto.ProductListResponseDto
 import retrofit2.http.GET
@@ -13,7 +14,7 @@ interface ProductApi {
 
     @GET("products")
     suspend fun getAllProducts(
-        @Query(QUERY_LIMIT) limit:Int = 30
+        @Query(QUERY_LIMIT) limit:Int = 80
     ): ProductListResponseDto
 
     @GET("products/{${PATH_PRODUCT_ID}}")
@@ -22,5 +23,10 @@ interface ProductApi {
     ): ProductDto
 
     @GET("products/categories")
-    suspend fun getAllCategories(): ProductCategoryListResponse
+    suspend fun getAllCategories(): ProductCategoryListDto
+
+    @GET("products/category/{${PATH_CATEGORY_NAME}}")
+    suspend fun getProductsOfCategory(
+        @Path(PATH_CATEGORY_NAME) categoryName:String
+    ): ProductListResponseDto
 }

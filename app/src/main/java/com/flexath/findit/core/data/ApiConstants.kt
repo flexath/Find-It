@@ -7,6 +7,7 @@ object ApiConstants {
 
     // Path
     const val PATH_PRODUCT_ID = "product_id"
+    const val PATH_CATEGORY_NAME = "category_name"
 
     // QUERY
     const val QUERY_LIMIT = "limit"

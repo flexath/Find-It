@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens.ExtraLargePadding5_2x
 import com.flexath.findit.core.utils.Dimens.LargePadding2
+import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.presentation.screens.common.CustomOutlinedButton
 import com.flexath.findit.main.presentation.screens.common.DetailTopAppBarWithOneAction
 import com.flexath.findit.main.presentation.screens.common.ProductCardGridList
@@ -38,6 +39,9 @@ fun CategoryScreen(
     context: Context,
     modifier: Modifier = Modifier,
     onClickBackButton: () -> Unit,
+    onClickProductCard: (Int) -> Unit,
+    categoryName: String,
+    productList: List<ProductVO>,
 ) {
     var query by remember {
         mutableStateOf("")
@@ -77,7 +81,7 @@ fun CategoryScreen(
                 Spacer(modifier = Modifier.height(LargePadding2))
 
                 Text(
-                    text = "Gadget",
+                    text = categoryName,
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold
                     ),
@@ -113,11 +117,12 @@ fun CategoryScreen(
 
                 ProductCardGridList(
                     modifier = Modifier.fillMaxWidth(),
+                    productList = productList.distinct(),
                     onClickVerticalDots = {
 
                     },
                     onClickProductCard = {
-
+                        onClickProductCard(it)
                     }
                 )
 
@@ -142,6 +147,12 @@ fun CategoryScreen(
 private fun CategoryScreenPreview() {
     CategoryScreen(
         context = LocalContext.current,
-    ) {}
+        onClickBackButton = {},
+        categoryName = "",
+        productList = listOf(),
+        onClickProductCard = {
+
+        }
+    )
 
 }

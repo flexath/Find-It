@@ -5,6 +5,7 @@ import com.flexath.findit.core.utils.NavGraphConstants.AUTH_SUB_GRAPH
 import com.flexath.findit.core.utils.NavGraphConstants.CATEGORY_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.HOME_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.MAIN_SUB_GRAPH
+import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_CATEGORY_NAME
 import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_ID
 import com.flexath.findit.core.utils.NavGraphConstants.NEWS_DETAIL_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.NEWS_LIST_SCREEN
@@ -27,7 +28,11 @@ sealed class Route(val route: String) {
     data object OrderScreen : Route(ORDER_SCREEN)
     data object ProfileScreen : Route(PROFILE_SCREEN)
     data object SearchScreen : Route(SEARCH_SCREEN)
-    data object CategoryScreen : Route(CATEGORY_SCREEN)
+    data object CategoryScreen : Route(route = "${CATEGORY_SCREEN}/{${NAV_ARG_CATEGORY_NAME}}") {
+        fun passCategoryName(categoryName: String): String {
+            return "${CATEGORY_SCREEN}/$categoryName"
+        }
+    }
     data object ProductDetailScreen : Route(route = "${PRODUCT_DETAIL_SCREEN}/{${NAV_ARG_ID}}") {
         fun passId(id: Int): String {
             return "${PRODUCT_DETAIL_SCREEN}/$id"

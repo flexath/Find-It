@@ -79,7 +79,7 @@ fun ProductDetailScreen(
     onClickBackButton: () -> Unit,
     onClickSellerProfile: () -> Unit,
     onClickSeeAllReviewButton: () -> Unit,
-    onClickProductCard: () -> Unit,
+    onClickProductCard: (Int) -> Unit,
     product: ProductVO?,
     featuredProductList: List<ProductVO>
 ) {
@@ -160,9 +160,9 @@ fun ProductDetailScreen(
                                 contentDescription = "Product Cover",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
+                                    .align(Alignment.Center)
                                     .padding(MediumPadding5)
                                     .clip(RoundedCornerShape(SmallPadding5))
-                                    .align(Alignment.Center)
                             )
 
                             Text(
@@ -174,23 +174,13 @@ fun ProductDetailScreen(
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                                 modifier = Modifier
+                                    .align(Alignment.BottomStart)
                                     .padding(
                                         start = SmallPadding5,
                                         bottom = SmallPadding5
                                     )
-                                    .align(Alignment.BottomStart)
                             )
                         }
-
-                        AsyncImage(
-                            model = ImageRequest.Builder(context).data(product?.images?.get(index))
-                                .build(),
-                            contentDescription = "Product Cover",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .padding(MediumPadding5)
-                                .clip(RoundedCornerShape(SmallPadding5))
-                        )
                     }
 
                     Spacer(modifier = Modifier.height(LargePadding2))
@@ -421,8 +411,8 @@ fun ProductDetailScreen(
                             onClickSeeAll = {
 
                             },
-                            onClickProductCard = {
-                                onClickProductCard()
+                            onClickProductCard = { id ->
+                                onClickProductCard(id)
                             },
                             onClickVerticalDots = {
                                 productActionBottomSheetShow = true

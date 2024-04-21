@@ -19,11 +19,9 @@ class ProductRepositoryImpl @Inject constructor(
     override fun getAllProducts(): Flow<Resource<List<ProductVO>>> = flow {
         emit(Resource.Loading())
 
-        val productList = productDatabase.productDao().getProductList()
-        emit(Resource.Loading(data = productList))
-
         try {
             val remoteProductList = productApi.getAllProducts().toProductListResponse().products
+            productDatabase.productDao().deleteProductList()
             productDatabase.productDao().insertProductList(remoteProductList ?: emptyList())
         } catch(e: HttpException) {
             emit(Resource.Error(
@@ -80,6 +78,27 @@ class ProductRepositoryImpl @Inject constructor(
             emit(Resource.Error(
                 message = "Couldn't reach server, check your internet connection.",
                 data = emptyList()
+            ))
+        }
+    }
+
+    override fun getProductsOfCategory(categoryName: String): Flow<Resource<List<ProductVO>>> = flow {
+        emit(Resource.Loading())
+
+        try {
+            val remoteProductList = productApi.getProductsOfCategory(categoryName = categoryName).toProductListResponse().products
+            emit(Resource.Success(
+                data = remoteProductList
+            ))
+        } catch(e: HttpException) {
+            emit(Resource.Error(
+                message = "Oops, something went wrong!",
+                data = listOf()
+            ))
+        } catch(e: IOException) {
+            emit(Resource.Error(
+                message = "Couldn't reach server, check your internet connection.",
+                data = listOf()
             ))
         }
     }

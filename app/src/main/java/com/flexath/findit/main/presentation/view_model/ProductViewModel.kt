@@ -10,10 +10,12 @@ import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.domain.use_cases.MainUseCase
 import com.flexath.findit.main.presentation.state.ProductCategoryListState
 import com.flexath.findit.main.presentation.state.ProductListState
+import com.flexath.findit.main.presentation.state.ProductState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,17 +32,21 @@ class ProductViewModel @Inject constructor(
     val productCategoryListState: State<ProductCategoryListState> = _productCategoryListState
 
     // Shared flow to emit product data
-    private val _productSharedFlow = MutableSharedFlow<ProductVO>(replay = 0)
-    val productSharedFlow = _productSharedFlow.asSharedFlow()
+    private val _productState = mutableStateOf(ProductState())
+    val productState = _productState
 
     // Shared flow to emit product data
     private val _productListSharedFlow = MutableSharedFlow<List<ProductVO>>(replay = 0)
     val productListSharedFlow = _productListSharedFlow.asSharedFlow()
 
+    private val _productListOfCategoryState = mutableStateOf(ProductListState())
+    val productListOfCategoryState: State<ProductListState> = _productListOfCategoryState
+
     fun fetchAllProducts() {
         viewModelScope.launch {
-            mainUseCase.allProductsUseCase.invoke()
+            mainUseCase.getAllProductsUseCase.invoke()
                 .flowOn(Dispatchers.IO)
+                .distinctUntilChanged()
                 .collect {
                     when (it) {
                         is Resource.Loading -> {
@@ -68,28 +74,34 @@ class ProductViewModel @Inject constructor(
         }
     }
 
+
     fun fetchProduct(
         productId: Int
     ) {
         viewModelScope.launch {
-            mainUseCase.productUseCase.invoke(productId)
+            mainUseCase.getProductUseCase.invoke(productId)
                 .flowOn(Dispatchers.IO)
                 .collect {
                     when (it) {
                         is Resource.Loading -> {
-
+                            _productState.value = productState.value.copy(
+                                product = it.data,
+                                isLoading = true
+                            )
                         }
 
                         is Resource.Success -> {
-                            it.data?.let { product ->
-                                _productSharedFlow.emit(product)
-                            }
-
-                            _productListSharedFlow.emit(productListState.value.productList)
+                            _productState.value = productState.value.copy(
+                                product = it.data,
+                                isLoading = true
+                            )
                         }
 
                         else -> {
-
+                            _productState.value = productState.value.copy(
+                                product = it.data,
+                                isLoading = true
+                            )
                         }
                     }
                 }
@@ -98,7 +110,7 @@ class ProductViewModel @Inject constructor(
 
     fun fetchAllProductCategories() {
         viewModelScope.launch {
-            mainUseCase.allProductCategoriesUseCase.invoke()
+            mainUseCase.getAllProductCategoriesUseCase.invoke()
                 .flowOn(Dispatchers.IO)
                 .collect {
                     when (it) {
@@ -120,6 +132,41 @@ class ProductViewModel @Inject constructor(
                         else -> {
                             _productCategoryListState.value = productCategoryListState.value.copy(
                                 productCategoryList = it.data ?: emptyList(),
+                                isLoading = false
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
+    fun fetchAllProductsOfCategory(
+        categoryName: String
+    ) {
+
+        viewModelScope.launch {
+            mainUseCase.getAllProductOfCategoryUseCase.invoke(categoryName = categoryName)
+                .flowOn(Dispatchers.IO)
+                .distinctUntilChanged()
+                .collect {
+                    when (it) {
+                        is Resource.Loading -> {
+                            _productListOfCategoryState.value = productListOfCategoryState.value.copy(
+                                productList = it.data ?: emptyList(),
+                                isLoading = true
+                            )
+                        }
+
+                        is Resource.Success -> {
+                            _productListOfCategoryState.value = productListOfCategoryState.value.copy(
+                                productList = it.data ?: emptyList(),
+                                isLoading = false
+                            )
+                        }
+
+                        else -> {
+                            _productListOfCategoryState.value = productListOfCategoryState.value.copy(
+                                productList = it.data ?: emptyList(),
                                 isLoading = false
                             )
                         }

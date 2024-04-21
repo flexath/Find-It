@@ -61,7 +61,7 @@ fun ProductCategory(
                     shape = RoundedCornerShape(MediumPadding3)
                 )
                 .clickable {
-                    onClick("Foods")
+                    onClick(category)
                 }
         ) {
             Spacer(modifier = Modifier.height(MediumPadding1))
@@ -99,6 +99,8 @@ fun ProductCategory(
 fun ProductCategoryPreview() {
     ProductCategory(
         category = "SmartPhones",
-        onClick = {}
+        onClick = {
+
+        }
     )
 }

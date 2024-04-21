@@ -24,8 +24,8 @@ fun ProductCardList(
             items(productList.size.coerceAtMost(5)) {index ->
                 ProductCard(
                     product = productList[index],
-                    onClickProductCard = {
-                        onClickProductCard(it)
+                    onClickProductCard = { id ->
+                        onClickProductCard(id)
                     },
                     onClickVerticalDots = {
                         onClickVerticalDots()

@@ -24,4 +24,5 @@ object NavGraphConstants {
 
     // Args
     const val NAV_ARG_ID = "id"
+    const val NAV_ARG_CATEGORY_NAME = "category_name"
 }

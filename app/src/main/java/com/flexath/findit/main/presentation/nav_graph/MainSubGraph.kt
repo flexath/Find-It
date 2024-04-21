@@ -1,12 +1,10 @@
 package com.flexath.findit.main.presentation.nav_graph
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.flexath.findit.core.presentation.Route
+import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_CATEGORY_NAME
 import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_ID
 import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.presentation.screens.MainBottomBar
@@ -38,32 +37,32 @@ import com.flexath.findit.main.presentation.screens.seller.SearchInStoreScreen
 import com.flexath.findit.main.presentation.screens.seller.SellerInfoScreen
 import com.flexath.findit.main.presentation.screens.wishlist.WishlistScreen
 import com.flexath.findit.main.presentation.view_model.ProductViewModel
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MainSubGraph() {
+fun MainSubGraph(
+    productViewModel: ProductViewModel = hiltViewModel()
+) {
     val navHostController = rememberNavController()
     val backStackEntry = navHostController.currentBackStackEntryAsState().value
 
-//    val bottomBarVisibility = remember(key1 = backStackEntry) {
-//        backStackEntry?.destination?.route == Route.HomeScreen.route ||
-//                backStackEntry?.destination?.route == Route.WishlistScreen.route ||
-//                backStackEntry?.destination?.route == Route.OrderScreen.route ||
-//                backStackEntry?.destination?.route == Route.ProfileScreen.route
-//    }
-
-    val bottomBarVisibility by remember(key1 = backStackEntry?.destination?.route) {
-        derivedStateOf {
-            when(backStackEntry?.destination?.route) {
-                Route.HomeScreen.route -> true
-                Route.WishlistScreen.route -> true
-                Route.OrderScreen.route -> true
-                Route.ProfileScreen.route -> true
-                else -> false
-            }
-        }
+    val bottomBarVisibility = remember(key1 = backStackEntry) {
+        backStackEntry?.destination?.route == Route.HomeScreen.route ||
+                backStackEntry?.destination?.route == Route.WishlistScreen.route ||
+                backStackEntry?.destination?.route == Route.OrderScreen.route ||
+                backStackEntry?.destination?.route == Route.ProfileScreen.route
     }
+
+//    val bottomBarVisibility by remember(key1 = backStackEntry?.destination?.route) {
+//        derivedStateOf {
+//            when (backStackEntry?.destination?.route) {
+//                Route.HomeScreen.route -> true
+//                Route.WishlistScreen.route -> true
+//                Route.OrderScreen.route -> true
+//                Route.ProfileScreen.route -> true
+//                else -> false
+//            }
+//        }
+//    }
 
     Scaffold(
         topBar = {
@@ -88,8 +87,6 @@ fun MainSubGraph() {
         val topPadding = it.calculateTopPadding()
         val context = LocalContext.current
 
-        val featureProductList = mutableListOf<ProductVO>()
-
         NavHost(
             navController = navHostController,
             startDestination = Route.HomeScreen.route,
@@ -100,27 +97,24 @@ fun MainSubGraph() {
             composable(
                 route = Route.HomeScreen.route
             ) {
-                val productViewModel: ProductViewModel = hiltViewModel()
 
-                productViewModel.fetchAllProductCategories()
-                productViewModel.fetchAllProducts()
-
-//                LaunchedEffect(key1 = Unit) {
-//                    featureProductList.value = if (productViewModel.productListState.value.productList.isNotEmpty()) {
-//                        productViewModel.productListState.value.productList.subList(0, 5)
-//                    } else {
-//                        emptyList()
-//                    }
-//                }
+                LaunchedEffect(key1 = Unit) {
+                    productViewModel.fetchAllProductCategories()
+                    productViewModel.fetchAllProducts()
+                }
 
                 HomeScreen(
                     viewModel = productViewModel,
                     context = context,
-                    onClickCategory = {
-                        navHostController.navigate(Route.CategoryScreen.route)
+                    onClickCategory = { categoryName ->
+                        navHostController.navigate(
+                            Route.CategoryScreen.passCategoryName(
+                                categoryName = categoryName
+                            )
+                        )
                     },
-                    onClickProductCard = {
-                        navHostController.navigate(Route.ProductDetailScreen.passId(it))
+                    onClickProductCard = { id ->
+                        navHostController.navigate(Route.ProductDetailScreen.passId(id = id))
                     },
                     onClickArticleCard = {
                         navHostController.navigate(Route.NewsDetailScreen.route)
@@ -155,25 +149,51 @@ fun MainSubGraph() {
             composable(
                 route = Route.SearchScreen.route
             ) {
+                LaunchedEffect(key1 = Unit) {
+                    productViewModel.fetchAllProducts()
+                }
+
+                val productList = productViewModel.productListState.value.productList
+
                 SearchScreen(
+                    productList = productList.shuffled(),
                     context = context,
                     modifier = Modifier.fillMaxSize(),
                     onClickBackButton = {
                         navHostController.popBackStack()
                     },
-                    onClickProductCard = {
-                        navHostController.navigate(Route.ProductDetailScreen.route)
+                    onClickProductCard = { id ->
+                        navHostController.navigate(Route.ProductDetailScreen.passId(id))
                     }
                 )
             }
 
             composable(
-                route = Route.CategoryScreen.route
-            ) {
+                route = Route.CategoryScreen.route,
+                arguments = listOf(
+                    navArgument(
+                        name = NAV_ARG_CATEGORY_NAME
+                    ) {
+                        type = NavType.StringType
+                    }
+                )
+            ) { navBackStack ->
+                val categoryName = navBackStack.arguments?.getString(NAV_ARG_CATEGORY_NAME) ?: ""
+
+                LaunchedEffect(key1 = Unit) {
+                    productViewModel.fetchAllProductsOfCategory(categoryName)
+                }
+                val productList = productViewModel.productListOfCategoryState.value.productList
+
                 // Need to adjust for nested scrolling
                 CategoryScreen(
+                    categoryName = categoryName,
+                    productList = productList,
                     context = context,
                     modifier = Modifier.fillMaxSize(),
+                    onClickProductCard = { id ->
+                        navHostController.navigate(Route.ProductDetailScreen.passId(id))
+                    },
                     onClickBackButton = {
                         navHostController.popBackStack()
                     }
@@ -186,14 +206,10 @@ fun MainSubGraph() {
                     navArgument(
                         name = NAV_ARG_ID
                     ) {
-                        this.type = NavType.IntType
+                        type = NavType.IntType
                     }
                 )
-            ) {navBackStack ->
-                val productViewModel: ProductViewModel = hiltViewModel()
-                productViewModel.fetchAllProducts()
-                productViewModel.fetchProduct(navBackStack.arguments?.getInt(NAV_ARG_ID) ?: 0)
-
+            ) { navBackStack ->
                 var product by remember {
                     mutableStateOf(
                         ProductVO(
@@ -212,25 +228,19 @@ fun MainSubGraph() {
                     mutableStateOf(listOf<ProductVO>())
                 }
 
-                LaunchedEffect(key1 = Unit) { // Ensures launch only on first composition
-                    launch {
-                        productViewModel.productSharedFlow.collect { result ->
-                            product = result
-                        }
-                    }
+                LaunchedEffect(key1 = Unit) {
+                    productViewModel.fetchProduct(navBackStack.arguments?.getInt(NAV_ARG_ID) ?: 0)
+                    productViewModel.fetchAllProducts()
                 }
 
-                LaunchedEffect(key1 = Unit) { // Ensures launch only on first composition
-                    launch {
-                        productViewModel.productListSharedFlow.collect { result ->
-                            productList = result
-                        }
-                    }
+                productViewModel.productState.value.product?.let { productResult ->
+                    product = productResult
                 }
+                productList = productViewModel.productListState.value.productList
 
                 ProductDetailScreen(
                     product = product,
-                    featuredProductList = productList,
+                    featuredProductList = productList.shuffled(),
                     context = context,
                     modifier = Modifier.fillMaxSize(),
                     onClickBackButton = {
@@ -242,8 +252,8 @@ fun MainSubGraph() {
                     onClickSeeAllReviewButton = {
                         navHostController.navigate(Route.ReviewProductScreen.route)
                     },
-                    onClickProductCard = {
-                        navHostController.navigate(Route.ProductDetailScreen.route)
+                    onClickProductCard = { id ->
+                        navHostController.navigate(Route.ProductDetailScreen.passId(id))
                     }
                 )
             }
@@ -251,10 +261,17 @@ fun MainSubGraph() {
             composable(
                 route = Route.SellerInfoScreen.route
             ) {
+                LaunchedEffect(key1 = Unit) {
+                    productViewModel.fetchAllProducts()
+                }
+
+                val productList = productViewModel.productListState.value.productList
+
                 SellerInfoScreen(
                     modifier = Modifier.fillMaxSize(),
-                    onClickProductCard = {
-                        navHostController.navigate(Route.ProductDetailScreen.route)
+                    productList = productList,
+                    onClickProductCard = { id ->
+                        navHostController.navigate(Route.ProductDetailScreen.passId(id))
                     },
                     onClickBackButton = {
                         navHostController.popBackStack()
@@ -268,14 +285,21 @@ fun MainSubGraph() {
             composable(
                 route = Route.SearchInStoreScreen.route
             ) {
+                LaunchedEffect(key1 = Unit) {
+                    productViewModel.fetchAllProducts()
+                }
+
+                val productList = productViewModel.productListState.value.productList
+
                 SearchInStoreScreen(
                     context = context,
+                    productList = productList.shuffled(),
                     modifier = Modifier.fillMaxSize(),
                     onClickBackButton = {
                         navHostController.popBackStack()
                     },
-                    onClickProductCard = {
-                        navHostController.navigate(Route.ProductDetailScreen.route)
+                    onClickProductCard = { id ->
+                        navHostController.navigate(Route.ProductDetailScreen.passId(id))
                     }
                 )
             }

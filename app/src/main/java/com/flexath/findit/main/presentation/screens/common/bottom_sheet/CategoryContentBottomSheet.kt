@@ -18,7 +18,7 @@ import com.flexath.findit.main.presentation.screens.home.components.ProductCateg
 fun CategoryContentBottomSheet(
     bottomSheetShow: Boolean,
     onSheetShowChange: (Boolean) -> Unit,
-    onClick: () -> Unit,
+    onClick: (String) -> Unit,
     categoryList: List<String>,
 ) {
     BottomSheetUtil(
@@ -37,7 +37,7 @@ fun CategoryContentBottomSheet(
                 items(count = categoryList.size) {index ->
                     ProductCategory(
                         onClick = {
-                            onClick()
+                            onClick(it)
                         },
                         category = categoryList[index]
                     )

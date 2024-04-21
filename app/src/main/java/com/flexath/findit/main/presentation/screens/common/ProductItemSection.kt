@@ -32,8 +32,8 @@ fun ProductItemSection(
             productList = productItemList ?: emptyList(),
             modifier = Modifier
                 .fillMaxWidth(),
-            onClickProductCard = {
-                onClickProductCard(it)
+            onClickProductCard = { id ->
+                onClickProductCard(id)
             },
             onClickVerticalDots = {
                 onClickVerticalDots()
