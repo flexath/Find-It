@@ -10,7 +10,7 @@ import com.flexath.findit.main.domain.model.ProductVO
 @Composable
 fun ProductCardList(
     modifier: Modifier = Modifier,
-    onClickProductCard: (id: Int) -> Unit,
+    onClickProductCard: (Int) -> Unit,
     onClickVerticalDots: () -> Unit,
     productList: List<ProductVO>
 ) {

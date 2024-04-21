@@ -6,21 +6,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.flexath.findit.core.presentation.Route
+import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_ID
 import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.presentation.screens.MainBottomBar
 import com.flexath.findit.main.presentation.screens.MainTopBar
@@ -87,11 +88,7 @@ fun MainSubGraph() {
         val topPadding = it.calculateTopPadding()
         val context = LocalContext.current
 
-        val productViewModel: ProductViewModel = hiltViewModel()
-
-        val featureProductList: MutableState<List<ProductVO>> = rememberSaveable {
-            mutableStateOf(listOf())
-        }
+        val featureProductList = mutableListOf<ProductVO>()
 
         NavHost(
             navController = navHostController,
@@ -103,6 +100,7 @@ fun MainSubGraph() {
             composable(
                 route = Route.HomeScreen.route
             ) {
+                val productViewModel: ProductViewModel = hiltViewModel()
 
                 productViewModel.fetchAllProductCategories()
                 productViewModel.fetchAllProducts()
@@ -122,7 +120,7 @@ fun MainSubGraph() {
                         navHostController.navigate(Route.CategoryScreen.route)
                     },
                     onClickProductCard = {
-                        navHostController.navigate(Route.ProductDetailScreen.route)
+                        navHostController.navigate(Route.ProductDetailScreen.passId(it))
                     },
                     onClickArticleCard = {
                         navHostController.navigate(Route.NewsDetailScreen.route)
@@ -183,8 +181,19 @@ fun MainSubGraph() {
             }
 
             composable(
-                route = Route.ProductDetailScreen.route
-            ) {
+                route = Route.ProductDetailScreen.route,
+                arguments = listOf(
+                    navArgument(
+                        name = NAV_ARG_ID
+                    ) {
+                        this.type = NavType.IntType
+                    }
+                )
+            ) {navBackStack ->
+                val productViewModel: ProductViewModel = hiltViewModel()
+                productViewModel.fetchAllProducts()
+                productViewModel.fetchProduct(navBackStack.arguments?.getInt(NAV_ARG_ID) ?: 0)
+
                 var product by remember {
                     mutableStateOf(
                         ProductVO(
@@ -199,19 +208,29 @@ fun MainSubGraph() {
                     )
                 }
 
-                productViewModel.fetchProduct(6)
+                var productList by remember {
+                    mutableStateOf(listOf<ProductVO>())
+                }
 
                 LaunchedEffect(key1 = Unit) { // Ensures launch only on first composition
                     launch {
-                        productViewModel.productSharedFlow.collect { productResource ->
-                            product = productResource
+                        productViewModel.productSharedFlow.collect { result ->
+                            product = result
+                        }
+                    }
+                }
+
+                LaunchedEffect(key1 = Unit) { // Ensures launch only on first composition
+                    launch {
+                        productViewModel.productListSharedFlow.collect { result ->
+                            productList = result
                         }
                     }
                 }
 
                 ProductDetailScreen(
                     product = product,
-                    featuredProductList = listOf(),
+                    featuredProductList = productList,
                     context = context,
                     modifier = Modifier.fillMaxSize(),
                     onClickBackButton = {

@@ -1,6 +1,7 @@
 package com.flexath.findit.main.data.repository
 
 import com.flexath.findit.core.utils.Resource
+import com.flexath.findit.main.data.local.ProductDatabase
 import com.flexath.findit.main.data.remote.api.ProductApi
 import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.domain.repository.ProductRepository
@@ -11,17 +12,19 @@ import java.io.IOException
 import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(
-    private val productApi: ProductApi
+    private val productApi: ProductApi,
+    private val productDatabase: ProductDatabase
 ): ProductRepository {
 
     override fun getAllProducts(): Flow<Resource<List<ProductVO>>> = flow {
         emit(Resource.Loading())
 
+        val productList = productDatabase.productDao().getProductList()
+        emit(Resource.Loading(data = productList))
+
         try {
-            val productList = productApi.getAllProducts().toProductListResponse().products
-            emit(Resource.Success(
-                data = productList
-            ))
+            val remoteProductList = productApi.getAllProducts().toProductListResponse().products
+            productDatabase.productDao().insertProductList(remoteProductList ?: emptyList())
         } catch(e: HttpException) {
             emit(Resource.Error(
                 message = "Oops, something went wrong!",
@@ -33,6 +36,10 @@ class ProductRepositoryImpl @Inject constructor(
                 data = listOf()
             ))
         }
+
+        emit(Resource.Success(
+            data = productDatabase.productDao().getProductList()
+        ))
     }
 
     override fun getProduct(productId: Int): Flow<Resource<ProductVO>> = flow {

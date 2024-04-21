@@ -142,17 +142,52 @@ fun ProductDetailScreen(
                 item {
                     Spacer(modifier = Modifier.height(LargePadding2))
 
-                    HorizontalPager(state = pagerState) {index ->
-                        AsyncImage(
-                            model = ImageRequest.Builder(context).data(product?.images?.get(index)).build(),
-                            contentDescription = "Product Cover",
-                            contentScale = ContentScale.Crop,
+                    HorizontalPager(
+                        state = pagerState
+                    ) { index ->
+
+                        Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = LargePadding2)
                                 .aspectRatio(325f / 300f)
                                 .clip(RoundedCornerShape(SmallPadding5))
                                 .background(color = searchBarBackgroundColor)
+                        ) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(context)
+                                    .data(product?.images?.get(index)).build(),
+                                contentDescription = "Product Cover",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .padding(MediumPadding5)
+                                    .clip(RoundedCornerShape(SmallPadding5))
+                                    .align(Alignment.Center)
+                            )
+
+                            Text(
+                                text = "${index + 1}/${product?.images?.size ?: 0} images",
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    fontWeight = FontWeight.Medium
+                                ),
+                                color = textColorPrimary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier
+                                    .padding(
+                                        start = SmallPadding5,
+                                        bottom = SmallPadding5
+                                    )
+                                    .align(Alignment.BottomStart)
+                            )
+                        }
+
+                        AsyncImage(
+                            model = ImageRequest.Builder(context).data(product?.images?.get(index))
+                                .build(),
+                            contentDescription = "Product Cover",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
                                 .padding(MediumPadding5)
                                 .clip(RoundedCornerShape(SmallPadding5))
                         )
@@ -243,7 +278,8 @@ fun ProductDetailScreen(
                             .padding(horizontal = LargePadding2)
                     ) {
                         AsyncImage(
-                            model = ImageRequest.Builder(context).data(product?.thumbnail.orEmpty()).build(),
+                            model = ImageRequest.Builder(context).data(product?.thumbnail.orEmpty())
+                                .build(),
                             contentDescription = "Seller Cover",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -391,7 +427,7 @@ fun ProductDetailScreen(
                             onClickVerticalDots = {
                                 productActionBottomSheetShow = true
                             },
-                            productItemList = emptyList()
+                            productItemList = featuredProductList
                         )
 
                         Spacer(modifier = Modifier.height(ExtraLargePadding5_2x))

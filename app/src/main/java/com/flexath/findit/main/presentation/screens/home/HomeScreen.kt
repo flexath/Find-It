@@ -53,7 +53,7 @@ import com.flexath.findit.theme.textColorPrimary
 fun HomeScreen(
     context: Context,
     onClickCategory: () -> Unit,
-    onClickProductCard: () -> Unit,
+    onClickProductCard: (Int) -> Unit,
     onClickArticleCard: () -> Unit,
     onClickSeeAllNewsButton: () -> Unit,
     onClickSearchBar: () -> Unit,
@@ -163,7 +163,7 @@ fun HomeScreen(
 
                         },
                         onClickProductCard = {
-                            onClickProductCard()
+                            onClickProductCard(it)
                         },
                         onClickVerticalDots = {
                             productActionBottomSheetShow = true
@@ -192,7 +192,7 @@ fun HomeScreen(
 
                         },
                         onClickProductCard = {
-                            onClickProductCard()
+                            onClickProductCard(it)
                         },
                         onClickVerticalDots = {
                             productActionBottomSheetShow = true
@@ -226,7 +226,7 @@ fun HomeScreen(
 
                         },
                         onClickProductCard = {
-                            onClickProductCard()
+                            onClickProductCard(it)
                         },
                         onClickVerticalDots = {
                             productActionBottomSheetShow = true
@@ -247,7 +247,7 @@ fun HomeScreen(
 
                         },
                         onClickProductCard = {
-                            onClickProductCard()
+                            onClickProductCard(it)
                         },
                         onClickVerticalDots = {
                             productActionBottomSheetShow = true
@@ -268,7 +268,7 @@ fun HomeScreen(
 
                         },
                         onClickProductCard = {
-                            onClickProductCard()
+                            onClickProductCard(it)
                         },
                         onClickVerticalDots = {
                             productActionBottomSheetShow = true

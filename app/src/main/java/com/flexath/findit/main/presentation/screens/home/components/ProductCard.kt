@@ -50,7 +50,7 @@ import com.flexath.findit.theme.textColorPrimary
 fun ProductCard(
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
-    onClickProductCard: (id: Int) -> Unit,
+    onClickProductCard: (Int) -> Unit,
     onClickVerticalDots: () -> Unit,
     product: ProductVO?
 ) {
@@ -63,7 +63,7 @@ fun ProductCard(
             .width(width = ProductCardWidth)
             .padding(all = SmallPadding4)
             .clickable {
-                onClickProductCard(1)
+                onClickProductCard(product?.id ?: 0)
             }
     ) {
         Column(
@@ -157,10 +157,147 @@ fun ProductCard(
 
 }
 
+@Composable
+fun ProductCardGrid(
+    modifier: Modifier = Modifier,
+    context: Context = LocalContext.current,
+    onClickProductCard: (Int) -> Unit,
+    onClickVerticalDots: () -> Unit,
+    product: ProductVO?
+) {
+    Surface(
+        color = colorBackground,
+        shape = RoundedCornerShape(MediumPadding3),
+        tonalElevation = SmallPadding0,
+        shadowElevation = SmallPadding0,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(all = SmallPadding4)
+            .clickable {
+                onClickProductCard(product?.id ?: 0)
+            }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = SmallPadding5),
+        ) {
+            Spacer(modifier = Modifier.height(MediumPadding3))
+
+            AsyncImage(
+                model = ImageRequest.Builder(context).data(product?.thumbnail.orEmpty()).build(),
+                contentDescription = product?.title.orEmpty(),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(125.dp)
+                    .clip(RoundedCornerShape(MediumPadding3))
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            Spacer(modifier = Modifier.height(MediumPadding5))
+
+            Text(
+                text = product?.title ?: "Item Title",
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Medium
+                ),
+                color = textColorPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Spacer(modifier = Modifier.height(SmallPadding2))
+
+            Text(
+                text = "${product?.price}$",
+                style = MaterialTheme.typography.bodySmall.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                color = alertColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Spacer(modifier = Modifier.height(SmallPadding5))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(1f).padding(end = SmallPadding5)
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_star),
+                        contentDescription = "Rating Star",
+                        tint = Color(0xFFFFC120)
+                    )
+
+                    Text(
+                        text = product?.rating.toString(),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = textColorPrimary,
+                        maxLines = 1,
+                        modifier = Modifier.padding(start = SmallPadding1)
+                    )
+
+                    Text(
+                        text = if ((product?.stock ?: 0) <= 1) {
+                            "${product?.stock} stock left"
+                        } else {
+                            "${product?.stock} stocks left"
+                        },
+                        style = MaterialTheme.typography.labelSmall,
+                        color = textColorPrimary,
+                        maxLines = 1,
+                        modifier = Modifier.padding(start = SmallPadding5)
+                    )
+                }
+
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_dots_vertical),
+                    contentDescription = "Rating Star",
+                    modifier = Modifier.clickable {
+                        onClickVerticalDots()
+                    }
+                )
+            }
+            Spacer(modifier = Modifier.height(MediumPadding3))
+        }
+    }
+
+}
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun ProductCardPreview() {
     ProductCard(
+        modifier = Modifier,
+        onClickProductCard = {
+
+        },
+        onClickVerticalDots = {
+
+        },
+        product = ProductVO(
+            title = "",
+            price = 1,
+            rating = 0.0,
+            stock = 1,
+            brand = "",
+            thumbnail = "",
+            images = emptyList()
+        )
+    )
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun ProductCardGridPreview() {
+    ProductCardGrid(
         modifier = Modifier,
         onClickProductCard = {
 

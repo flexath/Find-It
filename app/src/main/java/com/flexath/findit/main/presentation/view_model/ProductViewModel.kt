@@ -33,6 +33,10 @@ class ProductViewModel @Inject constructor(
     private val _productSharedFlow = MutableSharedFlow<ProductVO>(replay = 0)
     val productSharedFlow = _productSharedFlow.asSharedFlow()
 
+    // Shared flow to emit product data
+    private val _productListSharedFlow = MutableSharedFlow<List<ProductVO>>(replay = 0)
+    val productListSharedFlow = _productListSharedFlow.asSharedFlow()
+
     fun fetchAllProducts() {
         viewModelScope.launch {
             mainUseCase.allProductsUseCase.invoke()
@@ -80,6 +84,8 @@ class ProductViewModel @Inject constructor(
                             it.data?.let { product ->
                                 _productSharedFlow.emit(product)
                             }
+
+                            _productListSharedFlow.emit(productListState.value.productList)
                         }
 
                         else -> {

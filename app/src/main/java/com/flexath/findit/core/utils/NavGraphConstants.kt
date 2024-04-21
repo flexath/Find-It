@@ -21,4 +21,7 @@ object NavGraphConstants {
     // sub nav graphs
     const val AUTH_SUB_GRAPH = "authSubGraph"
     const val MAIN_SUB_GRAPH = "mainSubGraph"
+
+    // Args
+    const val NAV_ARG_ID = "id"
 }

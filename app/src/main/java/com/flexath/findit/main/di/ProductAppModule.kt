@@ -1,10 +1,14 @@
 package com.flexath.findit.main.di
 
+import android.content.Context
+import androidx.room.Room
 import com.flexath.findit.core.data.ApiConstants.DUMMY_JSON_BASE_URL
+import com.flexath.findit.main.data.local.ProductDatabase
 import com.flexath.findit.main.data.remote.api.ProductApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -44,6 +48,26 @@ object ProductAppModule {
     fun provideRetrofitApi(retrofit: Retrofit) : ProductApi {
         return retrofit.create(ProductApi::class.java)
     }
+
+    @Volatile
+    private var INSTANCE: ProductDatabase? = null
+
+    @Provides
+    @Singleton
+    fun provideJobDatabaseInstance(@ApplicationContext context: Context) = INSTANCE ?: synchronized(this) {
+        INSTANCE ?: Room.databaseBuilder(
+            context,
+            ProductDatabase::class.java,
+            "job_database"
+        ).fallbackToDestructiveMigration()
+            .build().also {
+                INSTANCE = it
+            }
+    }
+
+    @Provides
+    @Singleton
+    fun provideJobDao(database: ProductDatabase) = database.productDao()
 
     // For LiveNetworkChecker
 //    @Provides

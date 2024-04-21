@@ -17,7 +17,7 @@ fun ProductItemSection(
     context: Context,
     title: String,
     onClickSeeAll: () -> Unit,
-    onClickProductCard: () -> Unit,
+    onClickProductCard: (Int) -> Unit,
     onClickVerticalDots: () -> Unit,
     productItemList: List<ProductVO>?
 ) {
@@ -33,7 +33,7 @@ fun ProductItemSection(
             modifier = Modifier
                 .fillMaxWidth(),
             onClickProductCard = {
-                onClickProductCard()
+                onClickProductCard(it)
             },
             onClickVerticalDots = {
                 onClickVerticalDots()

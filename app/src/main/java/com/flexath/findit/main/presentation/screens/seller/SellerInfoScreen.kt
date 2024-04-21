@@ -47,7 +47,7 @@ import com.flexath.findit.core.utils.Dimens.SmallPadding5
 import com.flexath.findit.main.presentation.screens.common.CustomFilledButton
 import com.flexath.findit.main.presentation.screens.common.CustomOutlinedButton
 import com.flexath.findit.main.presentation.screens.common.DetailTopAppBarWithTwoActions
-import com.flexath.findit.main.presentation.screens.common.ProductCardGrid
+import com.flexath.findit.main.presentation.screens.common.ProductCardGridList
 import com.flexath.findit.main.presentation.screens.common.RatingTextWithIcon
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.ShippingSupportContentBottomSheet
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.SortingContentBottomSheet
@@ -317,7 +317,7 @@ fun SellerInfoScreen(
                     ) {
                         Spacer(modifier = Modifier.height(LargePadding2))
 
-                        ProductCardGrid(
+                        ProductCardGridList(
                             modifier = Modifier.fillMaxWidth(),
                             onClickVerticalDots = {
 
