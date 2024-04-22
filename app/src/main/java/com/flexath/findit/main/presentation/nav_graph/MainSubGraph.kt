@@ -27,8 +27,8 @@ import com.flexath.findit.main.presentation.screens.MainTopBar
 import com.flexath.findit.main.presentation.screens.category.CategoryScreen
 import com.flexath.findit.main.presentation.screens.home.HomeScreen
 import com.flexath.findit.main.presentation.screens.home.ProductDetailScreen
-import com.flexath.findit.main.presentation.screens.news.NewsDetailScreen
-import com.flexath.findit.main.presentation.screens.news.NewsListScreen
+import com.flexath.findit.news.presentation.screens.NewsDetailScreen
+import com.flexath.findit.news.presentation.screens.NewsListScreen
 import com.flexath.findit.main.presentation.screens.order.OrderScreen
 import com.flexath.findit.main.presentation.screens.profile.ProfileScreen
 import com.flexath.findit.main.presentation.screens.review.ReviewProductScreen
