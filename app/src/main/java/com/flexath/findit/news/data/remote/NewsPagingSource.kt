@@ -1,13 +1,15 @@
 package com.flexath.findit.news.data.remote
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.flexath.findit.news.data.remote.api.NewsApi
 import com.flexath.findit.news.domain.model.ArticleVO
+import javax.inject.Inject
 
-class NewsPagingSource(
+class NewsPagingSource @Inject constructor(
     val newsApi: NewsApi,
-    val sources: String
+    val query:String
 ) : PagingSource<Int, ArticleVO>() {
 
     private var totalPageCount  = 0
@@ -21,16 +23,19 @@ class NewsPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ArticleVO> {
         val page = params.key ?: 1
+
+        Log.i("NewsPage","Page $page")
+
         return try {
             val newResponse = newsApi.getNews(
-                page = page,
-                sources = sources
+                searchQuery = query,
+                page = page
             )
-            totalPageCount += newResponse.articles.size
-            val articles = newResponse.articles.distinctBy { it.title }
+            totalPageCount += newResponse.articles?.size ?: 0
+            val articles = newResponse.articles?.distinctBy { it.title }
 
             LoadResult.Page(
-                data = articles,
+                data = articles ?: emptyList(),
                 prevKey = if (page == 1) null else -1,
                 nextKey = if(totalPageCount == newResponse.totalResults) null else page + 1
             )

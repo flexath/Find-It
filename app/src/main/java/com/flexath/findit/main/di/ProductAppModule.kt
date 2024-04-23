@@ -15,6 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -35,6 +36,7 @@ object ProductAppModule {
 
     @Provides
     @Singleton
+    @Named("productRetrofit")
     fun provideRetrofitBuilder(okHttpClient: OkHttpClient) : Retrofit {
         return Retrofit.Builder()
             .baseUrl(DUMMY_JSON_BASE_URL)
@@ -45,7 +47,7 @@ object ProductAppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofitApi(retrofit: Retrofit) : ProductApi {
+    fun provideRetrofitApi(@Named("productRetrofit") retrofit: Retrofit) : ProductApi {
         return retrofit.create(ProductApi::class.java)
     }
 

@@ -18,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.flexath.findit.core.presentation.Route
 import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_CATEGORY_NAME
 import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_ID
@@ -37,10 +38,13 @@ import com.flexath.findit.main.presentation.screens.seller.SearchInStoreScreen
 import com.flexath.findit.main.presentation.screens.seller.SellerInfoScreen
 import com.flexath.findit.main.presentation.screens.wishlist.WishlistScreen
 import com.flexath.findit.main.presentation.view_model.ProductViewModel
+import com.flexath.findit.news.domain.model.ArticleVO
+import com.flexath.findit.news.presentation.view_models.NewsViewModel
 
 @Composable
 fun MainSubGraph(
-    productViewModel: ProductViewModel = hiltViewModel()
+    productViewModel: ProductViewModel = hiltViewModel(),
+    newsViewModel: NewsViewModel = hiltViewModel()
 ) {
     val navHostController = rememberNavController()
     val backStackEntry = navHostController.currentBackStackEntryAsState().value
@@ -101,10 +105,12 @@ fun MainSubGraph(
                 LaunchedEffect(key1 = Unit) {
                     productViewModel.fetchAllProductCategories()
                     productViewModel.fetchAllProducts()
+                    newsViewModel.fetchNewsForHomeScreen()
                 }
 
                 HomeScreen(
-                    viewModel = productViewModel,
+                    productViewModel = productViewModel,
+                    newsViewModel = newsViewModel,
                     context = context,
                     onClickCategory = { categoryName ->
                         navHostController.navigate(
@@ -116,7 +122,14 @@ fun MainSubGraph(
                     onClickProductCard = { id ->
                         navHostController.navigate(Route.ProductDetailScreen.passId(id = id))
                     },
-                    onClickArticleCard = {
+                    onClickArticleCard = { article ->
+                        article.let {
+                            navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                "article",
+                                article
+                            )
+                        }
+
                         navHostController.navigate(Route.NewsDetailScreen.route)
                     },
                     onClickSeeAllNewsButton = {
@@ -318,13 +331,24 @@ fun MainSubGraph(
             composable(
                 route = Route.NewsListScreen.route
             ) {
+
+                val articleList = newsViewModel.news.collectAsLazyPagingItems()
+
                 NewsListScreen(
                     context = context,
                     modifier = Modifier.fillMaxSize(),
+                    articleList = articleList,
                     onClickBackButton = {
                         navHostController.popBackStack()
                     },
                     onClickArticleCard = {
+                        it.let { article ->
+                            navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                "article",
+                                article
+                            )
+                        }
+
                         navHostController.navigate(Route.NewsDetailScreen.route)
                     }
                 )
@@ -333,18 +357,37 @@ fun MainSubGraph(
             composable(
                 route = Route.NewsDetailScreen.route
             ) {
-                NewsDetailScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    onClickBackButton = {
-                        navHostController.popBackStack()
-                    },
-                    onClickSeeAllNewsButton = {
-                        navHostController.navigate(Route.NewsListScreen.route)
-                    },
-                    onClickArticleCard = {
-                        navHostController.navigate(Route.NewsDetailScreen.route)
+                LaunchedEffect(key1 = Unit) {
+                    newsViewModel.fetchNewsForHomeScreen()
+                }
+
+                navHostController.previousBackStackEntry?.savedStateHandle?.get<ArticleVO>("article")
+                    ?.let { article ->
+                        NewsDetailScreen(
+                            article = article,
+                            articleList = newsViewModel.articleListHomeState.value.articleList,
+                            context = context,
+                            modifier = Modifier.fillMaxSize(),
+                            onClickBackButton = {
+                                navHostController.popBackStack()
+                            },
+                            onClickSeeAllNewsButton = {
+                                navHostController.navigate(Route.NewsListScreen.route)
+                            },
+                            onClickArticleCard = { articleDetail ->
+                                articleDetail.let { articleDetail2 ->
+                                    navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                        "article",
+                                        articleDetail2
+                                    )
+                                }
+
+                                navHostController.navigate(Route.NewsDetailScreen.route)
+                            }
+                        )
                     }
-                )
+
+
             }
         }
     }

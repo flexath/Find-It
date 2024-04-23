@@ -16,18 +16,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens
 import com.flexath.findit.main.presentation.screens.common.DetailTopAppBar
 import com.flexath.findit.main.presentation.screens.common.SearchBar
 import com.flexath.findit.main.presentation.screens.common.articleCardList
+import com.flexath.findit.main.presentation.screens.common.articleCardPagingList
+import com.flexath.findit.news.domain.model.ArticleVO
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun NewsListScreen(
     context: Context,
     modifier: Modifier = Modifier,
     onClickBackButton: () -> Unit,
-    onClickArticleCard: () -> Unit,
+    onClickArticleCard: (ArticleVO) -> Unit,
+    articleList: LazyPagingItems<ArticleVO>,
 ) {
     var query by remember {
         mutableStateOf("")
@@ -64,9 +71,13 @@ fun NewsListScreen(
                 )
             }
 
-            articleCardList {
-                onClickArticleCard()
-            }
+            articleCardPagingList(
+                context = context,
+                articleList = articleList,
+                onClick = { article ->
+                    onClickArticleCard(article)
+                }
+            )
         }
     }
 }
@@ -81,6 +92,7 @@ private fun NewsListScreenPreview() {
         },
         onClickArticleCard = {
 
-        }
+        },
+        articleList = flowOf(PagingData.from(listOf<ArticleVO>())).collectAsLazyPagingItems()
     )
 }

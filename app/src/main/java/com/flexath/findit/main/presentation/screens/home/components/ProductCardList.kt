@@ -35,15 +35,7 @@ fun ProductCardList(
         } else {
             items(count = 3) {_ ->
                 ProductCard(
-                    product = ProductVO(
-                        title = "",
-                        price = 1,
-                        rating = 0.0,
-                        stock = 1,
-                        brand = "",
-                        thumbnail = "",
-                        images = emptyList()
-                    ),
+                    product = null,
                     onClickProductCard = {
                         onClickProductCard(it)
                     },

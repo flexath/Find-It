@@ -17,7 +17,7 @@ data class ProductDto(
 ) {
     fun toProductVO(): ProductVO {
         return ProductVO(
-            id = id,
+            id = id ?: 0,
             title = title,
             description = description,
             price = price,

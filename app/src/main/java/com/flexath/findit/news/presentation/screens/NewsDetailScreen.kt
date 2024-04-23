@@ -1,5 +1,6 @@
 package com.flexath.findit.news.presentation.screens
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,26 +17,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.flexath.findit.R
+import com.flexath.findit.core.utils.ContextUtils.shareLink
 import com.flexath.findit.core.utils.Dimens
 import com.flexath.findit.core.utils.Dimens.LargePadding2
 import com.flexath.findit.main.presentation.screens.common.CustomOutlinedButton
 import com.flexath.findit.main.presentation.screens.common.DetailTopAppBarWithOneAction
 import com.flexath.findit.main.presentation.screens.common.articleCardList
+import com.flexath.findit.news.domain.model.ArticleVO
 import com.flexath.findit.theme.textColorPrimary
 import com.flexath.findit.theme.textColorSecondary
 
 @Composable
 fun NewsDetailScreen(
+    context: Context,
     modifier: Modifier = Modifier,
     onClickBackButton: () -> Unit,
-    onClickArticleCard: () -> Unit,
-    onClickSeeAllNewsButton: () -> Unit
+    onClickArticleCard: (ArticleVO) -> Unit,
+    onClickSeeAllNewsButton: () -> Unit,
+    article: ArticleVO,
+    articleList: List<ArticleVO>
 ) {
     Column(
         modifier = modifier
@@ -47,7 +56,7 @@ fun NewsDetailScreen(
                 onClickBackButton()
             },
             onClickActionButton = {
-                // Share news article code
+                context.shareLink(article.url)
             }
         )
 
@@ -55,8 +64,8 @@ fun NewsDetailScreen(
             item {
                 Spacer(modifier = Modifier.height(LargePadding2))
 
-                Image(
-                    painter = painterResource(id = R.drawable.dummy_car),
+                AsyncImage(
+                    model = ImageRequest.Builder(context = context).data(article.urlToImage).build(),
                     contentDescription = "Banner Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -68,7 +77,7 @@ fun NewsDetailScreen(
                 Spacer(modifier = Modifier.height(LargePadding2))
 
                 Text(
-                    text = "Philosophy Tips Merawat Bodi Mobil agar Tidak Terlihat Kusam",
+                    text = article.title.orEmpty(),
                     style = MaterialTheme.typography.headlineSmall,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
@@ -78,7 +87,7 @@ fun NewsDetailScreen(
                 Spacer(modifier = Modifier.height(Dimens.SmallPadding5))
 
                 Text(
-                    text = "13 Jan 2021",
+                    text = article.formatPublishedAtTime(),
                     style = MaterialTheme.typography.bodySmall,
                     color = textColorSecondary,
                     maxLines = 1,
@@ -88,7 +97,7 @@ fun NewsDetailScreen(
                 Spacer(modifier = Modifier.height(LargePadding2))
 
                 Text(
-                    text = "The speaker unit contains a diaphragm that is precision-grown from NAC Audio bio-cellulose, making it stiffer, lighter and stronger than regular PET speaker units, and allowing the sound-producing diaphragm to vibrate without the levels of distortion found in other speakers. \n\nThe speaker unit contains a diaphragm that is precision-grown from NAC Audio bio-cellulose, making it stiffer, lighter and stronger than regular PET speaker units, and allowing the sound-producing diaphragm to vibrate without the levels of distortion found in other speakers. \n\nThe speaker unit contains a diaphragm that is precision-grown from NAC Audio bio-cellulose, making it stiffer, lighter and stronger than regular PET speaker units, and allowing the sound-producing diaphragm to vibrate without the levels of distortion found in other speakers. \n\nThe speaker unit contains a diaphragm that is precision-grown from NAC Audio bio-cellulose, making it stiffer, lighter and stronger than regular PET speaker units, and allowing the sound-producing diaphragm to vibrate without the levels of distortion found in other speakers. ",
+                    text = article.content ?: "",
                     style = MaterialTheme.typography.bodyMedium,
                     color = textColorPrimary,
                     modifier = Modifier.padding(horizontal = LargePadding2)
@@ -108,9 +117,13 @@ fun NewsDetailScreen(
                 )
             }
 
-            articleCardList {
-                onClickArticleCard()
-            }
+            articleCardList(
+                context = context,
+                articleList = articleList,
+                onClick = { article ->
+                    onClickArticleCard(article)
+                }
+            )
 
             item {
                 CustomOutlinedButton(
@@ -130,15 +143,27 @@ fun NewsDetailScreen(
 @Composable
 private fun NewsDetailScreenPreview() {
     NewsDetailScreen(
+        context = LocalContext.current,
         modifier = Modifier.fillMaxSize(),
-        onClickArticleCard = {
+        onClickBackButton = {
 
         },
-        onClickBackButton = {
+        onClickArticleCard = {
 
         },
         onClickSeeAllNewsButton = {
 
-        }
+        },
+        article = ArticleVO(
+            "Aung Thiha",
+            content = "Philosophy That Addresses Topics Such As Goodness",
+            description = "Agar tetap kinclong, bodi motor ten",
+            publishedAt = "13 Jan 2021",
+            source = null,
+            title = "Philosophy That Addresses Topics Such As Goodness",
+            url = "",
+            urlToImage = ""
+        ),
+        articleList = listOf()
     )
 }

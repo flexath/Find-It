@@ -47,3 +47,14 @@
  -keep class com.flexath.findit.main.data.** { *; }
  -keep class com.flexath.findit.main.domain.model.** { *; }
  -keep class com.flexath.findit.main.domain.repository.** { *; }
+
+# # Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
+# # JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+# -keep class * extends com.google.gson.TypeAdapter
+# -keep class * implements com.google.gson.TypeAdapterFactory
+# -keep class * implements com.google.gson.JsonSerializer
+# -keep class * implements com.google.gson.JsonDeserializer
+#
+# # Retain generic signatures of TypeToken and its subclasses with R8 version 3.0 and higher.
+# -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+# -keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken

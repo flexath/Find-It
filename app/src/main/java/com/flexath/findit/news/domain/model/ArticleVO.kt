@@ -1,12 +1,17 @@
 package com.flexath.findit.news.domain.model
 
 import android.os.Parcelable
+import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.flexath.findit.news.data.local.NewsTypeConverter
 import kotlinx.parcelize.Parcelize
+import javax.annotation.Nonnull
 
 @Parcelize
 @Entity
+@TypeConverters(NewsTypeConverter::class)
 data class ArticleVO(
     val author: String?,
     val content: String?,
@@ -14,6 +19,12 @@ data class ArticleVO(
     val publishedAt: String?,
     val source: SourceVO?,
     val title: String?,
-    @PrimaryKey val url: String,
+    @PrimaryKey val url: String = "",
     val urlToImage: String?
-): Parcelable
+): Parcelable {
+    fun formatPublishedAtTime(): String {
+        return publishedAt?.indexOfFirst {
+            it == 'T'
+        }?.let { publishedAt.removeRange(it,publishedAt.lastIndex+1) } ?: ""
+    }
+}

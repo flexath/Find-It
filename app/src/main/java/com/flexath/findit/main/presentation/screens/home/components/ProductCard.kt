@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -20,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -31,6 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens.MediumPadding3
@@ -73,10 +76,18 @@ fun ProductCard(
         ) {
             Spacer(modifier = Modifier.height(MediumPadding3))
 
-            AsyncImage(
-                model = ImageRequest.Builder(context).data(product?.thumbnail.orEmpty()).build(),
+            SubcomposeAsyncImage(
+                model = ImageRequest.Builder(context).data(product?.thumbnail.orEmpty())
+                    .crossfade(true)
+                    .build(),
                 contentDescription = product?.title.orEmpty(),
                 contentScale = ContentScale.Crop,
+                loading = {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.scale(0.3f)
+                    )
+                },
                 modifier = Modifier
                     .size(125.dp)
                     .clip(RoundedCornerShape(MediumPadding3))
@@ -86,7 +97,12 @@ fun ProductCard(
             Spacer(modifier = Modifier.height(MediumPadding5))
 
             Text(
-                text = product?.title ?: "Item Title",
+                text = if (product == null) {
+                    ""
+                } else {
+                    product.title ?: "Item Title"
+                },
+
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Medium
                 ),
@@ -98,7 +114,11 @@ fun ProductCard(
             Spacer(modifier = Modifier.height(SmallPadding2))
 
             Text(
-                text = "${product?.price}$",
+                text = if (product == null) {
+                    ""
+                } else {
+                    "${product.price}$"
+                },
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontWeight = FontWeight.Bold
                 ),
@@ -117,14 +137,20 @@ fun ProductCard(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_star),
-                        contentDescription = "Rating Star",
-                        tint = Color(0xFFFFC120)
-                    )
+                    product?.let {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_star),
+                            contentDescription = "Rating Star",
+                            tint = Color(0xFFFFC120)
+                        )
+                    }
 
                     Text(
-                        text = product?.rating.toString(),
+                        text = if (product == null) {
+                            ""
+                        } else {
+                            product.rating.toString()
+                        },
                         style = MaterialTheme.typography.labelSmall,
                         color = textColorPrimary,
                         maxLines = 1,
@@ -132,10 +158,14 @@ fun ProductCard(
                     )
 
                     Text(
-                        text = if ((product?.stock ?: 0) <= 1) {
-                            "${product?.stock} stock left"
+                        text = if (product == null) {
+                            ""
                         } else {
-                            "${product?.stock} stocks left"
+                            if ((product.stock ?: 0) <= 1) {
+                                "${product.stock} stock left"
+                            } else {
+                                "${product.stock} stocks left"
+                            }
                         },
                         style = MaterialTheme.typography.labelSmall,
                         color = textColorPrimary,
@@ -228,7 +258,9 @@ fun ProductCardGrid(
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.weight(1f).padding(end = SmallPadding5)
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = SmallPadding5)
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_star),

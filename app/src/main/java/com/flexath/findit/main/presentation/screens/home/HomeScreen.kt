@@ -44,6 +44,8 @@ import com.flexath.findit.main.presentation.screens.home.components.BannerSectio
 import com.flexath.findit.main.presentation.screens.home.components.ProductCategoryList
 import com.flexath.findit.main.presentation.screens.home.components.TitleSection
 import com.flexath.findit.main.presentation.view_model.ProductViewModel
+import com.flexath.findit.news.domain.model.ArticleVO
+import com.flexath.findit.news.presentation.view_models.NewsViewModel
 import com.flexath.findit.theme.colorBackground
 import com.flexath.findit.theme.searchBarBackgroundColor
 import com.flexath.findit.theme.textColorPrimary
@@ -54,10 +56,11 @@ fun HomeScreen(
     context: Context,
     onClickCategory: (String) -> Unit,
     onClickProductCard: (Int) -> Unit,
-    onClickArticleCard: () -> Unit,
+    onClickArticleCard: (ArticleVO) -> Unit,
     onClickSeeAllNewsButton: () -> Unit,
     onClickSearchBar: () -> Unit,
-    viewModel: ProductViewModel
+    productViewModel: ProductViewModel,
+    newsViewModel: NewsViewModel
 ) {
     val pagerState = rememberPagerState { 3 }
 
@@ -74,7 +77,7 @@ fun HomeScreen(
     }
 
     CategoryContentBottomSheet(
-        categoryList = viewModel.productCategoryListState.value.productCategoryList,
+        categoryList = productViewModel.productCategoryListState.value.productCategoryList,
         bottomSheetShow = categoryBottomSheetShow,
         onSheetShowChange = {
             categoryBottomSheetShow = it
@@ -136,7 +139,7 @@ fun HomeScreen(
                 }
 
                 ProductCategoryList(
-                    categoryList = viewModel.productCategoryListState.value.productCategoryList,
+                    categoryList = productViewModel.productCategoryListState.value.productCategoryList,
                     modifier = Modifier
                         .fillMaxWidth(),
                     onClick = {
@@ -152,8 +155,8 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(LargePadding2))
 
                     ProductItemSection(
-                        productItemList = if (viewModel.productListState.value.productList.isNotEmpty()) {
-                            viewModel.productListState.value.productList.subList(0, 5)
+                        productItemList = if (productViewModel.productListState.value.productList.isNotEmpty()) {
+                            productViewModel.productListState.value.productList.subList(0, 5)
                         } else {
                             emptyList()
                         },
@@ -197,8 +200,8 @@ fun HomeScreen(
                         onClickVerticalDots = {
                             productActionBottomSheetShow = true
                         },
-                        productItemList = if (viewModel.productListState.value.productList.isNotEmpty()) {
-                            viewModel.productListState.value.productList.subList(6, 11)
+                        productItemList = if (productViewModel.productListState.value.productList.isNotEmpty()) {
+                            productViewModel.productListState.value.productList.subList(6, 11)
                         } else {
                             emptyList()
                         }
@@ -231,8 +234,8 @@ fun HomeScreen(
                         onClickVerticalDots = {
                             productActionBottomSheetShow = true
                         },
-                        productItemList = if (viewModel.productListState.value.productList.isNotEmpty()) {
-                            viewModel.productListState.value.productList.subList(24, 30)
+                        productItemList = if (productViewModel.productListState.value.productList.isNotEmpty()) {
+                            productViewModel.productListState.value.productList.subList(24, 30)
                         } else {
                             emptyList()
                         }
@@ -252,8 +255,8 @@ fun HomeScreen(
                         onClickVerticalDots = {
                             productActionBottomSheetShow = true
                         },
-                        productItemList = if (viewModel.productListState.value.productList.isNotEmpty()) {
-                            viewModel.productListState.value.productList.subList(12, 17)
+                        productItemList = if (productViewModel.productListState.value.productList.isNotEmpty()) {
+                            productViewModel.productListState.value.productList.subList(12, 17)
                         } else {
                             emptyList()
                         }
@@ -273,8 +276,8 @@ fun HomeScreen(
                         onClickVerticalDots = {
                             productActionBottomSheetShow = true
                         },
-                        productItemList = if (viewModel.productListState.value.productList.isNotEmpty()) {
-                            viewModel.productListState.value.productList.subList(18, 23)
+                        productItemList = if (productViewModel.productListState.value.productList.isNotEmpty()) {
+                            productViewModel.productListState.value.productList.subList(18, 23)
                         } else {
                             emptyList()
                         }
@@ -296,9 +299,13 @@ fun HomeScreen(
             )
         }
 
-        articleCardList {
-            onClickArticleCard()
-        }
+        articleCardList(
+            context = context,
+            articleList = newsViewModel.articleListHomeState.value.articleList,
+            onClick = { article ->
+                onClickArticleCard(article)
+            }
+        )
 
         item {
             CustomOutlinedButton(
@@ -333,6 +340,7 @@ private fun HomeScreenPreview() {
         onClickSearchBar = {
 
         },
-        viewModel = hiltViewModel()
+        productViewModel = hiltViewModel(),
+        newsViewModel = hiltViewModel()
     )
 }

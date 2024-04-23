@@ -10,8 +10,7 @@ import com.flexath.findit.main.data.local.type_converters.ListStringTypeConverte
     ListStringTypeConverter::class
 )
 data class ProductVO(
-    @PrimaryKey
-    val id: Int? = 0,
+    @PrimaryKey val id: Int = 0,
     val title: String?,
     val description: String? = "",
     val price: Int?,

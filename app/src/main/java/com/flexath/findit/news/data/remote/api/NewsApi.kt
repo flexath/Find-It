@@ -12,16 +12,9 @@ interface NewsApi {
 
     @GET("everything")
     suspend fun getNews(
+        @Query("q") searchQuery: String = "shopping",
+        @Query("pageSize") pageSize: Int = 10,
         @Query(PARAM_PAGE) page: Int,
-        @Query(PARAM_SOURCES) sources: String,
         @Query(PARAM_API_KEY) apiKey: String = NEWS_API_KEY
-    ): NewsDto
-
-    @GET("everything")
-    suspend fun searchNews(
-        @Query("q") searchQuery: String,
-        @Query("sources") sources: String,
-        @Query("page") page: Int,
-        @Query("apiKey") apiKey: String = NEWS_API_KEY
     ): NewsDto
 }

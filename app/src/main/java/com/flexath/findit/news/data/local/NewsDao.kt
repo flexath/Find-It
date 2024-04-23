@@ -12,6 +12,9 @@ interface NewsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertArticles(articleList: List<ArticleVO>)
 
-    @Query("SELECT * FROM ArticleVO")
+    @Query("SELECT * FROM ArticleVO LIMIT 5")
     suspend fun getArticles() : List<ArticleVO>
+
+    @Query("DELETE FROM ArticleVO")
+    suspend fun deleteArticleList()
 }

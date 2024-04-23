@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.flexath.findit.core.utils.Resource
 import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.domain.use_cases.MainUseCase
-import com.flexath.findit.main.presentation.state.ProductCategoryListState
-import com.flexath.findit.main.presentation.state.ProductListState
-import com.flexath.findit.main.presentation.state.ProductState
+import com.flexath.findit.main.presentation.states.ProductCategoryListState
+import com.flexath.findit.main.presentation.states.ProductListState
+import com.flexath.findit.main.presentation.states.ProductState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
