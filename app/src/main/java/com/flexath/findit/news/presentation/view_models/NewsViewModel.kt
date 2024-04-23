@@ -7,13 +7,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.flexath.findit.core.utils.Resource
 import com.flexath.findit.news.domain.usecases.news.NewsUseCases
-import com.flexath.findit.news.presentation.states.ArticleListPagingState
 import com.flexath.findit.news.presentation.states.ArticleListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,8 +19,8 @@ class NewsViewModel @Inject constructor(
     private val newsUseCases: NewsUseCases
 ) : ViewModel() {
 
-    private val _articleListState = mutableStateOf(ArticleListPagingState())
-    val articleListState: State<ArticleListPagingState> = _articleListState
+//    private val _articleListState = mutableStateOf(ArticleListPagingState())
+//    val articleListState: State<ArticleListPagingState> = _articleListState
 
     private val _articleListHomeState = mutableStateOf(ArticleListState())
     val articleListHomeState: State<ArticleListState> = _articleListHomeState
@@ -32,17 +29,17 @@ class NewsViewModel @Inject constructor(
         query = "shopping"
     ).cachedIn(viewModelScope)
 
-    fun searchNews(query: String) {
-        _articleListState.value = articleListState.value.copy(
-            articleList = newsUseCases.getNewsUseCases(
-                query = query
-            ).flowOn(Dispatchers.IO).onEach {
-
-            }
-                .cachedIn(viewModelScope),
-            isLoading = false
-        )
-    }
+//    fun searchNews(query: String) {
+//        _articleListState.value = articleListState.value.copy(
+//            articleList = newsUseCases.getNewsUseCases(
+//                query = query
+//            ).flowOn(Dispatchers.IO).onEach {
+//
+//            }
+//                .cachedIn(viewModelScope),
+//            isLoading = false
+//        )
+//    }
 
     fun fetchNewsForHomeScreen() {
         viewModelScope.launch {
