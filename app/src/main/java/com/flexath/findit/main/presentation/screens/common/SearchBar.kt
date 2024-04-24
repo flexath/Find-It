@@ -35,7 +35,7 @@ fun SearchBar(
     onQueryChange: (String) -> Unit,
     isClickable: Boolean,
     onClickSearchBar: () -> Unit,
-    onSearch: (Boolean) -> Unit
+    onSearch: (String) -> Unit
 ) {
 
     TextField(
@@ -49,7 +49,7 @@ fun SearchBar(
         ),
         keyboardActions = KeyboardActions(
             onSearch = {
-                onSearch(true)
+                onSearch(query)
             }
         ),
         trailingIcon = {

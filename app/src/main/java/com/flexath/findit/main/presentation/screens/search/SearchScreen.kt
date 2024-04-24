@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -21,10 +22,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens.ExtraLargePadding5_2x
 import com.flexath.findit.core.utils.Dimens.LargePadding2
-import com.flexath.findit.main.domain.model.ProductVO
+import com.flexath.findit.main.domain.model.HistoryVO
 import com.flexath.findit.main.presentation.events.SearchEvent
 import com.flexath.findit.main.presentation.screens.common.DetailTopAppBar
 import com.flexath.findit.main.presentation.screens.common.ProductCardGridList
@@ -32,8 +34,8 @@ import com.flexath.findit.main.presentation.screens.common.ProductItemSection
 import com.flexath.findit.main.presentation.screens.common.SearchBar
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.ProductContentBottomSheet
 import com.flexath.findit.main.presentation.screens.search.components.historySearchList
-import com.flexath.findit.main.presentation.states.ProductHistoryState
-import com.flexath.findit.main.presentation.states.ProductSearchState
+import com.flexath.findit.main.presentation.view_model.ProductViewModel
+import com.flexath.findit.main.presentation.view_model.SearchViewModel
 import com.flexath.findit.theme.textColorPrimary
 
 @Composable
@@ -42,11 +44,23 @@ fun SearchScreen(
     modifier: Modifier = Modifier,
     onClickBackButton: () -> Unit,
     onClickProductCard: (Int) -> Unit,
-    productList: List<ProductVO>,
-    searchState: ProductSearchState,
     event: (SearchEvent) -> Unit,
-    searchHistoryState: ProductHistoryState
+    productViewModel: ProductViewModel,
+    searchViewModel: SearchViewModel
 ) {
+    var historyList by rememberSaveable {
+        mutableStateOf(listOf<HistoryVO>())
+    }
+
+    val searchState = searchViewModel.productSearchState.value
+    historyList = searchViewModel.productSearchHistoryState.value.searchHistoryList
+
+    LaunchedEffect(key1 = Unit) {
+        productViewModel.fetchAllProducts()
+    }
+
+    val featuredProductList = productViewModel.productListState.value.productList
+
     var productActionBottomSheetShow by rememberSaveable {
         mutableStateOf(false)
     }
@@ -93,8 +107,11 @@ fun SearchScreen(
                     onQueryChange = { query ->
                         event(SearchEvent.UpdateQuery(query))
                     },
-                    onSearch = {
+                    onSearch = { query ->
                         event(SearchEvent.Search)
+                        if(query.isNotEmpty()) {
+                            searchViewModel.insertSearchHistory(query)
+                        }
                     }
                 )
             }
@@ -134,7 +151,7 @@ fun SearchScreen(
             }
 
             if(searchState.query.isEmpty()) {
-                historySearchList(historyList = searchHistoryState.searchHistoryList)
+                historySearchList(historyList = historyList)
             }
         }
 
@@ -154,7 +171,7 @@ fun SearchScreen(
                     onClickVerticalDots = {
                         productActionBottomSheetShow = true
                     },
-                    productItemList = productList
+                    productItemList = featuredProductList
                 )
 
                 Spacer(modifier = Modifier.height(LargePadding2))
@@ -174,11 +191,10 @@ private fun SearchScreenPreview() {
         onClickProductCard = {
 
         },
-        productList = listOf(),
-        searchState = ProductSearchState(),
         event = {
 
         },
-        searchHistoryState = ProductHistoryState()
+        productViewModel = hiltViewModel(),
+        searchViewModel = hiltViewModel()
     )
 }

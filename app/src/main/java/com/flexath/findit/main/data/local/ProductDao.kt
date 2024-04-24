@@ -22,6 +22,6 @@ interface ProductDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSearchHistory(query: HistoryVO)
 
-    @Query("SELECT * FROM history_table")
+    @Query("SELECT * FROM history_table ORDER BY id DESC LIMIT 20")
     suspend fun getAllSearchHistory(): List<HistoryVO>
 }

@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.flexath.findit.core.utils.Resource
+import com.flexath.findit.main.presentation.events.SearchEvent
 import com.flexath.findit.news.domain.usecases.news.NewsUseCases
 import com.flexath.findit.news.presentation.states.ArticleListState
+import com.flexath.findit.news.presentation.states.NewsSearchState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
@@ -19,27 +21,34 @@ class NewsViewModel @Inject constructor(
     private val newsUseCases: NewsUseCases
 ) : ViewModel() {
 
-//    private val _articleListState = mutableStateOf(ArticleListPagingState())
-//    val articleListState: State<ArticleListPagingState> = _articleListState
+    private var _newsSearchState = mutableStateOf(NewsSearchState())
+    val newsSearchState: State<NewsSearchState> = _newsSearchState
 
     private val _articleListHomeState = mutableStateOf(ArticleListState())
     val articleListHomeState: State<ArticleListState> = _articleListHomeState
 
-    val news = newsUseCases.getNewsUseCases(
-        query = "shopping"
-    ).cachedIn(viewModelScope)
+    fun fetchAllNews() {
+        val articles = newsUseCases.getNewsUseCases(
+            query = "shopping"
+        ).cachedIn(viewModelScope)
 
-//    fun searchNews(query: String) {
-//        _articleListState.value = articleListState.value.copy(
-//            articleList = newsUseCases.getNewsUseCases(
-//                query = query
-//            ).flowOn(Dispatchers.IO).onEach {
-//
-//            }
-//                .cachedIn(viewModelScope),
-//            isLoading = false
-//        )
-//    }
+        _newsSearchState.value = newsSearchState.value.copy(
+            articles = articles
+        )
+    }
+
+    fun onNewsEvent(event: SearchEvent) {
+        when(event) {
+            is SearchEvent.UpdateQuery -> {
+                _newsSearchState.value = newsSearchState.value.copy(
+                    query = event.query
+                )
+            }
+            is SearchEvent.Search -> {
+                searchNews()
+            }
+        }
+    }
 
     fun fetchNewsForHomeScreen() {
         viewModelScope.launch {
@@ -70,5 +79,15 @@ class NewsViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    private fun searchNews() {
+        val articles = newsUseCases.getNewsUseCases.invoke(
+            query = newsSearchState.value.query,
+        ).cachedIn(viewModelScope)
+
+        _newsSearchState.value = newsSearchState.value.copy(
+            articles = articles
+        )
     }
 }

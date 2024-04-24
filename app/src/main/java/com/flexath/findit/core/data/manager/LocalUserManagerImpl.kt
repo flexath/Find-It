@@ -1,4 +1,4 @@
-package com.flexath.findit.news.data.manager
+package com.flexath.findit.core.data.manager
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -6,10 +6,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
+import com.flexath.findit.core.data.manager.LocalUserManagerImpl.PreferencesKeys.APP_ENTRY
+import com.flexath.findit.core.domain.manager.LocalUserManager
 import com.flexath.findit.core.utils.Constants.APP_ENTRY_SETTING
 import com.flexath.findit.core.utils.Constants.USER_SETTING
-import com.flexath.findit.news.data.manager.LocalUserManagerImpl.PreferencesKeys.APP_ENTRY
-import com.flexath.findit.news.domain.manager.LocalUserManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

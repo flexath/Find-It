@@ -31,7 +31,7 @@ class SearchViewModel @Inject constructor(
         getAllSearchHistory()
     }
 
-    fun onEvent(event: SearchEvent) {
+    fun onProductEvent(event: SearchEvent) {
         when(event) {
             is SearchEvent.UpdateQuery -> {
                 _productSearchState.value = productSearchState.value.copy(
@@ -39,6 +39,9 @@ class SearchViewModel @Inject constructor(
                 )
             }
             is SearchEvent.Search -> {
+                _productSearchState.value = productSearchState.value.copy(
+                    productList = emptyList()
+                )
                 searchProducts(productSearchState.value.query)
             }
         }
@@ -76,6 +79,7 @@ class SearchViewModel @Inject constructor(
     fun insertSearchHistory(query: String) {
         viewModelScope.launch {
             mainUseCase.insertHistoryUseCase.invoke(query)
+            getAllSearchHistory()
         }
     }
 

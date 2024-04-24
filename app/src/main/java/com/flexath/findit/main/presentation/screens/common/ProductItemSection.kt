@@ -1,6 +1,5 @@
 package com.flexath.findit.main.presentation.screens.common
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +13,6 @@ import com.flexath.findit.main.presentation.screens.home.components.TitleSection
 
 @Composable
 fun ProductItemSection(
-    context: Context,
     title: String,
     onClickSeeAll: () -> Unit,
     onClickProductCard: (Int) -> Unit,

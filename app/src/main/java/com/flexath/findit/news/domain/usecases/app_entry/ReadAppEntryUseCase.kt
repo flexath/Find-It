@@ -1,6 +1,6 @@
 package com.flexath.findit.news.domain.usecases.app_entry
 
-import com.flexath.findit.news.domain.manager.LocalUserManager
+import com.flexath.findit.core.domain.manager.LocalUserManager
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

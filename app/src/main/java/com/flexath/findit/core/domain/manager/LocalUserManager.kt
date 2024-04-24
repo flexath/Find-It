@@ -1,4 +1,4 @@
-package com.flexath.findit.news.domain.manager
+package com.flexath.findit.core.domain.manager
 
 import kotlinx.coroutines.flow.Flow
 

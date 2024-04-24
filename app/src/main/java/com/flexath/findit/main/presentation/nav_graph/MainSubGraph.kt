@@ -18,19 +18,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.flexath.findit.core.presentation.Route
 import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_CATEGORY_NAME
 import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_ID
 import com.flexath.findit.main.domain.model.ProductVO
-import com.flexath.findit.main.presentation.events.SearchEvent
 import com.flexath.findit.main.presentation.screens.MainBottomBar
 import com.flexath.findit.main.presentation.screens.MainTopBar
 import com.flexath.findit.main.presentation.screens.category.CategoryScreen
 import com.flexath.findit.main.presentation.screens.home.HomeScreen
 import com.flexath.findit.main.presentation.screens.home.ProductDetailScreen
-import com.flexath.findit.news.presentation.screens.NewsDetailScreen
-import com.flexath.findit.news.presentation.screens.NewsListScreen
 import com.flexath.findit.main.presentation.screens.order.OrderScreen
 import com.flexath.findit.main.presentation.screens.profile.ProfileScreen
 import com.flexath.findit.main.presentation.screens.review.ReviewProductScreen
@@ -41,6 +37,8 @@ import com.flexath.findit.main.presentation.screens.wishlist.WishlistScreen
 import com.flexath.findit.main.presentation.view_model.ProductViewModel
 import com.flexath.findit.main.presentation.view_model.SearchViewModel
 import com.flexath.findit.news.domain.model.ArticleVO
+import com.flexath.findit.news.presentation.screens.NewsDetailScreen
+import com.flexath.findit.news.presentation.screens.NewsListScreen
 import com.flexath.findit.news.presentation.view_models.NewsViewModel
 
 @Composable
@@ -165,25 +163,13 @@ fun MainSubGraph(
                 route = Route.SearchScreen.route
             ) {
                 val searchViewModel: SearchViewModel = hiltViewModel()
-                val searchState = searchViewModel.productSearchState.value
-                val searchHistoryState = searchViewModel.productSearchHistoryState.value
-
-                LaunchedEffect(key1 = Unit) {
-                    productViewModel.fetchAllProducts()
-                }
-
-                val featuredProductList = productViewModel.productListState.value.productList
 
                 SearchScreen(
-                    searchState = searchState,
-                    searchHistoryState = searchHistoryState,
+                    productViewModel = productViewModel,
+                    searchViewModel = searchViewModel,
                     event = { event ->
-                        searchViewModel.onEvent(event)
-                        if(event == SearchEvent.Search && searchState.query.isNotEmpty()) {
-                            searchViewModel.insertSearchHistory(searchState.query)
-                        }
+                        searchViewModel.onProductEvent(event)
                     },
-                    productList = featuredProductList,
                     context = context,
                     modifier = Modifier.fillMaxSize(),
                     onClickBackButton = {
@@ -313,25 +299,13 @@ fun MainSubGraph(
                 route = Route.SearchInStoreScreen.route
             ) {
                 val searchViewModel: SearchViewModel = hiltViewModel()
-                val searchState = searchViewModel.productSearchState.value
-                val searchHistoryState = searchViewModel.productSearchHistoryState.value
-
-                LaunchedEffect(key1 = Unit) {
-                    productViewModel.fetchAllProducts()
-                }
-
-                val featuredProductList = productViewModel.productListState.value.productList
 
                 SearchInStoreScreen(
-                    searchState = searchState,
-                    searchHistoryState = searchHistoryState,
+                    productViewModel = productViewModel,
+                    searchViewModel = searchViewModel,
                     event = { event ->
-                        searchViewModel.onEvent(event)
-                        if(event == SearchEvent.Search && searchState.query.isNotEmpty()) {
-                            searchViewModel.insertSearchHistory(searchState.query)
-                        }
+                        searchViewModel.onProductEvent(event)
                     },
-                    productList = featuredProductList,
                     context = context,
                     modifier = Modifier.fillMaxSize(),
                     onClickBackButton = {
@@ -357,13 +331,17 @@ fun MainSubGraph(
             composable(
                 route = Route.NewsListScreen.route
             ) {
-
-                val articleList = newsViewModel.news.collectAsLazyPagingItems()
+                LaunchedEffect(key1 = Unit) {
+                    newsViewModel.fetchAllNews()
+                }
 
                 NewsListScreen(
+                    newsViewModel = newsViewModel,
+                    event = { event ->
+                        newsViewModel.onNewsEvent(event = event)
+                    },
                     context = context,
                     modifier = Modifier.fillMaxSize(),
-                    articleList = articleList,
                     onClickBackButton = {
                         navHostController.popBackStack()
                     },

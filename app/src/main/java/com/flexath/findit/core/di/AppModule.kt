@@ -1,8 +1,8 @@
 package com.flexath.findit.core.di
 
 import android.content.Context
-import com.flexath.findit.news.data.manager.LocalUserManagerImpl
-import com.flexath.findit.news.domain.manager.LocalUserManager
+import com.flexath.findit.core.data.manager.LocalUserManagerImpl
+import com.flexath.findit.core.domain.manager.LocalUserManager
 import com.flexath.findit.news.domain.usecases.app_entry.AppEntryUseCases
 import com.flexath.findit.news.domain.usecases.app_entry.ReadAppEntryUseCase
 import com.flexath.findit.news.domain.usecases.app_entry.SaveAppEntryUseCase
