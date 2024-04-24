@@ -3,6 +3,7 @@ package com.flexath.findit.main.data.repository
 import com.flexath.findit.core.utils.Resource
 import com.flexath.findit.main.data.local.ProductDatabase
 import com.flexath.findit.main.data.remote.api.ProductApi
+import com.flexath.findit.main.domain.model.HistoryVO
 import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.domain.repository.ProductRepository
 import kotlinx.coroutines.flow.Flow
@@ -103,4 +104,53 @@ class ProductRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun searchProducts(query: String): Flow<Resource<List<ProductVO>>> = flow {
+        emit(Resource.Loading())
+
+        try {
+            val productList = productApi.searchProducts(query = query).toProductListResponse().products
+            emit(Resource.Success(
+                data = productList
+            ))
+        } catch(e: HttpException) {
+            emit(Resource.Error(
+                message = "Oops, something went wrong!",
+                data = emptyList()
+            ))
+        } catch(e: IOException) {
+            emit(Resource.Error(
+                message = "Couldn't reach server, check your internet connection.",
+                data = emptyList()
+            ))
+        }
+    }
+
+    override suspend fun insertSearchHistory(query: String) {
+        productDatabase.productDao().insertSearchHistory(
+            HistoryVO(
+                query = query
+            )
+        )
+    }
+
+    override fun getAllSearchHistory(): Flow<Resource<List<HistoryVO>>> = flow {
+        emit(Resource.Loading())
+
+        try {
+            val searchHistoryList = productDatabase.productDao().getAllSearchHistory()
+            emit(Resource.Success(
+                data = searchHistoryList
+            ))
+        } catch(e: HttpException) {
+            emit(Resource.Error(
+                message = "Oops, something went wrong!",
+                data = emptyList()
+            ))
+        } catch(e: IOException) {
+            emit(Resource.Error(
+                message = "Couldn't fetch from local database, try again",
+                data = emptyList()
+            ))
+        }
+    }
 }

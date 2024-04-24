@@ -13,6 +13,7 @@ object ApiConstants {
 
     // QUERY
     const val QUERY_LIMIT = "limit"
+    const val QUERY_STRING = "q"
 
     // Params
     const val PARAM_PAGE = "page"

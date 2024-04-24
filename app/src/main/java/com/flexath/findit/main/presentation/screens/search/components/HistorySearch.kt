@@ -11,16 +11,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens
+import com.flexath.findit.main.domain.model.HistoryVO
 import com.flexath.findit.theme.textColorPrimary
 
 @Composable
 fun HistorySearch(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    history: HistoryVO
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -30,7 +31,7 @@ fun HistorySearch(
             Icon(painter = painterResource(id = R.drawable.ic_clock), contentDescription = "Close Button")
 
             Text(
-                text = stringResource(R.string.lbl_recent_search),
+                text = history.query.orEmpty(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = textColorPrimary,
                 maxLines = 1,
@@ -53,6 +54,9 @@ fun HistorySearch(
 @Composable
 private fun HistorySearchPreview() {
     HistorySearch(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = Dimens.LargePadding2)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = Dimens.LargePadding2),
+        history = HistoryVO(
+            query = ""
+        )
     )
 }

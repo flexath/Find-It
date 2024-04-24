@@ -11,10 +11,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -24,13 +22,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.flexath.findit.R
+import com.flexath.findit.core.utils.Dimens.ExtraLargePadding5_2x
 import com.flexath.findit.core.utils.Dimens.LargePadding2
 import com.flexath.findit.main.domain.model.ProductVO
+import com.flexath.findit.main.presentation.events.SearchEvent
 import com.flexath.findit.main.presentation.screens.common.DetailTopAppBar
+import com.flexath.findit.main.presentation.screens.common.ProductCardGridList
 import com.flexath.findit.main.presentation.screens.common.ProductItemSection
 import com.flexath.findit.main.presentation.screens.common.SearchBar
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.ProductContentBottomSheet
 import com.flexath.findit.main.presentation.screens.search.components.historySearchList
+import com.flexath.findit.main.presentation.states.ProductHistoryState
+import com.flexath.findit.main.presentation.states.ProductSearchState
 import com.flexath.findit.theme.textColorPrimary
 
 @Composable
@@ -39,22 +42,11 @@ fun SearchScreen(
     modifier: Modifier = Modifier,
     onClickBackButton: () -> Unit,
     onClickProductCard: (Int) -> Unit,
-    productList: List<ProductVO>
+    productList: List<ProductVO>,
+    searchState: ProductSearchState,
+    event: (SearchEvent) -> Unit,
+    searchHistoryState: ProductHistoryState
 ) {
-    var query by remember {
-        mutableStateOf("")
-    }
-
-    var hasSearch by remember {
-        mutableStateOf(false)
-    }
-
-    hasSearch = remember {
-        derivedStateOf {
-            query.isNotEmpty()
-        }.value
-    }
-
     var productActionBottomSheetShow by rememberSaveable {
         mutableStateOf(false)
     }
@@ -77,64 +69,76 @@ fun SearchScreen(
         modifier = modifier
     ) {
 
-        Column(
+        LazyColumn(
             modifier = Modifier.weight(1f)
         ){
-            DetailTopAppBar(
-                title = stringResource(R.string.lbl_search)
-            ) {
-                onClickBackButton()
+            item {
+                DetailTopAppBar(
+                    title = stringResource(R.string.lbl_search)
+                ) {
+                    onClickBackButton()
+                }
+
+                Spacer(modifier = Modifier.height(LargePadding2))
+
+                SearchBar(
+                    context = context,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = LargePadding2),
+                    query = searchState.query,
+                    isEnabled = true,
+                    isClickable = false,
+                    onClickSearchBar = {},
+                    onQueryChange = { query ->
+                        event(SearchEvent.UpdateQuery(query))
+                    },
+                    onSearch = {
+                        event(SearchEvent.Search)
+                    }
+                )
             }
 
-            LazyColumn {
-                item {
+            item {
+                if(searchState.query.isEmpty()) {
+                    Column {
+                        Spacer(modifier = Modifier.height(LargePadding2))
+
+                        Text(
+                            text = stringResource(R.string.lbl_recent_search),
+                            style = MaterialTheme.typography.bodyLarge.copy(
+                                fontWeight = FontWeight.Medium
+                            ),
+                            color = textColorPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.padding(horizontal = LargePadding2)
+                        )
+                    }
+                } else {
                     Spacer(modifier = Modifier.height(LargePadding2))
 
-                    SearchBar(
-                        context = context,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = LargePadding2),
-                        query = query,
-                        isEnabled = true,
-                        isClickable = false,
-                        onClickSearchBar = {
+                    ProductCardGridList(
+                        modifier = Modifier.fillMaxWidth(),
+                        productList = searchState.productList,
+                        onClickVerticalDots = {
 
                         },
-                        onQueryChange = {
-                            query = it
-                        },
-                        onSearch = {
-                            hasSearch = true
+                        onClickProductCard = {
+                            onClickProductCard(it)
                         }
                     )
 
-                    if(!hasSearch) {
-                        Column {
-                            Spacer(modifier = Modifier.height(LargePadding2))
-
-                            Text(
-                                text = stringResource(R.string.lbl_recent_search),
-                                style = MaterialTheme.typography.bodyLarge.copy(
-                                    fontWeight = FontWeight.Medium
-                                ),
-                                color = textColorPrimary,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.padding(horizontal = LargePadding2)
-                            )
-                        }
-                    }
+                    Spacer(modifier = Modifier.height(ExtraLargePadding5_2x))
                 }
+            }
 
-                if(!hasSearch) {
-                    historySearchList()
-                }
-
+            if(searchState.query.isEmpty()) {
+                historySearchList(historyList = searchHistoryState.searchHistoryList)
             }
         }
 
-        if(query.isEmpty()) {
+        if(searchState.query.isEmpty()) {
             Column {
                 Spacer(modifier = Modifier.height(LargePadding2))
 
@@ -170,6 +174,11 @@ private fun SearchScreenPreview() {
         onClickProductCard = {
 
         },
-        productList = listOf()
+        productList = listOf(),
+        searchState = ProductSearchState(),
+        event = {
+
+        },
+        searchHistoryState = ProductHistoryState()
     )
 }

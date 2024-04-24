@@ -6,11 +6,13 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.ui.Modifier
 import com.flexath.findit.core.utils.Dimens.LargePadding2
 import com.flexath.findit.core.utils.Dimens.MediumPadding2
+import com.flexath.findit.main.domain.model.HistoryVO
 
-fun LazyListScope.historySearchList() {
-    items(count = 15) {index ->
+fun LazyListScope.historySearchList(historyList: List<HistoryVO>) {
+    items(count = historyList.size) {index ->
         HistorySearch(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = LargePadding2, vertical = MediumPadding2)
+            modifier = Modifier.fillMaxWidth().padding(horizontal = LargePadding2, vertical = MediumPadding2),
+            history = historyList[index]
         )
     }
 }
