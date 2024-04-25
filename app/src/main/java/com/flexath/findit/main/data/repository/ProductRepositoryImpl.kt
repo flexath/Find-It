@@ -133,6 +133,10 @@ class ProductRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun deleteSearchHistory(id: Int) {
+        productDatabase.productDao().deleteSearchHistory(id = id)
+    }
+
     override fun getAllSearchHistory(): Flow<Resource<List<HistoryVO>>> = flow {
         emit(Resource.Loading())
 

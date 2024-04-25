@@ -25,5 +25,7 @@ interface ProductRepository {
 
     suspend fun insertSearchHistory(query: String)
 
+    suspend fun deleteSearchHistory(id: Int)
+
     fun getAllSearchHistory(): Flow<Resource<List<HistoryVO>>>
 }

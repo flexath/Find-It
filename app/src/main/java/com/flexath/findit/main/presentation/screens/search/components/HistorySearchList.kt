@@ -8,11 +8,19 @@ import com.flexath.findit.core.utils.Dimens.LargePadding2
 import com.flexath.findit.core.utils.Dimens.MediumPadding2
 import com.flexath.findit.main.domain.model.HistoryVO
 
-fun LazyListScope.historySearchList(historyList: List<HistoryVO>) {
-    items(count = historyList.size) {index ->
+fun LazyListScope.historySearchList(
+    historyList: List<HistoryVO>,
+    onClickDeleteButton: (Int) -> Unit
+) {
+    items(count = historyList.size) { index ->
         HistorySearch(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = LargePadding2, vertical = MediumPadding2),
-            history = historyList[index]
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = LargePadding2, vertical = MediumPadding2),
+            history = historyList[index],
+            onClickDeleteButton = { id ->
+                onClickDeleteButton(id)
+            }
         )
     }
 }

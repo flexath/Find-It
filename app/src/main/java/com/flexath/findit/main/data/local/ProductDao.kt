@@ -22,6 +22,9 @@ interface ProductDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSearchHistory(query: HistoryVO)
 
+    @Query("DELETE FROM history_table WHERE id = :id")
+    suspend fun deleteSearchHistory(id: Int)
+
     @Query("SELECT * FROM history_table ORDER BY id DESC LIMIT 20")
     suspend fun getAllSearchHistory(): List<HistoryVO>
 }

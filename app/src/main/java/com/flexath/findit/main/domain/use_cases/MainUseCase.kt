@@ -9,5 +9,6 @@ data class MainUseCase @Inject constructor(
     val getAllProductOfCategoryUseCase: GetAllProductOfCategoryUseCase,
     val searchProductsUseCase: SearchProductsUseCase,
     val getAllSearchHistoryUseCase: GetAllSearchHistoryUseCase,
-    val insertHistoryUseCase: InsertHistoryUseCase
+    val insertHistoryUseCase: InsertHistoryUseCase,
+    val deleteHistoryUseCase: DeleteHistoryUseCase
 )

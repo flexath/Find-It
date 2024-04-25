@@ -122,9 +122,11 @@ fun SearchInStoreScreen(
                         onQueryChange = { query ->
                             event(SearchEvent.UpdateQuery(query))
                         },
-                        onSearch = {
+                        onSearch = { query ->
                             event(SearchEvent.Search)
-
+                            if(query.isNotEmpty()) {
+                                searchViewModel.insertSearchHistory(query)
+                            }
                         }
                     )
 
@@ -222,7 +224,12 @@ fun SearchInStoreScreen(
                 }
 
                 if(searchState.query.isEmpty()) {
-                    historySearchList(historyList)
+                    historySearchList(
+                        historyList = historyList,
+                        onClickDeleteButton = { id ->
+                            searchViewModel.deleteSearchHistory(id = id)
+                        }
+                    )
                 }
             }
         }

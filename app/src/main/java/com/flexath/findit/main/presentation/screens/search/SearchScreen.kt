@@ -151,7 +151,12 @@ fun SearchScreen(
             }
 
             if(searchState.query.isEmpty()) {
-                historySearchList(historyList = historyList)
+                historySearchList(
+                    historyList = historyList,
+                    onClickDeleteButton = { id ->
+                        searchViewModel.deleteSearchHistory(id = id)
+                    }
+                )
             }
         }
 

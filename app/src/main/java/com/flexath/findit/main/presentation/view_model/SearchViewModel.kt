@@ -83,6 +83,14 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun deleteSearchHistory(id: Int) {
+        viewModelScope.launch {
+            mainUseCase.deleteHistoryUseCase.invoke(id)
+        }
+
+        getAllSearchHistory()
+    }
+
     private fun getAllSearchHistory() {
         viewModelScope.launch {
             mainUseCase.getAllSearchHistoryUseCase.invoke()

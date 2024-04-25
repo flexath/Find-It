@@ -21,7 +21,8 @@ import com.flexath.findit.theme.textColorPrimary
 @Composable
 fun HistorySearch(
     modifier: Modifier = Modifier,
-    history: HistoryVO
+    history: HistoryVO,
+    onClickDeleteButton: (Int) -> Unit
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -44,7 +45,7 @@ fun HistorySearch(
             painter = painterResource(id = R.drawable.ic_close),
             contentDescription = "Close Button",
             modifier = Modifier.clickable {
-
+                onClickDeleteButton(history.id)
             }
         )
     }
@@ -57,6 +58,9 @@ private fun HistorySearchPreview() {
         modifier = Modifier.fillMaxWidth().padding(horizontal = Dimens.LargePadding2),
         history = HistoryVO(
             query = ""
-        )
+        ),
+        onClickDeleteButton = {
+
+        }
     )
 }
