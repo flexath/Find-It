@@ -28,8 +28,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -45,6 +47,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.flexath.findit.R
@@ -65,6 +68,7 @@ import com.flexath.findit.main.presentation.screens.common.RatingTextWithIcon
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.AddToCartContentBottomSheet
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.ProductContentBottomSheet
 import com.flexath.findit.main.presentation.screens.common.reviewCardList
+import com.flexath.findit.main.presentation.view_model.ProductViewModel
 import com.flexath.findit.theme.alertColor
 import com.flexath.findit.theme.colorBackground
 import com.flexath.findit.theme.dividerColor
@@ -80,9 +84,37 @@ fun ProductDetailScreen(
     onClickSellerProfile: () -> Unit,
     onClickSeeAllReviewButton: () -> Unit,
     onClickProductCard: (Int) -> Unit,
-    product: ProductVO?,
-    featuredProductList: List<ProductVO>
+    productViewModel: ProductViewModel,
+    productId: Int,
 ) {
+    var product by remember {
+        mutableStateOf(
+            ProductVO(
+                title = "Product Title",
+                price = 1,
+                rating = 0.0,
+                stock = 1,
+                brand = "Product Brand",
+                thumbnail = "Product Image Url",
+                images = emptyList()
+            )
+        )
+    }
+
+    var productList by remember {
+        mutableStateOf(listOf<ProductVO>())
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        productViewModel.fetchProduct(productId = productId)
+        productViewModel.fetchAllProducts()
+    }
+
+    productViewModel.productState.value.product?.let { productResult ->
+        product = productResult
+    }
+    productList = productViewModel.productListState.value.productList
+
     var productActionBottomSheetShow by rememberSaveable {
         mutableStateOf(false)
     }
@@ -92,7 +124,7 @@ fun ProductDetailScreen(
     }
 
     val pagerState = rememberPagerState {
-        product?.images?.size ?: 1
+        product.images?.size ?: 1
     }
 
     AddToCartContentBottomSheet(
@@ -156,7 +188,7 @@ fun ProductDetailScreen(
                         ) {
                             AsyncImage(
                                 model = ImageRequest.Builder(context)
-                                    .data(product?.images?.get(index)).build(),
+                                    .data(product.images?.get(index)).build(),
                                 contentDescription = "Product Cover",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
@@ -166,7 +198,7 @@ fun ProductDetailScreen(
                             )
 
                             Text(
-                                text = "${index + 1}/${product?.images?.size ?: 0} images",
+                                text = "${index + 1}/${product.images?.size ?: 0} images",
                                 style = MaterialTheme.typography.bodyLarge.copy(
                                     fontWeight = FontWeight.Medium
                                 ),
@@ -186,7 +218,7 @@ fun ProductDetailScreen(
                     Spacer(modifier = Modifier.height(LargePadding2))
 
                     Text(
-                        text = product?.title ?: "Product Title",
+                        text = product.title ?: "Product Title",
                         style = MaterialTheme.typography.headlineMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),
@@ -201,7 +233,7 @@ fun ProductDetailScreen(
                     Spacer(modifier = Modifier.height(SmallPadding5))
 
                     Text(
-                        text = "${product?.price}$",
+                        text = "${product.price}$",
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Medium,
                         ),
@@ -226,7 +258,7 @@ fun ProductDetailScreen(
                         )
 
                         Text(
-                            text = product?.rating.toString(),
+                            text = product.rating.toString(),
                             style = MaterialTheme.typography.bodyMedium,
                             color = textColorPrimary,
                             maxLines = 1,
@@ -235,10 +267,10 @@ fun ProductDetailScreen(
                         )
 
                         Text(
-                            text = if ((product?.stock ?: 0) <= 1) {
-                                "${product?.stock} stock left"
+                            text = if ((product.stock ?: 0) <= 1) {
+                                "${product.stock} stock left"
                             } else {
-                                "${product?.stock} stocks left"
+                                "${product.stock} stocks left"
                             },
                             style = MaterialTheme.typography.bodyMedium,
                             color = textColorPrimary,
@@ -268,7 +300,7 @@ fun ProductDetailScreen(
                             .padding(horizontal = LargePadding2)
                     ) {
                         AsyncImage(
-                            model = ImageRequest.Builder(context).data(product?.thumbnail.orEmpty())
+                            model = ImageRequest.Builder(context).data(product.thumbnail.orEmpty())
                                 .build(),
                             contentDescription = "Seller Cover",
                             contentScale = ContentScale.Crop,
@@ -282,7 +314,7 @@ fun ProductDetailScreen(
                             modifier = Modifier.weight(3f)
                         ) {
                             Text(
-                                text = product?.brand ?: "Brand Name",
+                                text = product.brand ?: "Brand Name",
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     fontWeight = FontWeight.Medium
                                 ),
@@ -353,7 +385,7 @@ fun ProductDetailScreen(
                     Spacer(modifier = Modifier.height(LargePadding2))
 
                     Text(
-                        text = product?.description ?: "There is no description.",
+                        text = product.description ?: "There is no description.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = textColorPrimary,
                         modifier = Modifier.padding(horizontal = LargePadding2)
@@ -417,7 +449,7 @@ fun ProductDetailScreen(
                             onClickVerticalDots = {
                                 productActionBottomSheetShow = true
                             },
-                            productItemList = featuredProductList
+                            productItemList = productList
                         )
 
                         Spacer(modifier = Modifier.height(ExtraLargePadding5_2x))
@@ -472,15 +504,7 @@ private fun ProductDetailScreenPreview() {
         onClickProductCard = {
 
         },
-        product = ProductVO(
-            title = "",
-            price = 1,
-            rating = 0.0,
-            stock = 1,
-            brand = "",
-            thumbnail = "",
-            images = emptyList()
-        ),
-        featuredProductList = emptyList()
+        productViewModel = hiltViewModel(),
+        productId = 0
     )
 }

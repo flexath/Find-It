@@ -1,7 +1,6 @@
 package com.flexath.findit.news.presentation.screens
 
 import android.content.Context
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -14,15 +13,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.flexath.findit.R
@@ -33,6 +33,7 @@ import com.flexath.findit.main.presentation.screens.common.CustomOutlinedButton
 import com.flexath.findit.main.presentation.screens.common.DetailTopAppBarWithOneAction
 import com.flexath.findit.main.presentation.screens.common.articleCardList
 import com.flexath.findit.news.domain.model.ArticleVO
+import com.flexath.findit.news.presentation.view_models.NewsViewModel
 import com.flexath.findit.theme.textColorPrimary
 import com.flexath.findit.theme.textColorSecondary
 
@@ -44,8 +45,14 @@ fun NewsDetailScreen(
     onClickArticleCard: (ArticleVO) -> Unit,
     onClickSeeAllNewsButton: () -> Unit,
     article: ArticleVO,
-    articleList: List<ArticleVO>
+    newsViewModel: NewsViewModel
 ) {
+    LaunchedEffect(key1 = Unit) {
+        newsViewModel.fetchNewsForHomeScreen()
+    }
+
+    val articleList = newsViewModel.articleListHomeState.value.articleList
+
     Column(
         modifier = modifier
     ) {
@@ -164,6 +171,6 @@ private fun NewsDetailScreenPreview() {
             url = "",
             urlToImage = ""
         ),
-        articleList = listOf()
+        newsViewModel = hiltViewModel()
     )
 }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens.ExtraLargePadding5_2x
 import com.flexath.findit.core.utils.Dimens.LargePadding2
@@ -31,6 +33,7 @@ import com.flexath.findit.main.presentation.screens.common.DetailTopAppBarWithOn
 import com.flexath.findit.main.presentation.screens.common.ProductCardGridList
 import com.flexath.findit.main.presentation.screens.common.SearchBar
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.FilterAndSortingContentBottomSheet
+import com.flexath.findit.main.presentation.view_model.ProductViewModel
 import com.flexath.findit.theme.colorBackground
 import com.flexath.findit.theme.textColorPrimary
 
@@ -41,8 +44,13 @@ fun CategoryScreen(
     onClickBackButton: () -> Unit,
     onClickProductCard: (Int) -> Unit,
     categoryName: String,
-    productList: List<ProductVO>,
+    productViewModel: ProductViewModel,
 ) {
+    LaunchedEffect(key1 = Unit) {
+        productViewModel.fetchAllProductsOfCategory(categoryName)
+    }
+    val productList = productViewModel.productListOfCategoryState.value.productList
+
     var query by remember {
         mutableStateOf("")
     }
@@ -148,11 +156,11 @@ private fun CategoryScreenPreview() {
     CategoryScreen(
         context = LocalContext.current,
         onClickBackButton = {},
-        categoryName = "",
-        productList = listOf(),
         onClickProductCard = {
 
-        }
+        },
+        categoryName = "",
+        productViewModel = hiltViewModel()
     )
 
 }

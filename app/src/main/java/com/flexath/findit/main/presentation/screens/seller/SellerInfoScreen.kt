@@ -22,6 +22,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens
 import com.flexath.findit.core.utils.Dimens.ExtraLargePadding5_2x
@@ -52,6 +54,7 @@ import com.flexath.findit.main.presentation.screens.common.ProductCardGridList
 import com.flexath.findit.main.presentation.screens.common.RatingTextWithIcon
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.ShippingSupportContentBottomSheet
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.SortingContentBottomSheet
+import com.flexath.findit.main.presentation.view_model.ProductViewModel
 import com.flexath.findit.theme.colorBackground
 import com.flexath.findit.theme.searchBarBackgroundColor
 import com.flexath.findit.theme.textColorPrimary
@@ -63,8 +66,13 @@ fun SellerInfoScreen(
     onClickBackButton: () -> Unit,
     onClickProductCard: (Int) -> Unit,
     onClickSearchButton: () -> Unit,
-    productList: List<ProductVO>
+    productViewModel: ProductViewModel
 ) {
+    LaunchedEffect(key1 = Unit) {
+        productViewModel.fetchAllProducts()
+    }
+
+    val productList = productViewModel.productListState.value.productList
 
     var sortingBottomSheetShow by rememberSaveable {
         mutableStateOf(false)
@@ -377,6 +385,6 @@ private fun SellerInfoScreenPreview() {
         onClickSearchButton = {
 
         },
-        productList = listOf()
+        productViewModel = hiltViewModel()
     )
 }

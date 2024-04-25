@@ -1,14 +1,13 @@
 package com.flexath.findit.main.presentation.nav_graph
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,9 +18,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.flexath.findit.core.presentation.Route
+import com.flexath.findit.core.utils.NavGraphConstants
 import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_CATEGORY_NAME
 import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_ID
-import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.presentation.screens.MainBottomBar
 import com.flexath.findit.main.presentation.screens.MainTopBar
 import com.flexath.findit.main.presentation.screens.category.CategoryScreen
@@ -42,10 +41,7 @@ import com.flexath.findit.news.presentation.screens.NewsListScreen
 import com.flexath.findit.news.presentation.view_models.NewsViewModel
 
 @Composable
-fun MainSubGraph(
-    productViewModel: ProductViewModel = hiltViewModel(),
-    newsViewModel: NewsViewModel = hiltViewModel()
-) {
+fun MainSubGraph() {
     val navHostController = rememberNavController()
     val backStackEntry = navHostController.currentBackStackEntryAsState().value
 
@@ -94,6 +90,12 @@ fun MainSubGraph(
         NavHost(
             navController = navHostController,
             startDestination = Route.HomeScreen.route,
+            enterTransition = {
+                EnterTransition.None
+            },
+            exitTransition = {
+                ExitTransition.None
+            },
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = bottomPadding, top = topPadding)
@@ -101,6 +103,8 @@ fun MainSubGraph(
             composable(
                 route = Route.HomeScreen.route
             ) {
+                val productViewModel: ProductViewModel = hiltViewModel()
+                val newsViewModel: NewsViewModel = hiltViewModel()
 
                 LaunchedEffect(key1 = Unit) {
                     productViewModel.fetchAllProductCategories()
@@ -163,6 +167,7 @@ fun MainSubGraph(
                 route = Route.SearchScreen.route
             ) {
                 val searchViewModel: SearchViewModel = hiltViewModel()
+                val productViewModel: ProductViewModel = hiltViewModel()
 
                 SearchScreen(
                     productViewModel = productViewModel,
@@ -191,17 +196,12 @@ fun MainSubGraph(
                     }
                 )
             ) { navBackStack ->
+                val productViewModel: ProductViewModel = hiltViewModel()
                 val categoryName = navBackStack.arguments?.getString(NAV_ARG_CATEGORY_NAME) ?: ""
 
-                LaunchedEffect(key1 = Unit) {
-                    productViewModel.fetchAllProductsOfCategory(categoryName)
-                }
-                val productList = productViewModel.productListOfCategoryState.value.productList
-
-                // Need to adjust for nested scrolling
                 CategoryScreen(
                     categoryName = categoryName,
-                    productList = productList,
+                    productViewModel = productViewModel,
                     context = context,
                     modifier = Modifier.fillMaxSize(),
                     onClickProductCard = { id ->
@@ -223,37 +223,11 @@ fun MainSubGraph(
                     }
                 )
             ) { navBackStack ->
-                var product by remember {
-                    mutableStateOf(
-                        ProductVO(
-                            title = "Product Title",
-                            price = 1,
-                            rating = 0.0,
-                            stock = 1,
-                            brand = "Product Brand",
-                            thumbnail = "Product Image Url",
-                            images = emptyList()
-                        )
-                    )
-                }
-
-                var productList by remember {
-                    mutableStateOf(listOf<ProductVO>())
-                }
-
-                LaunchedEffect(key1 = Unit) {
-                    productViewModel.fetchProduct(navBackStack.arguments?.getInt(NAV_ARG_ID) ?: 0)
-                    productViewModel.fetchAllProducts()
-                }
-
-                productViewModel.productState.value.product?.let { productResult ->
-                    product = productResult
-                }
-                productList = productViewModel.productListState.value.productList
+                val productViewModel: ProductViewModel = hiltViewModel()
 
                 ProductDetailScreen(
-                    product = product,
-                    featuredProductList = productList.shuffled(),
+                    productViewModel = productViewModel,
+                    productId = navBackStack.arguments?.getInt(NAV_ARG_ID) ?: 0,
                     context = context,
                     modifier = Modifier.fillMaxSize(),
                     onClickBackButton = {
@@ -274,15 +248,11 @@ fun MainSubGraph(
             composable(
                 route = Route.SellerInfoScreen.route
             ) {
-                LaunchedEffect(key1 = Unit) {
-                    productViewModel.fetchAllProducts()
-                }
-
-                val productList = productViewModel.productListState.value.productList
+                val productViewModel: ProductViewModel = hiltViewModel()
 
                 SellerInfoScreen(
                     modifier = Modifier.fillMaxSize(),
-                    productList = productList,
+                    productViewModel = productViewModel,
                     onClickProductCard = { id ->
                         navHostController.navigate(Route.ProductDetailScreen.passId(id))
                     },
@@ -299,6 +269,7 @@ fun MainSubGraph(
                 route = Route.SearchInStoreScreen.route
             ) {
                 val searchViewModel: SearchViewModel = hiltViewModel()
+                val productViewModel: ProductViewModel = hiltViewModel()
 
                 SearchInStoreScreen(
                     productViewModel = productViewModel,
@@ -331,6 +302,8 @@ fun MainSubGraph(
             composable(
                 route = Route.NewsListScreen.route
             ) {
+                val newsViewModel: NewsViewModel = hiltViewModel()
+
                 LaunchedEffect(key1 = Unit) {
                     newsViewModel.fetchAllNews()
                 }
@@ -361,15 +334,13 @@ fun MainSubGraph(
             composable(
                 route = Route.NewsDetailScreen.route
             ) {
-                LaunchedEffect(key1 = Unit) {
-                    newsViewModel.fetchNewsForHomeScreen()
-                }
+                val newsViewModel: NewsViewModel = hiltViewModel()
 
                 navHostController.previousBackStackEntry?.savedStateHandle?.get<ArticleVO>("article")
                     ?.let { article ->
                         NewsDetailScreen(
                             article = article,
-                            articleList = newsViewModel.articleListHomeState.value.articleList,
+                            newsViewModel = newsViewModel,
                             context = context,
                             modifier = Modifier.fillMaxSize(),
                             onClickBackButton = {
@@ -390,8 +361,6 @@ fun MainSubGraph(
                             }
                         )
                     }
-
-
             }
         }
     }
