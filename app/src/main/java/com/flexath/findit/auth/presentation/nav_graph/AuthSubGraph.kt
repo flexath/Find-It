@@ -42,7 +42,7 @@ fun AuthSubGraph(
             composable(
                 route = Route.RegisterScreen.route
             ) {
-
+                // Comment
             }
 
             composable(
