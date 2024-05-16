@@ -4,6 +4,7 @@ import com.flexath.findit.core.utils.NavGraphConstants
 import com.flexath.findit.core.utils.NavGraphConstants.AUTH_SUB_GRAPH
 import com.flexath.findit.core.utils.NavGraphConstants.CATEGORY_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.HOME_SCREEN
+import com.flexath.findit.core.utils.NavGraphConstants.LOGIN_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.MAIN_SUB_GRAPH
 import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_CATEGORY_NAME
 import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_ID
@@ -11,11 +12,16 @@ import com.flexath.findit.core.utils.NavGraphConstants.NEWS_DETAIL_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.NEWS_LIST_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.ORDER_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.PRODUCT_DETAIL_SCREEN
+import com.flexath.findit.core.utils.NavGraphConstants.PROFILE_AND_PASSWORD_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.PROFILE_SCREEN
+import com.flexath.findit.core.utils.NavGraphConstants.REGISTER_SCREEN
+import com.flexath.findit.core.utils.NavGraphConstants.RESET_PASSWORD_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.REVIEW_PRODUCT_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.SEARCH_IN_STORE_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.SEARCH_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.SELLER_INFO_SCREEN
+import com.flexath.findit.core.utils.NavGraphConstants.UPDATE_PASSWORD_SCREEN
+import com.flexath.findit.core.utils.NavGraphConstants.VERIFICATION_SCREEN
 import com.flexath.findit.core.utils.NavGraphConstants.WISHLIST_SCREEN
 
 sealed class Route(val route: String) {
@@ -23,6 +29,7 @@ sealed class Route(val route: String) {
     data object AuthStartDestination : Route(NavGraphConstants.AUTH_START_DESTINATION)
     data object MainStartDestination : Route(NavGraphConstants.MAIN_START_DESTINATION)
 
+    // Main
     data object HomeScreen : Route(HOME_SCREEN)
     data object WishlistScreen : Route(WISHLIST_SCREEN)
     data object OrderScreen : Route(ORDER_SCREEN)
@@ -44,6 +51,14 @@ sealed class Route(val route: String) {
     data object ReviewProductScreen : Route(REVIEW_PRODUCT_SCREEN)
     data object NewsListScreen : Route(NEWS_LIST_SCREEN)
     data object NewsDetailScreen : Route(NEWS_DETAIL_SCREEN)
+
+    // Auth
+    data object LoginScreen : Route(LOGIN_SCREEN)
+    data object ResetPasswordScreen : Route(RESET_PASSWORD_SCREEN)
+    data object UpdatePasswordScreen : Route(UPDATE_PASSWORD_SCREEN)
+    data object VerificationScreen : Route(VERIFICATION_SCREEN)
+    data object RegisterScreen : Route(REGISTER_SCREEN)
+    data object ProfileAndPasswordScreen : Route(PROFILE_AND_PASSWORD_SCREEN)
 
     // sub-graphs
     data object AuthSubGraph : Route(AUTH_SUB_GRAPH)

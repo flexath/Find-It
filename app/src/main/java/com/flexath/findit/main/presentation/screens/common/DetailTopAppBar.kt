@@ -26,13 +26,15 @@ fun DetailTopAppBar(
 ) {
     CenterAlignedTopAppBar(
         title = {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleSmall.copy(
-                    fontWeight = FontWeight.Medium,
-                ),
-                color = textColorPrimary
-            )
+            if(title.isNotEmpty()) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontWeight = FontWeight.Medium,
+                    ),
+                    color = textColorPrimary
+                )
+            }
         },
         navigationIcon = {
             IconButton(

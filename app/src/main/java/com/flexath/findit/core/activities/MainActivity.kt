@@ -3,6 +3,7 @@ package com.flexath.findit.core.activities
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -12,8 +13,10 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.flexath.findit.core.presentation.Route
 import com.flexath.findit.core.presentation.nav_graph.NavGraph
+import com.flexath.findit.core.presentation.view_model.AppViewModel
 import com.flexath.findit.theme.FindItTheme
 import com.flexath.findit.theme.colorBackground
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -21,6 +24,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val appViewModel: AppViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -42,7 +48,11 @@ class MainActivity : ComponentActivity() {
                         .background(color = colorBackground),
                     contentAlignment = Alignment.Center
                 ) {
-                    NavGraph(startDestination = Route.MainSubGraph.route)
+                    val startDestination = appViewModel.startDestination.value
+                    NavGraph(
+                        startDestination = startDestination,
+                        viewModel = appViewModel
+                    )
                 }
             }
         }
@@ -60,7 +70,7 @@ fun GreetingPreview() {
                 .background(color = colorBackground),
             contentAlignment = Alignment.Center
         ) {
-            NavGraph(startDestination = Route.MainSubGraph.route)
+            NavGraph(startDestination = Route.MainSubGraph.route, viewModel = hiltViewModel())
         }
     }
 }

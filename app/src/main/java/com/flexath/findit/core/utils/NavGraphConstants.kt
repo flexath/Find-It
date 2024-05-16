@@ -17,6 +17,12 @@ object NavGraphConstants {
     const val REVIEW_PRODUCT_SCREEN = "reviewProductScreen"
     const val NEWS_LIST_SCREEN = "newsListScreen"
     const val NEWS_DETAIL_SCREEN = "newsDetailScreen"
+    const val LOGIN_SCREEN = "loginScreen"
+    const val RESET_PASSWORD_SCREEN = "resetPasswordScreen"
+    const val UPDATE_PASSWORD_SCREEN = "updatePasswordScreen"
+    const val VERIFICATION_SCREEN = "verificationScreen"
+    const val REGISTER_SCREEN = "registerScreen"
+    const val PROFILE_AND_PASSWORD_SCREEN = "profileAndPassword"
 
     // sub nav graphs
     const val AUTH_SUB_GRAPH = "authSubGraph"

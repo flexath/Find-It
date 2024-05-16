@@ -7,11 +7,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.flexath.findit.auth.presentation.nav_graph.AuthSubGraph
 import com.flexath.findit.core.presentation.Route
+import com.flexath.findit.core.presentation.view_model.AppViewModel
 import com.flexath.findit.main.presentation.nav_graph.MainSubGraph
 
 @Composable
 fun NavGraph(
-    startDestination: String
+    startDestination: String,
+    viewModel: AppViewModel
 ) {
     val navHostController = rememberNavController()
 
@@ -26,7 +28,9 @@ fun NavGraph(
             composable(
                 route = Route.AuthStartDestination.route
             ) {
-                AuthSubGraph()
+                AuthSubGraph {
+                    viewModel.onEvent(it)
+                }
             }
         }
 
