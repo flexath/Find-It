@@ -20,7 +20,7 @@ class AppViewModel @Inject constructor(
     private val appEntryUseCase: AppEntryUseCase
 ): ViewModel() {
 
-    private var _startDestination = mutableStateOf(Route.AuthStartDestination.route)
+    private var _startDestination = mutableStateOf(Route.AuthSubGraph.route)
     val startDestination get() = _startDestination
 
     init {
@@ -32,9 +32,9 @@ class AppViewModel @Inject constructor(
             .flowOn(Dispatchers.IO)
             .onEach {
                 _startDestination.value = if(it) {
-                    Route.MainStartDestination.route
+                    Route.MainSubGraph.route
                 } else {
-                    Route.AuthStartDestination.route
+                    Route.AuthSubGraph.route
                 }
             }.launchIn(viewModelScope)
     }

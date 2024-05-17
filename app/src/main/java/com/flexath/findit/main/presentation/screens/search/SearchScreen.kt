@@ -88,10 +88,11 @@ fun SearchScreen(
         ){
             item {
                 DetailTopAppBar(
-                    title = stringResource(R.string.lbl_search)
-                ) {
-                    onClickBackButton()
-                }
+                    title = stringResource(R.string.lbl_search),
+                    onClickBackButton = {
+                        onClickBackButton()
+                    }
+                )
 
                 Spacer(modifier = Modifier.height(LargePadding2))
 

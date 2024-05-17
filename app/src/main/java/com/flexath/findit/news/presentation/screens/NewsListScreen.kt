@@ -44,10 +44,11 @@ fun NewsListScreen(
         modifier = modifier
     ) {
         DetailTopAppBar(
-            title = stringResource(R.string.lbl_news)
-        ) {
-            onClickBackButton()
-        }
+            title = stringResource(R.string.lbl_news),
+            onClickBackButton = {
+                onClickBackButton()
+            }
+        )
 
         LazyColumn {
             item {

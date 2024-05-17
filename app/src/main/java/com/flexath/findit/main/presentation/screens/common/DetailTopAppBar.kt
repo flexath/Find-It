@@ -21,8 +21,9 @@ import com.flexath.findit.theme.textColorPrimary
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailTopAppBar(
+    modifier: Modifier = Modifier,
     title: String,
-    onClickBackButton: () -> Unit
+    onClickBackButton: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -61,7 +62,11 @@ fun DetailTopAppBar(
 @Composable
 private fun DetailTopBarPreview() {
     DetailTopAppBar(
-        title = "News"
-    ) {}
+        modifier = Modifier,
+        title = "News",
+        onClickBackButton = {
+
+        }
+    )
 
 }

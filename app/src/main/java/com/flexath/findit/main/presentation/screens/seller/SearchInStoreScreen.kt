@@ -101,10 +101,11 @@ fun SearchInStoreScreen(
             modifier = Modifier.weight(1f)
         ){
             DetailTopAppBar(
-                title = stringResource(R.string.lbl_search_in_store)
-            ) {
-                onClickBackButton()
-            }
+                title = stringResource(R.string.lbl_search_in_store),
+                onClickBackButton = {
+                    onClickBackButton()
+                }
+            )
 
             LazyColumn {
                 item {
