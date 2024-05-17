@@ -48,9 +48,9 @@ class MainActivity : ComponentActivity() {
                         .background(color = colorBackground),
                     contentAlignment = Alignment.Center
                 ) {
-                    val startDestination = appViewModel.startDestination.value
+                    val startSubGraph = appViewModel.startDestination.value
                     NavGraph(
-                        startDestination = startDestination,
+                        startDestination = startSubGraph,
                         viewModel = appViewModel
                     )
                 }
