@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val startSubGraph = appViewModel.startDestination.value
                     NavGraph(
-                        startDestination = startSubGraph,
+                        startDestination = Route.MainSubGraph.route,
                         viewModel = appViewModel
                     )
                 }

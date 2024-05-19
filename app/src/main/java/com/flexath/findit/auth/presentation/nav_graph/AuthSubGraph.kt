@@ -31,7 +31,7 @@ fun AuthSubGraph(
                     navHostController.popBackStack()
                 },
                 onClickConfirmButton = {
-
+                    onAuthEvent(AppCoreEvent.AuthEvent)
                 },
                 modifier = Modifier.fillMaxSize()
             )
