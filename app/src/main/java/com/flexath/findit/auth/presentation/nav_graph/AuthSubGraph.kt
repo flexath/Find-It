@@ -1,17 +1,10 @@
 package com.flexath.findit.auth.presentation.nav_graph
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.flexath.findit.R
 import com.flexath.findit.auth.presentation.screens.register.RegisterScreen
 import com.flexath.findit.core.presentation.Route
 import com.flexath.findit.core.presentation.events.AppCoreEvent
@@ -21,67 +14,51 @@ fun AuthSubGraph(
     onAuthEvent: (AppCoreEvent) -> Unit
 ) {
     val navHostController = rememberNavController()
+    val context = LocalContext.current
 
-    Scaffold(
-        topBar = {
-            IconButton(
-                onClick = {
+    NavHost(
+        navController = navHostController,
+        startDestination = Route.RegisterScreen.route
+    ) {
+        composable(
+            route = Route.RegisterScreen.route
+        ) {
+            RegisterScreen(
+                context = context,
+                onClickBackButton = {
                     navHostController.popBackStack()
                 }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = "Back Button"
-                )
-            }
+            )
         }
-    ) { paddingValues ->
-        val padding = paddingValues.calculateBottomPadding()
 
-        NavHost(
-            navController = navHostController,
-            startDestination = Route.RegisterScreen.route
+        composable(
+            route = Route.LoginScreen.route
         ) {
-            composable(
-                route = Route.RegisterScreen.route
-            ) {
-                RegisterScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    onClickBackButton = {
-                        navHostController.popBackStack()
-                    }
-                )
-            }
 
-            composable(
-                route = Route.LoginScreen.route
-            ) {
+        }
 
-            }
+        composable(
+            route = Route.ResetPasswordScreen.route
+        ) {
 
-            composable(
-                route = Route.ResetPasswordScreen.route
-            ) {
+        }
 
-            }
+        composable(
+            route = Route.UpdatePasswordScreen.route
+        ) {
 
-            composable(
-                route = Route.UpdatePasswordScreen.route
-            ) {
+        }
 
-            }
+        composable(
+            route = Route.VerificationScreen.route
+        ) {
 
-            composable(
-                route = Route.VerificationScreen.route
-            ) {
+        }
 
-            }
+        composable(
+            route = Route.ProfileAndPasswordScreen.route
+        ) {
 
-            composable(
-                route = Route.ProfileAndPasswordScreen.route
-            ) {
-
-            }
         }
     }
 }

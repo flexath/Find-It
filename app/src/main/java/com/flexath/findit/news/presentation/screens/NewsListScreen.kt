@@ -18,7 +18,7 @@ import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens
 import com.flexath.findit.main.presentation.events.SearchEvent
 import com.flexath.findit.main.presentation.screens.common.DetailTopAppBar
-import com.flexath.findit.main.presentation.screens.common.SearchBar
+import com.flexath.findit.main.presentation.screens.common.TextFieldBar
 import com.flexath.findit.main.presentation.screens.common.articleCardPagingList
 import com.flexath.findit.news.domain.model.ArticleVO
 import com.flexath.findit.news.presentation.view_models.NewsViewModel
@@ -54,7 +54,7 @@ fun NewsListScreen(
             item {
                 Spacer(modifier = Modifier.height(Dimens.LargePadding2))
 
-                SearchBar(
+                TextFieldBar(
                     context = context,
                     modifier = Modifier
                         .fillMaxWidth()

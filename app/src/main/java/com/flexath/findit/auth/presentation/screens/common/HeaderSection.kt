@@ -7,10 +7,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.flexath.findit.core.utils.Dimens.MediumPadding5
+import com.flexath.findit.core.utils.Dimens.SmallPadding5
 import com.flexath.findit.theme.textColorPrimary
 
 @Composable
@@ -20,7 +21,8 @@ fun HeaderSection(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = title,
@@ -30,11 +32,11 @@ fun HeaderSection(
             overflow = TextOverflow.Ellipsis
         )
 
-        Spacer(modifier = Modifier.height(MediumPadding5))
+        Spacer(modifier = Modifier.height(SmallPadding5))
 
         Text(
             text = description,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.titleSmall,
             color = textColorPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis

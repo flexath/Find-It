@@ -27,11 +27,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens.ExtraLargePadding5_2x
 import com.flexath.findit.core.utils.Dimens.LargePadding2
-import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.presentation.screens.common.CustomOutlinedButton
 import com.flexath.findit.main.presentation.screens.common.DetailTopAppBarWithOneAction
 import com.flexath.findit.main.presentation.screens.common.ProductCardGridList
-import com.flexath.findit.main.presentation.screens.common.SearchBar
+import com.flexath.findit.main.presentation.screens.common.TextFieldBar
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.FilterAndSortingContentBottomSheet
 import com.flexath.findit.main.presentation.view_model.ProductViewModel
 import com.flexath.findit.theme.colorBackground
@@ -99,7 +98,7 @@ fun CategoryScreen(
 
                 Spacer(modifier = Modifier.height(LargePadding2))
 
-                SearchBar(
+                TextFieldBar(
                     context = context,
                     modifier = Modifier
                         .fillMaxWidth()

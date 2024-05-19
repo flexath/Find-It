@@ -3,6 +3,7 @@ package com.flexath.findit.main.presentation.screens.common
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -17,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,7 +29,7 @@ import com.flexath.findit.theme.searchBarBackgroundColor
 import com.flexath.findit.theme.textColorPrimary
 
 @Composable
-fun SearchBar(
+fun TextFieldBar(
     context: Context,
     modifier: Modifier = Modifier,
     isEnabled: Boolean,
@@ -35,9 +37,10 @@ fun SearchBar(
     onQueryChange: (String) -> Unit,
     isClickable: Boolean,
     onClickSearchBar: () -> Unit,
-    onSearch: (String) -> Unit
+    onSearch: (String) -> Unit,
+    isTrailingIconVisible: Boolean = true,
+    placeholder: String = stringResource(id = R.string.lbl_search_hint)
 ) {
-
     TextField(
         value = query,
         onValueChange = {
@@ -53,14 +56,16 @@ fun SearchBar(
             }
         ),
         trailingIcon = {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_search),
-                contentDescription = "Search Icon"
-            )
+            if(isTrailingIconVisible) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_search),
+                    contentDescription = "Search Icon"
+                )
+            }
         },
         placeholder = {
             Text(
-                text = context.getString(R.string.lbl_search_hint),
+                text = placeholder,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Medium
                 ),
@@ -93,10 +98,10 @@ fun SearchBar(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun SearchBarPreview() {
-    SearchBar(
+    TextFieldBar(
         LocalContext.current,
         isEnabled = false,
-        modifier = Modifier,
+        modifier = Modifier.fillMaxWidth(),
         query = "aung thiha",
         isClickable = false,
         onClickSearchBar = {

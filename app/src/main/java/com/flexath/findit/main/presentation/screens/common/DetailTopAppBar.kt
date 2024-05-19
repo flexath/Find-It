@@ -49,7 +49,7 @@ fun DetailTopAppBar(
                 )
             }
         },
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .shadow(
                 elevation = Dimens.SmallPadding2,

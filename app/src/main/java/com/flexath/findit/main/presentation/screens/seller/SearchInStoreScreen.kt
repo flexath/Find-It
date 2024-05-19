@@ -44,7 +44,7 @@ import com.flexath.findit.main.presentation.screens.common.DetailTopAppBar
 import com.flexath.findit.main.presentation.screens.common.ProductCardGridList
 import com.flexath.findit.main.presentation.screens.common.ProductItemSection
 import com.flexath.findit.main.presentation.screens.common.RatingTextWithIcon
-import com.flexath.findit.main.presentation.screens.common.SearchBar
+import com.flexath.findit.main.presentation.screens.common.TextFieldBar
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.ProductContentBottomSheet
 import com.flexath.findit.main.presentation.screens.search.components.historySearchList
 import com.flexath.findit.main.presentation.view_model.ProductViewModel
@@ -111,7 +111,7 @@ fun SearchInStoreScreen(
                 item {
                     Spacer(modifier = Modifier.height(LargePadding2))
 
-                    SearchBar(
+                    TextFieldBar(
                         context = context,
                         modifier = Modifier
                             .fillMaxWidth()

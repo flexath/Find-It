@@ -36,7 +36,7 @@ import com.flexath.findit.core.utils.Dimens.LargePadding2
 import com.flexath.findit.core.utils.Dimens.LargePadding5
 import com.flexath.findit.main.presentation.screens.common.CustomOutlinedButton
 import com.flexath.findit.main.presentation.screens.common.ProductItemSection
-import com.flexath.findit.main.presentation.screens.common.SearchBar
+import com.flexath.findit.main.presentation.screens.common.TextFieldBar
 import com.flexath.findit.main.presentation.screens.common.articleCardList
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.CategoryContentBottomSheet
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.ProductContentBottomSheet
@@ -109,7 +109,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(LargePadding2))
 
                 // Need to connect query with ViewModel
-                SearchBar(
+                TextFieldBar(
                     context = context,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -125,7 +125,8 @@ fun HomeScreen(
                     },
                     onSearch = {
 
-                    }
+                    },
+                    isTrailingIconVisible = true
                 )
 
                 Spacer(modifier = Modifier.height(LargePadding2))
