@@ -1,4 +1,4 @@
-package com.flexath.findit.main.presentation.screens.common
+package com.flexath.findit.core.presentation.common
 
 import android.content.Context
 import androidx.compose.foundation.background

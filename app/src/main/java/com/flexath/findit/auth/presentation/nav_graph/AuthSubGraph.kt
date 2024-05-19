@@ -1,6 +1,8 @@
 package com.flexath.findit.auth.presentation.nav_graph
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,7 +29,11 @@ fun AuthSubGraph(
                 context = context,
                 onClickBackButton = {
                     navHostController.popBackStack()
-                }
+                },
+                onClickConfirmButton = {
+
+                },
+                modifier = Modifier.fillMaxSize()
             )
         }
 

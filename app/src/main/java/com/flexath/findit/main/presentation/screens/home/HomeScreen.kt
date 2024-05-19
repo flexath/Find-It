@@ -36,7 +36,7 @@ import com.flexath.findit.core.utils.Dimens.LargePadding2
 import com.flexath.findit.core.utils.Dimens.LargePadding5
 import com.flexath.findit.main.presentation.screens.common.CustomOutlinedButton
 import com.flexath.findit.main.presentation.screens.common.ProductItemSection
-import com.flexath.findit.main.presentation.screens.common.TextFieldBar
+import com.flexath.findit.core.presentation.common.TextFieldBar
 import com.flexath.findit.main.presentation.screens.common.articleCardList
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.CategoryContentBottomSheet
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.ProductContentBottomSheet

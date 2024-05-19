@@ -39,7 +39,7 @@
     <string name="lbl_apply">Apply</string>
     <string name="lbl_shipping_support">Shipping Support</string>
     <string name="lbl_price_range">Price Range</string>
-    <string name="lbl_register_account">Register Account</string>
+    <string name="lbl_register_account">Registration</string>
     <string name="lbl_enter_email_phone_number_to_register">Enter Email/Phone Number to register</string>
     <string name="lbl_enter_your_email_phone_number">Enter your email/phone number</string>
     <string name="lbl_email_phone">Email/Phone</string>
@@ -50,4 +50,5 @@
     <string name="lbl_enter_your_password">Enter your password</string>
     <string name="lbl_enter_your_username">Enter your username</string>
     <string name="lbl_create_your_own_account">Create your own account</string>
+    <string name="lbl_register">Register</string>
 </resources>

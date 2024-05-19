@@ -20,10 +20,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.flexath.findit.R
 import com.flexath.findit.auth.presentation.screens.common.HeaderSection
+import com.flexath.findit.auth.presentation.screens.common.PasswordTextFieldWithTitle
 import com.flexath.findit.auth.presentation.screens.common.TextFieldWithTitle
 import com.flexath.findit.core.utils.Dimens.LargePadding2
 import com.flexath.findit.core.utils.Dimens.LargePadding5
 import com.flexath.findit.core.utils.Dimens.MediumPadding5
+import com.flexath.findit.main.presentation.screens.common.CustomFilledButton
 import com.flexath.findit.main.presentation.screens.common.DetailTopAppBar
 import com.flexath.findit.theme.colorPrimary
 import com.flexath.findit.theme.hintColor
@@ -32,7 +34,8 @@ import com.flexath.findit.theme.hintColor
 fun RegisterScreen(
     context: Context,
     modifier: Modifier = Modifier,
-    onClickBackButton: () -> Unit
+    onClickBackButton: () -> Unit,
+    onClickConfirmButton: () -> Unit
 ) {
     var userNameQuery by remember {
         mutableStateOf("")
@@ -47,14 +50,16 @@ fun RegisterScreen(
     }
 
     ConstraintLayout(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
     ) {
         val (topAppBarRef,
             headerSectionRef,
             usernameRef,
             emailRef,
             passwordRef,
-            haveAnAccountRef) = createRefs()
+            haveAnAccountRef,
+            confirmButtonRef
+        ) = createRefs()
 
         DetailTopAppBar(
             title = "",
@@ -63,10 +68,10 @@ fun RegisterScreen(
             },
             modifier = Modifier
                 .constrainAs(topAppBarRef) {
-                top.linkTo(parent.top)
-                width = Dimension.matchParent
-                height = Dimension.wrapContent
-            }
+                    top.linkTo(parent.top)
+                    width = Dimension.matchParent
+                    height = Dimension.wrapContent
+                }
         )
 
         HeaderSection(
@@ -88,7 +93,7 @@ fun RegisterScreen(
             context = context,
             title = stringResource(R.string.lbl_username),
             placeholder = stringResource(R.string.lbl_enter_your_username),
-            text = userNameQuery,
+            query = userNameQuery,
             onQueryChange = {
                 userNameQuery = it
             },
@@ -105,7 +110,7 @@ fun RegisterScreen(
             context = context,
             title = stringResource(R.string.lbl_email_phone),
             placeholder = stringResource(R.string.lbl_enter_email_phone),
-            text = emailOrPhoneQuery,
+            query = emailOrPhoneQuery,
             onQueryChange = {
                 emailOrPhoneQuery = it
             },
@@ -118,11 +123,9 @@ fun RegisterScreen(
                 }
         )
 
-        TextFieldWithTitle(
-            context = context,
+        PasswordTextFieldWithTitle(
             title = "Password",
-            placeholder = stringResource(R.string.lbl_enter_your_password),
-            text = passwordQuery,
+            query = passwordQuery,
             onQueryChange = {
                 passwordQuery = it
             },
@@ -135,8 +138,25 @@ fun RegisterScreen(
                 }
         )
 
+        CustomFilledButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .constrainAs(confirmButtonRef) {
+                    start.linkTo(parent.start, margin = LargePadding2)
+                    end.linkTo(parent.end, margin = LargePadding2)
+                    top.linkTo(passwordRef.bottom, margin = LargePadding5)
+                    width = Dimension.matchParent
+                    height = Dimension.wrapContent
+                },
+            text = stringResource(R.string.lbl_register),
+            onClick = {
+                onClickConfirmButton()
+            }
+        )
+
         Row(
             modifier = Modifier.constrainAs(haveAnAccountRef) {
+                top.linkTo(confirmButtonRef.bottom)
                 bottom.linkTo(parent.bottom, LargePadding5)
                 centerHorizontallyTo(parent)
                 width = Dimension.wrapContent
@@ -157,6 +177,8 @@ fun RegisterScreen(
         }
 
     }
+
+
 }
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -166,6 +188,9 @@ private fun RegisterScreenPreview() {
         context = LocalContext.current,
         modifier = Modifier.fillMaxSize(),
         onClickBackButton = {
+
+        },
+        onClickConfirmButton = {
 
         }
     )
