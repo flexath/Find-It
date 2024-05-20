@@ -103,14 +103,14 @@ fun CategoryScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = LargePadding2),
-                    query = query,
                     isEnabled = true,
+                    query = query,
+                    onQueryChange = {
+                        query = it
+                    },
                     isClickable = false,
                     onClickSearchBar = {
 
-                    },
-                    onQueryChange = {
-                        query = it
                     },
                     onSearch = {
 

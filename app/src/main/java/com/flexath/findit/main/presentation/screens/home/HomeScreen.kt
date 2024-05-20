@@ -116,12 +116,12 @@ fun HomeScreen(
                         .padding(horizontal = LargePadding2),
                     isEnabled = false,
                     query = query,
+                    onQueryChange = {
+                        query = it
+                    },
                     isClickable = true,
                     onClickSearchBar = {
                         onClickSearchBar()
-                    },
-                    onQueryChange = {
-                        query = it
                     },
                     onSearch = {
 

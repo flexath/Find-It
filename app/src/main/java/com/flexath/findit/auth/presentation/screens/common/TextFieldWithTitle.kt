@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import com.flexath.findit.core.presentation.common.TextFieldBar
 import com.flexath.findit.core.utils.Dimens
@@ -21,7 +22,9 @@ fun TextFieldWithTitle(
     title: String,
     placeholder: String,
     query: String,
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
+    queryColor: Color,
+    isError: Boolean
 ) {
     Column(
         modifier = modifier
@@ -43,6 +46,8 @@ fun TextFieldWithTitle(
                 .padding(horizontal = Dimens.LargePadding2),
             isEnabled = true,
             query = query,
+            queryColor = queryColor,
+            isError = isError,
             isClickable = true,
             onClickSearchBar = {
 

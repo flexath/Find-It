@@ -51,4 +51,6 @@
     <string name="lbl_enter_your_username">Enter your username</string>
     <string name="lbl_create_your_own_account">Create your own account</string>
     <string name="lbl_register">Register</string>
+    <string name="lbl_password_confirmation">Password Confirmation</string>
+    <string name="lbl_password">Password</string>
 </resources>

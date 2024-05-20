@@ -59,13 +59,13 @@ fun NewsListScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = Dimens.LargePadding2),
-                    query = newsSearchState.query,
                     isEnabled = true,
-                    isClickable = false,
-                    onClickSearchBar = {},
+                    query = newsSearchState.query,
                     onQueryChange = { query ->
                         event(SearchEvent.UpdateQuery(query))
                     },
+                    isClickable = false,
+                    onClickSearchBar = {},
                     onSearch = { _ ->
                         event(SearchEvent.Search)
                     }

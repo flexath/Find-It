@@ -116,13 +116,13 @@ fun SearchInStoreScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = LargePadding2),
-                        query = searchState.query,
                         isEnabled = true,
-                        isClickable = false,
-                        onClickSearchBar = {},
+                        query = searchState.query,
                         onQueryChange = { query ->
                             event(SearchEvent.UpdateQuery(query))
                         },
+                        isClickable = false,
+                        onClickSearchBar = {},
                         onSearch = { query ->
                             event(SearchEvent.Search)
                             if(query.isNotEmpty()) {
