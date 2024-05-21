@@ -92,10 +92,11 @@ fun ProductContentBottomSheet(
                 CustomFilledButton(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = stringResource(id = R.string.lbl_add_to_cart)
-                ) {
-                    onClickAddToCardButton()
-                }
+                    text = stringResource(id = R.string.lbl_add_to_cart),
+                    onClick = {
+                        onClickAddToCardButton()
+                    }
+                )
             }
         }
     )

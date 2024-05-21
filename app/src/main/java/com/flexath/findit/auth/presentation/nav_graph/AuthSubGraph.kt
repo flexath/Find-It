@@ -7,7 +7,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.flexath.findit.auth.presentation.screens.register.RegisterScreen
+import com.flexath.findit.auth.presentation.screens.RegisterScreen
+import com.flexath.findit.auth.presentation.screens.VerificationScreen
 import com.flexath.findit.auth.presentation.view_models.AuthViewModel
 import com.flexath.findit.core.presentation.Route
 import com.flexath.findit.core.presentation.events.AppCoreEvent
@@ -58,7 +59,15 @@ fun AuthSubGraph(
         composable(
             route = Route.VerificationScreen.route
         ) {
+            VerificationScreen(
+                viewModel = authViewModel,
+                modifier = Modifier.fillMaxSize(),
+                context = context,
+                emailOrPhone = "09795448753",
+                onClickConfirmButton = {
 
+                }
+            )
         }
 
         composable(

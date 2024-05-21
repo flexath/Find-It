@@ -363,10 +363,11 @@ fun SellerInfoScreen(
 
             CustomFilledButton(
                 text = stringResource(R.string.lbl_follow),
-                modifier = Modifier.weight(1f)
-            ) {
+                modifier = Modifier.weight(1f),
+                onClick = {
 
-            }
+                }
+            )
         }
     }
 }

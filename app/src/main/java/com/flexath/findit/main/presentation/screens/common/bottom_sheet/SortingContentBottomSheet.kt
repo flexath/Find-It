@@ -83,10 +83,11 @@ fun SortingContentBottomSheet(
 
                 CustomFilledButton(
                     text = stringResource(R.string.lbl_apply),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    onClickApplyButton()
-                }
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        onClickApplyButton()
+                    }
+                )
             }
 
         }

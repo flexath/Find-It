@@ -477,10 +477,11 @@ fun ProductDetailScreen(
 
             CustomFilledButton(
                 text = stringResource(R.string.lbl_add_to_cart),
-                modifier = Modifier.weight(1f)
-            ) {
-                addToCartBottomSheetShow = true
-            }
+                modifier = Modifier.weight(1f),
+                onClick = {
+                    addToCartBottomSheetShow = true
+                }
+            )
         }
     }
 }

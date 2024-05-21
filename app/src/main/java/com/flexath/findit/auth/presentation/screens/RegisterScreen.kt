@@ -1,4 +1,4 @@
-package com.flexath.findit.auth.presentation.screens.register
+package com.flexath.findit.auth.presentation.screens
 
 import android.content.Context
 import androidx.compose.foundation.layout.Column

@@ -193,10 +193,11 @@ fun AddToCartContentBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = LargePadding2),
-                text = stringResource(id = R.string.lbl_add_to_cart)
-            ) {
-                onClickAddToCardButton()
-            }
+                text = stringResource(id = R.string.lbl_add_to_cart),
+                onClick = {
+                    onClickAddToCardButton()
+                }
+            )
         }
     )
 }

@@ -25,12 +25,14 @@ import com.flexath.findit.theme.colorPrimary
 import com.flexath.findit.core.utils.Dimens
 import com.flexath.findit.core.utils.Dimens.MediumPadding5
 import com.flexath.findit.core.utils.Dimens.SmallPadding5
+import com.flexath.findit.theme.hintColor
 
 @Composable
 fun CustomFilledButton(
     modifier: Modifier = Modifier,
     text: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isEnabled: Boolean = true
 ) {
     Button(
         onClick = {
@@ -39,8 +41,10 @@ fun CustomFilledButton(
         shape = RoundedCornerShape(corner = CornerSize(SmallPadding5)),
         contentPadding = PaddingValues(vertical = Dimens.MediumPadding3),
         colors = ButtonDefaults.buttonColors(
-            containerColor = colorPrimary
+            containerColor = colorPrimary,
+            disabledContainerColor = hintColor,
         ),
+        enabled = isEnabled,
         modifier = modifier
             .clip(RoundedCornerShape(SmallPadding5))
             .background(color = colorBackground)
