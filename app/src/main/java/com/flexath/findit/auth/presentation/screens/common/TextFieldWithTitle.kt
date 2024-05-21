@@ -22,9 +22,7 @@ fun TextFieldWithTitle(
     title: String,
     placeholder: String,
     query: String,
-    onQueryChange: (String) -> Unit,
-    queryColor: Color,
-    isError: Boolean
+    onQueryChange: (String) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -46,8 +44,6 @@ fun TextFieldWithTitle(
                 .padding(horizontal = Dimens.LargePadding2),
             isEnabled = true,
             query = query,
-            queryColor = queryColor,
-            isError = isError,
             isClickable = true,
             onClickSearchBar = {
 

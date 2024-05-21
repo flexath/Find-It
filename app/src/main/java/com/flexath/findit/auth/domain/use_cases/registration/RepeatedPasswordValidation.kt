@@ -12,7 +12,7 @@ class RepeatedPasswordValidation @Inject constructor(
         password: String,
         repeatedPassword: String
     ): ValidationResult {
-        if(!isEmpty(password,repeatedPassword)) {
+        if(isEmpty(password,repeatedPassword)) {
             return ValidationResult(
                 isSuccessful = false,
                 errorMsg = "Repeated Password can't be empty"
@@ -32,7 +32,7 @@ class RepeatedPasswordValidation @Inject constructor(
     }
 
     private fun isEmpty(input: String, repeatedPassword: String): Boolean {
-        return input.isNotBlank() && repeatedPassword.isNotBlank()
+        return input.isBlank() && repeatedPassword.isBlank()
     }
 
     private fun isSamePassword(input: String, repeatedPassword: String): Boolean {

@@ -16,9 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,7 +24,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens.SmallPadding5
-import com.flexath.findit.theme.colorPrimary
+import com.flexath.findit.theme.alertColor
 import com.flexath.findit.theme.hintColor
 import com.flexath.findit.theme.searchBarBackgroundColor
 import com.flexath.findit.theme.textColorPrimary
@@ -44,8 +41,6 @@ fun TextFieldBar(
     onSearch: (String) -> Unit,
     isTrailingIconVisible: Boolean = true,
     placeholder: String = stringResource(id = R.string.lbl_search_hint),
-    queryColor: Color = textColorPrimary,
-    isError: Boolean = false
 ) {
     TextField(
         value = query,
@@ -61,7 +56,6 @@ fun TextFieldBar(
                 onSearch(query)
             }
         ),
-        isError = isError,
         trailingIcon = {
             if (isTrailingIconVisible) {
                 Icon(
@@ -86,10 +80,10 @@ fun TextFieldBar(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
-            focusedTextColor = queryColor,
-            unfocusedTextColor = queryColor,
+            focusedTextColor = textColorPrimary,
+            unfocusedTextColor = textColorPrimary,
             errorContainerColor = searchBarBackgroundColor,
-            errorTextColor = queryColor,
+            errorTextColor = alertColor,
             errorIndicatorColor = Color.Transparent
         ),
         singleLine = true,
@@ -122,7 +116,6 @@ private fun SearchBarPreview() {
         },
         onSearch = {
 
-        },
-        queryColor = colorPrimary
+        }
     )
 }

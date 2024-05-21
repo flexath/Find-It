@@ -1,19 +1,20 @@
 package com.flexath.findit.core.presentation.nav_graph
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.flexath.findit.auth.presentation.nav_graph.AuthSubGraph
+import com.flexath.findit.auth.presentation.view_models.AuthViewModel
 import com.flexath.findit.core.presentation.Route
 import com.flexath.findit.core.presentation.view_model.AppViewModel
 import com.flexath.findit.main.presentation.nav_graph.MainSubGraph
 
 @Composable
 fun NavGraph(
-    startDestination: String,
-    viewModel: AppViewModel
+    startDestination: String
 ) {
     val navHostController = rememberNavController()
 
@@ -28,9 +29,13 @@ fun NavGraph(
             composable(
                 route = Route.AuthStartDestination.route
             ) {
-                AuthSubGraph {
-                    viewModel.onEvent(it)
-                }
+                val authViewModel: AuthViewModel = hiltViewModel()
+                AuthSubGraph(
+                    authViewModel = authViewModel,
+                    onAuthEvent = {
+                        authViewModel.onEvent(it)
+                    }
+                )
             }
         }
 

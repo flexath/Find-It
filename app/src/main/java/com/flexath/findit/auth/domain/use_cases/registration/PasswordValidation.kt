@@ -11,14 +11,14 @@ class PasswordValidation @Inject constructor(
     operator fun invoke(
         input: String
     ): ValidationResult {
-        if(!isEmpty(input)) {
+        if(isEmpty(input)) {
             return ValidationResult(
                 isSuccessful = false,
                 errorMsg = "Password can't be empty"
             )
         }
 
-        if(!isLessThan8(input)) {
+        if(isLessThan8(input)) {
             return ValidationResult(
                 isSuccessful = false,
                 errorMsg = "The password needs to consist of al least 8 characters"
@@ -38,7 +38,7 @@ class PasswordValidation @Inject constructor(
     }
 
     private fun isEmpty(input: String): Boolean {
-        return input.isNotBlank()
+        return input.isBlank()
     }
 
     private fun isLessThan8(input: String): Boolean {

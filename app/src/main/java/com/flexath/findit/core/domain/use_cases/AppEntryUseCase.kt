@@ -4,5 +4,5 @@ import javax.inject.Inject
 
 data class AppEntryUseCase @Inject constructor(
     val saveAppEntry: SaveAppEntryCase,
-    val readAppEntry: ReadAppEntryUsecase
+    val readAppEntry: ReadAppEntryUseCase
 )

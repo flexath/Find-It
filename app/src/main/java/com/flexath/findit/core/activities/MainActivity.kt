@@ -3,7 +3,6 @@ package com.flexath.findit.core.activities
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -25,8 +24,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val appViewModel: AppViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -35,6 +32,10 @@ class MainActivity : ComponentActivity() {
             ) {
                 val isSystemInDarkMode = isSystemInDarkTheme()
                 val systemUiColor = rememberSystemUiController()
+
+                val appViewModel: AppViewModel = hiltViewModel()
+                val startSubGraph = appViewModel.startDestination
+
                 SideEffect {
                     systemUiColor.setSystemBarsColor(
                         color = colorBackground,
@@ -48,11 +49,11 @@ class MainActivity : ComponentActivity() {
                         .background(color = colorBackground),
                     contentAlignment = Alignment.Center
                 ) {
-                    val startSubGraph = appViewModel.startDestination.value
-                    NavGraph(
-                        startDestination = startSubGraph,
-                        viewModel = appViewModel
-                    )
+                    if(startSubGraph.isNotEmpty()) {
+                        NavGraph(
+                            startDestination = startSubGraph
+                        )
+                    }
                 }
             }
         }
@@ -70,7 +71,7 @@ fun GreetingPreview() {
                 .background(color = colorBackground),
             contentAlignment = Alignment.Center
         ) {
-            NavGraph(startDestination = Route.MainSubGraph.route, viewModel = hiltViewModel())
+            NavGraph(startDestination = Route.MainSubGraph.route)
         }
     }
 }

@@ -8,7 +8,9 @@ import com.flexath.findit.auth.presentation.events.RegistrationFormEvent
 import com.flexath.findit.auth.presentation.events.ValidationEvent
 import com.flexath.findit.auth.presentation.states.RegistrationFormState
 import com.flexath.findit.core.domain.use_cases.AppEntryUseCase
+import com.flexath.findit.core.presentation.events.AppCoreEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -16,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val registrationUseCases: RegistrationUseCases
+    private val registrationUseCases: RegistrationUseCases,
+    private val appEntryUseCase: AppEntryUseCase
 ): ViewModel() {
 
     private var _authState = mutableStateOf(RegistrationFormState())
@@ -25,27 +28,45 @@ class AuthViewModel @Inject constructor(
     private var _validationEvent = Channel<ValidationEvent>()
     val validationEvent get() = _validationEvent.receiveAsFlow()
 
-    fun onRegistrationEvent(event: RegistrationFormEvent) {
+    fun onEvent(event: AppCoreEvent) {
+        when(event) {
+            is AppCoreEvent.AuthEvent -> {
+                saveAppEntry()
+            }
+        }
+    }
+
+    private fun saveAppEntry() {
         viewModelScope.launch {
+            appEntryUseCase.saveAppEntry.invoke()
+        }
+    }
+
+    fun onRegistrationEvent(event: RegistrationFormEvent) {
+        viewModelScope.launch(Dispatchers.Default) {
             when(event) {
                 is RegistrationFormEvent.UserNameChanged -> {
                     _authState.value = authState.value.copy(
-                        userName = event.userName
+                        userName = event.userName,
+                        userNameError = null
                     )
                 }
                 is RegistrationFormEvent.EmailChanged -> {
                     _authState.value = authState.value.copy(
-                        email = event.email
+                        email = event.email,
+                        emailError = null
                     )
                 }
                 is RegistrationFormEvent.PasswordChanged -> {
                     _authState.value = authState.value.copy(
-                        password = event.password
+                        password = event.password,
+                        passwordError = null
                     )
                 }
                 is RegistrationFormEvent.RepeatedPasswordChanged -> {
                     _authState.value = authState.value.copy(
-                        repeatedPassword = event.repeatedPassword
+                        repeatedPassword = event.repeatedPassword,
+                        repeatedPasswordError = null
                     )
                 }
                 RegistrationFormEvent.Submit -> {

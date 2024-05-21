@@ -4,7 +4,7 @@ import com.flexath.findit.core.domain.manager.LocalUserManager
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class ReadAppEntryUsecase @Inject constructor(
+class ReadAppEntryUseCase @Inject constructor(
     private val localUserManager: LocalUserManager
 ) {
     operator fun invoke(): Flow<Boolean> {

@@ -1,13 +1,11 @@
 package com.flexath.findit.auth.domain.use_cases.registration
 
-import android.util.Patterns
 import com.flexath.findit.auth.domain.use_cases.utils.ValidationResult
 import javax.inject.Inject
 
 class EmailValidation @Inject constructor(
 
 ) {
-
     operator fun invoke(
         input: String
     ): ValidationResult {
@@ -35,6 +33,7 @@ class EmailValidation @Inject constructor(
     }
 
     private fun isValidEmail(input: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(input).matches()
+        val emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+        return input.matches(emailPattern.toRegex())
     }
 }

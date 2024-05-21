@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -15,12 +14,11 @@ import com.flexath.findit.core.presentation.events.AppCoreEvent
 
 @Composable
 fun AuthSubGraph(
-    onAuthEvent: (AppCoreEvent) -> Unit
+    onAuthEvent: (AppCoreEvent) -> Unit,
+    authViewModel: AuthViewModel
 ) {
     val navHostController = rememberNavController()
     val context = LocalContext.current
-
-    val authViewModel: AuthViewModel = hiltViewModel()
 
     NavHost(
         navController = navHostController,
@@ -32,9 +30,6 @@ fun AuthSubGraph(
             RegisterScreen(
                 viewModel = authViewModel,
                 context = context,
-                onClickBackButton = {
-                    navHostController.popBackStack()
-                },
                 onClickRegisterButton = {
                     onAuthEvent(it)
                 },

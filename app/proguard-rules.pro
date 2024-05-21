@@ -63,6 +63,9 @@
 -keep class com.flexath.findit.news.data.** { *; }
 -keep class com.flexath.findit.news.domain.model.** { *; }
 -keep class com.flexath.findit.news.domain.repository.** { *; }
+-keep class com.flexath.findit.auth.data.** { *; }
+-keep class com.flexath.findit.auth.domain.model.** { *; }
+-keep class com.flexath.findit.auth.domain.repository.** { *; }
 
 ## Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
 ## JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
