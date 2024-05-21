@@ -9,7 +9,6 @@ import androidx.navigation.navigation
 import com.flexath.findit.auth.presentation.nav_graph.AuthSubGraph
 import com.flexath.findit.auth.presentation.view_models.AuthViewModel
 import com.flexath.findit.core.presentation.Route
-import com.flexath.findit.core.presentation.view_model.AppViewModel
 import com.flexath.findit.main.presentation.nav_graph.MainSubGraph
 
 @Composable
@@ -29,13 +28,8 @@ fun NavGraph(
             composable(
                 route = Route.AuthStartDestination.route
             ) {
-                val authViewModel: AuthViewModel = hiltViewModel()
-                AuthSubGraph(
-                    authViewModel = authViewModel,
-                    onAuthEvent = {
-                        authViewModel.onEvent(it)
-                    }
-                )
+
+                AuthSubGraph()
             }
         }
 

@@ -3,10 +3,7 @@ package com.flexath.findit.auth.domain.use_cases.registration
 import com.flexath.findit.auth.domain.use_cases.utils.ValidationResult
 import javax.inject.Inject
 
-class UserNameValidation @Inject constructor(
-
-) {
-
+class UserNameValidation @Inject constructor() {
     operator fun invoke(
         input: String
     ): ValidationResult {

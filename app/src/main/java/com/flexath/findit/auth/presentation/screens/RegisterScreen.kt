@@ -30,7 +30,6 @@ import com.flexath.findit.auth.presentation.screens.common.HeaderSection
 import com.flexath.findit.auth.presentation.screens.common.PasswordTextFieldWithTitle
 import com.flexath.findit.auth.presentation.screens.common.TextFieldWithTitle
 import com.flexath.findit.auth.presentation.view_models.AuthViewModel
-import com.flexath.findit.core.presentation.events.AppCoreEvent
 import com.flexath.findit.core.utils.Dimens.LargePadding2
 import com.flexath.findit.core.utils.Dimens.LargePadding5
 import com.flexath.findit.core.utils.Dimens.MediumPadding5
@@ -45,7 +44,7 @@ fun RegisterScreen(
     viewModel: AuthViewModel,
     context: Context,
     modifier: Modifier = Modifier,
-    onClickRegisterButton: (AppCoreEvent) -> Unit
+    onClickRegisterButton: () -> Unit
 ) {
     val authState = viewModel.authState.value
 
@@ -53,7 +52,7 @@ fun RegisterScreen(
         viewModel.validationEvent.collect {
             when (it) {
                 ValidationEvent.Success -> {
-                    onClickRegisterButton(AppCoreEvent.AuthEvent)
+                    onClickRegisterButton()
                 }
             }
         }

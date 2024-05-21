@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.flexath.findit.R
 import com.flexath.findit.auth.presentation.screens.common.OtpTextField
 import com.flexath.findit.auth.presentation.view_models.AuthViewModel
+import com.flexath.findit.core.presentation.events.AppCoreEvent
 import com.flexath.findit.core.utils.Dimens.ExtraLargePadding5
 import com.flexath.findit.core.utils.Dimens.ExtraLargePadding5_2x
 import com.flexath.findit.core.utils.Dimens.LargePadding2
@@ -38,7 +39,7 @@ fun VerificationScreen(
     modifier: Modifier = Modifier,
     context: Context,
     emailOrPhone: String,
-    onClickConfirmButton: () -> Unit
+    onClickConfirmButton: (AppCoreEvent) -> Unit
 ) {
     var otp by remember {
         mutableStateOf("")
@@ -149,7 +150,7 @@ fun VerificationScreen(
             text = stringResource(R.string.lbl_confirm),
             isEnabled = isOtpFull,
             onClick = {
-                onClickConfirmButton()
+                onClickConfirmButton(AppCoreEvent.AuthEvent)
             }
         )
     }
