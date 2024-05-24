@@ -28,6 +28,9 @@ class ProductViewModel @Inject constructor(
     private val _productListState = mutableStateOf(ProductListState())
     val productListState: State<ProductListState> = _productListState
 
+    private val _isProductListFetched = mutableStateOf(false)
+    val isProductListFetched get() = _isProductListFetched
+
     private val _productCategoryListState = mutableStateOf(ProductCategoryListState())
     val productCategoryListState: State<ProductCategoryListState> = _productCategoryListState
 
@@ -70,10 +73,10 @@ class ProductViewModel @Inject constructor(
                             )
                         }
                     }
+                    _isProductListFetched.value = true
                 }
         }
     }
-
 
     fun fetchProduct(
         productId: Int

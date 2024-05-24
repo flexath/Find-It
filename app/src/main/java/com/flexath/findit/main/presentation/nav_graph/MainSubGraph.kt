@@ -18,7 +18,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.flexath.findit.core.presentation.Route
-import com.flexath.findit.core.utils.NavGraphConstants
 import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_CATEGORY_NAME
 import com.flexath.findit.core.utils.NavGraphConstants.NAV_ARG_ID
 import com.flexath.findit.main.presentation.screens.MainBottomBar
@@ -106,10 +105,14 @@ fun MainSubGraph() {
                 val productViewModel: ProductViewModel = hiltViewModel()
                 val newsViewModel: NewsViewModel = hiltViewModel()
 
-                LaunchedEffect(key1 = Unit) {
-                    productViewModel.fetchAllProductCategories()
-                    productViewModel.fetchAllProducts()
-                    newsViewModel.fetchNewsForHomeScreen()
+                val isProductListFetched = productViewModel.isProductListFetched.value
+
+                LaunchedEffect(key1 = isProductListFetched) {
+                    if(!isProductListFetched) {
+                        productViewModel.fetchAllProductCategories()
+                        productViewModel.fetchAllProducts()
+                        newsViewModel.fetchNewsForHomeScreen()
+                    }
                 }
 
                 HomeScreen(

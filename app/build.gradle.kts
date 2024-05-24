@@ -75,8 +75,8 @@ dependencies {
     implementation(libs.androidx.material3)
 
     testImplementation(libs.junit)
-    testImplementation("junit:junit:4.12")
-    testImplementation("junit:junit:4.12")
+    testImplementation(libs.junit.v412)
+    testImplementation(libs.junit.junit.v412)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -122,6 +122,7 @@ dependencies {
     // ViewModel and LiveData for MVVM architecture
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
     // Dagger Hilt
     implementation(libs.hilt.android)

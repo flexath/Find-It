@@ -66,7 +66,9 @@ class ProductRepositoryImpl @Inject constructor(
         emit(Resource.Loading())
 
         try {
-            val productList = productApi.getAllCategories().toList()
+            val productList = productApi.getAllCategories().map {
+                it.name ?: ""
+            }
             emit(Resource.Success(
                 data = productList
             ))

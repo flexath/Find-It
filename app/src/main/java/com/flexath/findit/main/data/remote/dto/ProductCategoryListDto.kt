@@ -1,3 +1,3 @@
 package com.flexath.findit.main.data.remote.dto
 
-class ProductCategoryListDto : ArrayList<String>()
+class ProductCategoryListDto : ArrayList<ProductCategoryItemDto>()
