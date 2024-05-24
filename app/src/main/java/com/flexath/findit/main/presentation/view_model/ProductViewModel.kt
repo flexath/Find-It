@@ -1,22 +1,20 @@
 package com.flexath.findit.main.presentation.view_model
 
 import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flexath.findit.core.utils.Resource
-import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.domain.use_cases.MainUseCase
 import com.flexath.findit.main.presentation.states.ProductCategoryListState
 import com.flexath.findit.main.presentation.states.ProductListState
 import com.flexath.findit.main.presentation.states.ProductState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,25 +23,21 @@ class ProductViewModel @Inject constructor(
     private val mainUseCase: MainUseCase
 ) : ViewModel() {
 
-    private val _productListState = mutableStateOf(ProductListState())
-    val productListState: State<ProductListState> = _productListState
+    private var _productListState = MutableStateFlow(ProductListState())
+    val productListState get() = _productListState.asStateFlow()
 
-    private val _isProductListFetched = mutableStateOf(false)
-    val isProductListFetched get() = _isProductListFetched
+    private val _isProductListFetched = MutableStateFlow(false)
+    val isProductListFetched get() = _isProductListFetched.asStateFlow()
 
-    private val _productCategoryListState = mutableStateOf(ProductCategoryListState())
-    val productCategoryListState: State<ProductCategoryListState> = _productCategoryListState
-
-    // Shared flow to emit product data
-    private val _productState = mutableStateOf(ProductState())
-    val productState = _productState
+    private val _productCategoryListState = MutableStateFlow(ProductCategoryListState())
+    val productCategoryListState get() = _productCategoryListState.asStateFlow()
 
     // Shared flow to emit product data
-    private val _productListSharedFlow = MutableSharedFlow<List<ProductVO>>(replay = 0)
-    val productListSharedFlow = _productListSharedFlow.asSharedFlow()
+    private val _productState = MutableStateFlow(ProductState())
+    val productState get() = _productState.asStateFlow()
 
-    private val _productListOfCategoryState = mutableStateOf(ProductListState())
-    val productListOfCategoryState: State<ProductListState> = _productListOfCategoryState
+    private val _productListOfCategoryState = MutableStateFlow(ProductListState())
+    val productListOfCategoryState get() = _productListOfCategoryState.asStateFlow()
 
     fun fetchAllProducts() {
         viewModelScope.launch {
@@ -53,27 +47,35 @@ class ProductViewModel @Inject constructor(
                 .collect {
                     when (it) {
                         is Resource.Loading -> {
-                            _productListState.value = productListState.value.copy(
-                                productList = it.data ?: emptyList(),
-                                isLoading = true
-                            )
+                            _productListState.update { productState ->
+                                productState.copy(
+                                    productList = it.data ?: emptyList(),
+                                    isLoading = true
+                                )
+                            }
                         }
 
                         is Resource.Success -> {
-                            _productListState.value = productListState.value.copy(
-                                productList = it.data ?: emptyList(),
-                                isLoading = false
-                            )
+                            _productListState.update { productState ->
+                                productState.copy(
+                                    productList = it.data ?: emptyList(),
+                                    isLoading = false
+                                )
+                            }
                         }
 
                         else -> {
-                            _productListState.value = productListState.value.copy(
-                                productList = it.data ?: emptyList(),
-                                isLoading = false
-                            )
+                            _productListState.update { productState ->
+                                productState.copy(
+                                    productList = it.data ?: emptyList(),
+                                    isLoading = false
+                                )
+                            }
                         }
                     }
-                    _isProductListFetched.value = true
+                    _isProductListFetched.update {
+                        true
+                    }
                 }
         }
     }
@@ -87,24 +89,30 @@ class ProductViewModel @Inject constructor(
                 .collect {
                     when (it) {
                         is Resource.Loading -> {
-                            _productState.value = productState.value.copy(
-                                product = it.data,
-                                isLoading = true
-                            )
+                            _productState.update { product ->
+                                product.copy(
+                                    product = it.data,
+                                    isLoading = true
+                                )
+                            }
                         }
 
                         is Resource.Success -> {
-                            _productState.value = productState.value.copy(
-                                product = it.data,
-                                isLoading = true
-                            )
+                            _productState.update { product ->
+                                product.copy(
+                                    product = it.data,
+                                    isLoading = true
+                                )
+                            }
                         }
 
                         else -> {
-                            _productState.value = productState.value.copy(
-                                product = it.data,
-                                isLoading = true
-                            )
+                            _productState.update { product ->
+                                product.copy(
+                                    product = it.data,
+                                    isLoading = true
+                                )
+                            }
                         }
                     }
                 }
@@ -119,24 +127,30 @@ class ProductViewModel @Inject constructor(
                     when (it) {
                         is Resource.Loading -> {
                             Log.i("CollectData Resource", "Loading")
-                            _productCategoryListState.value = productCategoryListState.value.copy(
-                                productCategoryList = it.data ?: emptyList(),
-                                isLoading = true
-                            )
+                            _productCategoryListState.update { productCategoryState ->
+                                productCategoryState.copy(
+                                    productCategoryList = it.data ?: emptyList(),
+                                    isLoading = true
+                                )
+                            }
                         }
 
                         is Resource.Success -> {
-                            _productCategoryListState.value = productCategoryListState.value.copy(
-                                productCategoryList = it.data ?: emptyList(),
-                                isLoading = false
-                            )
+                            _productCategoryListState.update { productCategoryState ->
+                                productCategoryState.copy(
+                                    productCategoryList = it.data ?: emptyList(),
+                                    isLoading = false
+                                )
+                            }
                         }
 
                         else -> {
-                            _productCategoryListState.value = productCategoryListState.value.copy(
-                                productCategoryList = it.data ?: emptyList(),
-                                isLoading = false
-                            )
+                            _productCategoryListState.update { productCategoryState ->
+                                productCategoryState.copy(
+                                    productCategoryList = it.data ?: emptyList(),
+                                    isLoading = false
+                                )
+                            }
                         }
                     }
                 }
@@ -154,24 +168,30 @@ class ProductViewModel @Inject constructor(
                 .collect {
                     when (it) {
                         is Resource.Loading -> {
-                            _productListOfCategoryState.value = productListOfCategoryState.value.copy(
-                                productList = it.data ?: emptyList(),
-                                isLoading = true
-                            )
+                            _productListOfCategoryState.update { categoryProductListState ->
+                                categoryProductListState.copy(
+                                    productList = it.data ?: emptyList(),
+                                    isLoading = true
+                                )
+                            }
                         }
 
                         is Resource.Success -> {
-                            _productListOfCategoryState.value = productListOfCategoryState.value.copy(
-                                productList = it.data ?: emptyList(),
-                                isLoading = false
-                            )
+                            _productListOfCategoryState.update { categoryProductListState ->
+                                categoryProductListState.copy(
+                                    productList = it.data ?: emptyList(),
+                                    isLoading = true
+                                )
+                            }
                         }
 
                         else -> {
-                            _productListOfCategoryState.value = productListOfCategoryState.value.copy(
-                                productList = it.data ?: emptyList(),
-                                isLoading = false
-                            )
+                            _productListOfCategoryState.update { categoryProductListState ->
+                                categoryProductListState.copy(
+                                    productList = emptyList(),
+                                    isLoading = true
+                                )
+                            }
                         }
                     }
                 }

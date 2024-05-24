@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens
 import com.flexath.findit.core.utils.Dimens.ExtraLargePadding5_2x
@@ -73,7 +74,7 @@ fun SearchInStoreScreen(
         productViewModel.fetchAllProducts()
     }
 
-    val featuredProductList = productViewModel.productListState.value.productList
+    val featuredProductListState = productViewModel.productListState.collectAsStateWithLifecycle()
 
     var productActionBottomSheetShow by rememberSaveable {
         mutableStateOf(false)
@@ -251,7 +252,7 @@ fun SearchInStoreScreen(
                     onClickVerticalDots = {
                         productActionBottomSheetShow = true
                     },
-                    productItemList = featuredProductList
+                    productItemList = featuredProductListState.value.productList
                 )
 
                 Spacer(modifier = Modifier.height(LargePadding2))

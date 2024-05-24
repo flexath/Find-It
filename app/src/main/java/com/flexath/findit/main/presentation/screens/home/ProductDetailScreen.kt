@@ -48,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.flexath.findit.R
@@ -101,19 +102,18 @@ fun ProductDetailScreen(
         )
     }
 
-    var productList by remember {
-        mutableStateOf(listOf<ProductVO>())
-    }
-
     LaunchedEffect(key1 = Unit) {
         productViewModel.fetchProduct(productId = productId)
         productViewModel.fetchAllProducts()
     }
 
-    productViewModel.productState.value.product?.let { productResult ->
+    val productState = productViewModel.productState.collectAsStateWithLifecycle()
+
+    productState.value.product?.let { productResult ->
         product = productResult
     }
-    productList = productViewModel.productListState.value.productList
+
+    val productListState = productViewModel.productListState.collectAsStateWithLifecycle()
 
     var productActionBottomSheetShow by rememberSaveable {
         mutableStateOf(false)
@@ -449,7 +449,7 @@ fun ProductDetailScreen(
                             onClickVerticalDots = {
                                 productActionBottomSheetShow = true
                             },
-                            productItemList = productList
+                            productItemList = productListState.value.productList
                         )
 
                         Spacer(modifier = Modifier.height(ExtraLargePadding5_2x))

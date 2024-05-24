@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens.ExtraLargePadding5_2x
 import com.flexath.findit.core.utils.Dimens.LargePadding2
@@ -48,7 +49,7 @@ fun CategoryScreen(
     LaunchedEffect(key1 = Unit) {
         productViewModel.fetchAllProductsOfCategory(categoryName)
     }
-    val productList = productViewModel.productListOfCategoryState.value.productList
+    val productListState = productViewModel.productListOfCategoryState.collectAsStateWithLifecycle()
 
     var query by remember {
         mutableStateOf("")
@@ -124,7 +125,7 @@ fun CategoryScreen(
 
                 ProductCardGridList(
                     modifier = Modifier.fillMaxWidth(),
-                    productList = productList.distinct(),
+                    productList = productListState.value.productList,
                     onClickVerticalDots = {
 
                     },

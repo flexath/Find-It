@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens
 import com.flexath.findit.core.utils.Dimens.ExtraLargePadding5_2x
@@ -46,7 +47,6 @@ import com.flexath.findit.core.utils.Dimens.LargePadding2
 import com.flexath.findit.core.utils.Dimens.MediumPadding5
 import com.flexath.findit.core.utils.Dimens.SmallPadding3
 import com.flexath.findit.core.utils.Dimens.SmallPadding5
-import com.flexath.findit.main.domain.model.ProductVO
 import com.flexath.findit.main.presentation.screens.common.CustomFilledButton
 import com.flexath.findit.main.presentation.screens.common.CustomOutlinedButton
 import com.flexath.findit.main.presentation.screens.common.DetailTopAppBarWithTwoActions
@@ -72,7 +72,7 @@ fun SellerInfoScreen(
         productViewModel.fetchAllProducts()
     }
 
-    val productList = productViewModel.productListState.value.productList
+    val productListState = productViewModel.productListState.collectAsStateWithLifecycle()
 
     var sortingBottomSheetShow by rememberSaveable {
         mutableStateOf(false)
@@ -335,7 +335,7 @@ fun SellerInfoScreen(
                             onClickVerticalDots = {
 
                             },
-                            productList = productList
+                            productList = productListState.value.productList
                         )
 
                         Spacer(modifier = Modifier.height(ExtraLargePadding5_2x))

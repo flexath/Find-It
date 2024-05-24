@@ -105,16 +105,6 @@ fun MainSubGraph() {
                 val productViewModel: ProductViewModel = hiltViewModel()
                 val newsViewModel: NewsViewModel = hiltViewModel()
 
-                val isProductListFetched = productViewModel.isProductListFetched.value
-
-                LaunchedEffect(key1 = isProductListFetched) {
-                    if(!isProductListFetched) {
-                        productViewModel.fetchAllProductCategories()
-                        productViewModel.fetchAllProducts()
-                        newsViewModel.fetchNewsForHomeScreen()
-                    }
-                }
-
                 HomeScreen(
                     productViewModel = productViewModel,
                     newsViewModel = newsViewModel,

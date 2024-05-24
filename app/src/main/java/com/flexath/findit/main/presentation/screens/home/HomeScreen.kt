@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -30,13 +31,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flexath.findit.R
+import com.flexath.findit.core.presentation.common.TextFieldBar
 import com.flexath.findit.core.utils.Dimens
 import com.flexath.findit.core.utils.Dimens.LargePadding2
 import com.flexath.findit.core.utils.Dimens.LargePadding5
 import com.flexath.findit.main.presentation.screens.common.CustomOutlinedButton
 import com.flexath.findit.main.presentation.screens.common.ProductItemSection
-import com.flexath.findit.core.presentation.common.TextFieldBar
 import com.flexath.findit.main.presentation.screens.common.articleCardList
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.CategoryContentBottomSheet
 import com.flexath.findit.main.presentation.screens.common.bottom_sheet.ProductContentBottomSheet
@@ -76,8 +78,21 @@ fun HomeScreen(
         mutableStateOf("")
     }
 
+    val isProductListFetched = productViewModel.isProductListFetched.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = isProductListFetched) {
+        if(!isProductListFetched.value) {
+            productViewModel.fetchAllProductCategories()
+            productViewModel.fetchAllProducts()
+            newsViewModel.fetchNewsForHomeScreen()
+        }
+    }
+
+    val productListState = productViewModel.productListState.collectAsStateWithLifecycle()
+    val productCategoryListState = productViewModel.productCategoryListState.collectAsStateWithLifecycle()
+
     CategoryContentBottomSheet(
-        categoryList = productViewModel.productCategoryListState.value.productCategoryList,
+        categoryList = productCategoryListState.value.productCategoryList,
         bottomSheetShow = categoryBottomSheetShow,
         onSheetShowChange = {
             categoryBottomSheetShow = it
@@ -140,7 +155,7 @@ fun HomeScreen(
                 }
 
                 ProductCategoryList(
-                    categoryList = productViewModel.productCategoryListState.value.productCategoryList,
+                    categoryList = productCategoryListState.value.productCategoryList,
                     modifier = Modifier
                         .fillMaxWidth(),
                     onClick = {
@@ -156,8 +171,8 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(LargePadding2))
 
                     ProductItemSection(
-                        productItemList = if (productViewModel.productListState.value.productList.isNotEmpty()) {
-                            productViewModel.productListState.value.productList.subList(0, 5)
+                        productItemList = if (productListState.value.productList.isNotEmpty()) {
+                            productListState.value.productList.subList(0, 5)
                         } else {
                             emptyList()
                         },
@@ -201,8 +216,8 @@ fun HomeScreen(
                         onClickVerticalDots = {
                             productActionBottomSheetShow = true
                         },
-                        productItemList = if (productViewModel.productListState.value.productList.isNotEmpty()) {
-                            productViewModel.productListState.value.productList.subList(6, 11)
+                        productItemList = if (productListState.value.productList.isNotEmpty()) {
+                            productListState.value.productList.subList(6, 11)
                         } else {
                             emptyList()
                         }
@@ -235,8 +250,8 @@ fun HomeScreen(
                         onClickVerticalDots = {
                             productActionBottomSheetShow = true
                         },
-                        productItemList = if (productViewModel.productListState.value.productList.isNotEmpty()) {
-                            productViewModel.productListState.value.productList.subList(24, 30)
+                        productItemList = if (productListState.value.productList.isNotEmpty()) {
+                            productListState.value.productList.subList(24, 30)
                         } else {
                             emptyList()
                         }
@@ -256,8 +271,8 @@ fun HomeScreen(
                         onClickVerticalDots = {
                             productActionBottomSheetShow = true
                         },
-                        productItemList = if (productViewModel.productListState.value.productList.isNotEmpty()) {
-                            productViewModel.productListState.value.productList.subList(12, 17)
+                        productItemList = if (productListState.value.productList.isNotEmpty()) {
+                            productListState.value.productList.subList(12, 17)
                         } else {
                             emptyList()
                         }
@@ -277,8 +292,8 @@ fun HomeScreen(
                         onClickVerticalDots = {
                             productActionBottomSheetShow = true
                         },
-                        productItemList = if (productViewModel.productListState.value.productList.isNotEmpty()) {
-                            productViewModel.productListState.value.productList.subList(18, 23)
+                        productItemList = if (productListState.value.productList.isNotEmpty()) {
+                            productListState.value.productList.subList(18, 23)
                         } else {
                             emptyList()
                         }
