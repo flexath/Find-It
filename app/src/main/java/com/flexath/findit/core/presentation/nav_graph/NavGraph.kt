@@ -28,7 +28,6 @@ fun NavGraph(
             composable(
                 route = Route.AuthStartDestination.route
             ) {
-
                 AuthSubGraph()
             }
         }

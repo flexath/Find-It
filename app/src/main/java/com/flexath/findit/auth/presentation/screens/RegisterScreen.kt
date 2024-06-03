@@ -265,6 +265,7 @@ fun RegisterScreen(
 
         Row(
             modifier = Modifier.align(Alignment.CenterHorizontally)
+                .padding(LargePadding5)
         ) {
             Text(
                 text = stringResource(R.string.lbl_have_an_account),
