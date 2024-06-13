@@ -212,8 +212,6 @@ val productVariantList = listOf(
 
 @Composable
 fun ProductVariantButtons() {
-
-
     productVariantList.forEach { variant ->
         var isSelected by rememberSaveable {
             mutableStateOf(false)
