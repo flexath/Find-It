@@ -74,6 +74,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // For Shared Element Transition
+    implementation(libs.androidx.compose.animation)
+    implementation(libs.androidx.navigation.compose)
+
     testImplementation(libs.junit)
     testImplementation(libs.junit.v412)
     testImplementation(libs.junit.junit.v412)

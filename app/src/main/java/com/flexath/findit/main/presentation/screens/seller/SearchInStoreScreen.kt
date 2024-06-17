@@ -1,6 +1,9 @@
 package com.flexath.findit.main.presentation.screens.seller
 
 import android.content.Context
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -53,9 +56,11 @@ import com.flexath.findit.main.presentation.view_model.SearchViewModel
 import com.flexath.findit.theme.colorBackground
 import com.flexath.findit.theme.textColorPrimary
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SearchInStoreScreen(
+fun SharedTransitionScope.SearchInStoreScreen(
     context: Context,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
     onClickBackButton: () -> Unit,
     onClickProductCard: (Int) -> Unit,
@@ -252,7 +257,8 @@ fun SearchInStoreScreen(
                     onClickVerticalDots = {
                         productActionBottomSheetShow = true
                     },
-                    productItemList = featuredProductListState.value.productList
+                    productItemList = featuredProductListState.value.productList,
+                    animatedVisibilityScope = animatedVisibilityScope
                 )
 
                 Spacer(modifier = Modifier.height(LargePadding2))
@@ -261,21 +267,21 @@ fun SearchInStoreScreen(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun SearchInStoreScreenPreview() {
-    SearchInStoreScreen(
-        context = LocalContext.current,
-        onClickBackButton = {
-
-        },
-        onClickProductCard = {
-
-        },
-        event = {
-
-        },
-        productViewModel = hiltViewModel(),
-        searchViewModel = hiltViewModel()
-    )
-}
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//private fun SearchInStoreScreenPreview() {
+//    SearchInStoreScreen(
+//        context = LocalContext.current,
+//        onClickBackButton = {
+//
+//        },
+//        onClickProductCard = {
+//
+//        },
+//        event = {
+//
+//        },
+//        productViewModel = hiltViewModel(),
+//        searchViewModel = hiltViewModel()
+//    )
+//}

@@ -1,6 +1,10 @@
 package com.flexath.findit.main.presentation.screens.home.components
 
 import android.content.Context
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -49,13 +53,15 @@ import com.flexath.findit.theme.alertColor
 import com.flexath.findit.theme.colorBackground
 import com.flexath.findit.theme.textColorPrimary
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun ProductCard(
+fun SharedTransitionScope.ProductCard(
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     onClickProductCard: (Int) -> Unit,
     onClickVerticalDots: () -> Unit,
-    product: ProductVO?
+    product: ProductVO?,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     Surface(
         color = colorBackground,
@@ -89,6 +95,13 @@ fun ProductCard(
                     )
                 },
                 modifier = Modifier
+                    .sharedElement(
+                        state = rememberSharedContentState(key = product?.id ?: 0),
+                        animatedVisibilityScope = animatedVisibilityScope,
+                        boundsTransform = { _,_ ->
+                            tween(500)
+                        }
+                    )
                     .size(125.dp)
                     .clip(RoundedCornerShape(MediumPadding3))
                     .align(Alignment.CenterHorizontally)
@@ -108,7 +121,14 @@ fun ProductCard(
                 ),
                 color = textColorPrimary,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.sharedElement(
+                    state = rememberSharedContentState(key = "text/${product?.id}"),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    boundsTransform = { _,_ ->
+                        tween(500)
+                    }
+                )
             )
 
             Spacer(modifier = Modifier.height(SmallPadding2))
@@ -303,28 +323,29 @@ fun ProductCardGrid(
 
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun ProductCardPreview() {
-    ProductCard(
-        modifier = Modifier,
-        onClickProductCard = {
-
-        },
-        onClickVerticalDots = {
-
-        },
-        product = ProductVO(
-            title = "",
-            price = 1,
-            rating = 0.0,
-            stock = 1,
-            brand = "",
-            thumbnail = "",
-            images = emptyList()
-        )
-    )
-}
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//private fun ProductCardPreview() {
+//    ProductCard(
+//        modifier = Modifier,
+//        onClickProductCard = {
+//
+//        },
+//        onClickVerticalDots = {
+//
+//        },
+//        product = ProductVO(
+//            title = "",
+//            price = 1,
+//            rating = 0.0,
+//            stock = 1,
+//            brand = "",
+//            thumbnail = "",
+//            images = emptyList()
+//        ),
+//        animatedVisibilityScope = animatedVisibilityScope
+//    )
+//}
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

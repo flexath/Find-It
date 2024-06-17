@@ -1,6 +1,10 @@
 package com.flexath.findit.main.presentation.screens.home
 
 import android.content.Context
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,6 +26,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,12 +36,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -50,6 +55,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.flexath.findit.R
 import com.flexath.findit.core.utils.Dimens
@@ -76,11 +82,12 @@ import com.flexath.findit.theme.dividerColor
 import com.flexath.findit.theme.searchBarBackgroundColor
 import com.flexath.findit.theme.textColorPrimary
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun ProductDetailScreen(
+fun SharedTransitionScope.ProductDetailScreen(
     context: Context,
     modifier: Modifier = Modifier,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     onClickBackButton: () -> Unit,
     onClickSellerProfile: () -> Unit,
     onClickSeeAllReviewButton: () -> Unit,
@@ -88,19 +95,7 @@ fun ProductDetailScreen(
     productViewModel: ProductViewModel,
     productId: Int,
 ) {
-    var product by remember {
-        mutableStateOf(
-            ProductVO(
-                title = "Product Title",
-                price = 1,
-                rating = 0.0,
-                stock = 1,
-                brand = "Product Brand",
-                thumbnail = "Product Image Url",
-                images = emptyList()
-            )
-        )
-    }
+    var product:ProductVO? = null
 
     LaunchedEffect(key1 = Unit) {
         productViewModel.fetchProduct(productId = productId)
@@ -124,7 +119,7 @@ fun ProductDetailScreen(
     }
 
     val pagerState = rememberPagerState {
-        product.images?.size ?: 1
+        product?.images?.size ?: 1
     }
 
     AddToCartContentBottomSheet(
@@ -186,19 +181,32 @@ fun ProductDetailScreen(
                                 .clip(RoundedCornerShape(SmallPadding5))
                                 .background(color = searchBarBackgroundColor)
                         ) {
-                            AsyncImage(
+                            SubcomposeAsyncImage(
                                 model = ImageRequest.Builder(context)
-                                    .data(product.images?.get(index)).build(),
+                                    .data(product?.images?.get(index)).build(),
                                 contentDescription = "Product Cover",
                                 contentScale = ContentScale.Crop,
+                                loading = {
+                                    CircularProgressIndicator(
+                                        color = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.scale(0.3f)
+                                    )
+                                },
                                 modifier = Modifier
+                                    .sharedElement(
+                                        state = rememberSharedContentState(key = product?.id ?: 0),
+                                        animatedVisibilityScope = animatedVisibilityScope,
+                                        boundsTransform = { _,_ ->
+                                            tween(500)
+                                        }
+                                    )
                                     .align(Alignment.Center)
                                     .padding(MediumPadding5)
                                     .clip(RoundedCornerShape(SmallPadding5))
                             )
 
                             Text(
-                                text = "${index + 1}/${product.images?.size ?: 0} images",
+                                text = "${index + 1}/${product?.images?.size ?: 0} images",
                                 style = MaterialTheme.typography.bodyLarge.copy(
                                     fontWeight = FontWeight.Medium
                                 ),
@@ -218,12 +226,19 @@ fun ProductDetailScreen(
                     Spacer(modifier = Modifier.height(LargePadding2))
 
                     Text(
-                        text = product.title ?: "Product Title",
+                        text = product?.title ?: "Product Title",
                         style = MaterialTheme.typography.headlineMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),
                         color = textColorPrimary,
                         modifier = Modifier
+                            .sharedElement(
+                                state = rememberSharedContentState(key = "text/${product?.id}"),
+                                animatedVisibilityScope = animatedVisibilityScope,
+                                boundsTransform = { _,_ ->
+                                    tween(500)
+                                }
+                            )
                             .fillMaxWidth()
                             .padding(horizontal = LargePadding2),
                         overflow = TextOverflow.Ellipsis,
@@ -233,7 +248,7 @@ fun ProductDetailScreen(
                     Spacer(modifier = Modifier.height(SmallPadding5))
 
                     Text(
-                        text = "${product.price}$",
+                        text = "${product?.price}$",
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Medium,
                         ),
@@ -258,7 +273,7 @@ fun ProductDetailScreen(
                         )
 
                         Text(
-                            text = product.rating.toString(),
+                            text = product?.rating.toString(),
                             style = MaterialTheme.typography.bodyMedium,
                             color = textColorPrimary,
                             maxLines = 1,
@@ -267,10 +282,10 @@ fun ProductDetailScreen(
                         )
 
                         Text(
-                            text = if ((product.stock ?: 0) <= 1) {
-                                "${product.stock} stock left"
+                            text = if ((product?.stock ?: 0) <= 1) {
+                                "${product?.stock} stock left"
                             } else {
-                                "${product.stock} stocks left"
+                                "${product?.stock} stocks left"
                             },
                             style = MaterialTheme.typography.bodyMedium,
                             color = textColorPrimary,
@@ -300,7 +315,7 @@ fun ProductDetailScreen(
                             .padding(horizontal = LargePadding2)
                     ) {
                         AsyncImage(
-                            model = ImageRequest.Builder(context).data(product.thumbnail.orEmpty())
+                            model = ImageRequest.Builder(context).data(product?.thumbnail.orEmpty())
                                 .build(),
                             contentDescription = "Seller Cover",
                             contentScale = ContentScale.Crop,
@@ -314,7 +329,7 @@ fun ProductDetailScreen(
                             modifier = Modifier.weight(3f)
                         ) {
                             Text(
-                                text = product.brand ?: "Brand Name",
+                                text = product?.brand ?: "Brand Name",
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     fontWeight = FontWeight.Medium
                                 ),
@@ -385,7 +400,7 @@ fun ProductDetailScreen(
                     Spacer(modifier = Modifier.height(LargePadding2))
 
                     Text(
-                        text = product.description ?: "There is no description.",
+                        text = product?.description ?: "There is no description.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = textColorPrimary,
                         modifier = Modifier.padding(horizontal = LargePadding2)
@@ -449,13 +464,18 @@ fun ProductDetailScreen(
                             onClickVerticalDots = {
                                 productActionBottomSheetShow = true
                             },
-                            productItemList = productListState.value.productList
+                            productItemList = productListState.value.productList,
+                            animatedVisibilityScope = animatedVisibilityScope
                         )
 
                         Spacer(modifier = Modifier.height(ExtraLargePadding5_2x))
                     }
                 }
             }
+
+//            product?.let {
+//
+//            }
         }
 
         Row(
@@ -486,26 +506,27 @@ fun ProductDetailScreen(
     }
 }
 
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-private fun ProductDetailScreenPreview() {
-    ProductDetailScreen(
-        context = LocalContext.current,
-        modifier = Modifier.fillMaxSize(),
-        onClickBackButton = {
-
-        },
-        onClickSellerProfile = {
-
-        },
-        onClickSeeAllReviewButton = {
-
-        },
-        onClickProductCard = {
-
-        },
-        productViewModel = hiltViewModel(),
-        productId = 0
-    )
-}
+//@OptIn(ExperimentalSharedTransitionApi::class)
+//@Preview(showSystemUi = true, showBackground = true)
+//@Composable
+//private fun SharedTransitionScope.ProductDetailScreenPreview() {
+//    ProductDetailScreen(
+//        context = LocalContext.current,
+//        modifier = Modifier.fillMaxSize(),
+//        onClickBackButton = {
+//
+//        },
+//        onClickSellerProfile = {
+//
+//        },
+//        onClickSeeAllReviewButton = {
+//
+//        },
+//        onClickProductCard = {
+//
+//        },
+//        productViewModel = hiltViewModel(),
+//        productId = 0,
+//        animatedVisibilityScope =
+//    )
+//}

@@ -1,6 +1,9 @@
 package com.flexath.findit.main.presentation.screens.home
 
 import android.content.Context
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,12 +28,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flexath.findit.R
 import com.flexath.findit.core.presentation.common.TextFieldBar
@@ -52,9 +52,9 @@ import com.flexath.findit.theme.colorBackground
 import com.flexath.findit.theme.searchBarBackgroundColor
 import com.flexath.findit.theme.textColorPrimary
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun HomeScreen(
+fun SharedTransitionScope.HomeScreen(
     context: Context,
     onClickCategory: (String) -> Unit,
     onClickProductCard: (Int) -> Unit,
@@ -62,7 +62,8 @@ fun HomeScreen(
     onClickSeeAllNewsButton: () -> Unit,
     onClickSearchBar: () -> Unit,
     productViewModel: ProductViewModel,
-    newsViewModel: NewsViewModel
+    newsViewModel: NewsViewModel,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     val pagerState = rememberPagerState { 3 }
 
@@ -177,6 +178,7 @@ fun HomeScreen(
                             emptyList()
                         },
                         context = context,
+                        animatedVisibilityScope = animatedVisibilityScope,
                         title = stringResource(R.string.lbl_featured_product),
                         onClickSeeAll = {
 
@@ -220,7 +222,8 @@ fun HomeScreen(
                             productListState.value.productList.subList(6, 11)
                         } else {
                             emptyList()
-                        }
+                        },
+                        animatedVisibilityScope = animatedVisibilityScope
                     )
 
                     Spacer(modifier = Modifier.height(LargePadding2))
@@ -254,7 +257,8 @@ fun HomeScreen(
                             productListState.value.productList.subList(24, 30)
                         } else {
                             emptyList()
-                        }
+                        },
+                        animatedVisibilityScope = animatedVisibilityScope
                     )
 
                     Spacer(modifier = Modifier.height(LargePadding2))
@@ -275,7 +279,8 @@ fun HomeScreen(
                             productListState.value.productList.subList(12, 17)
                         } else {
                             emptyList()
-                        }
+                        },
+                        animatedVisibilityScope = animatedVisibilityScope
                     )
 
                     Spacer(modifier = Modifier.height(LargePadding2))
@@ -296,7 +301,8 @@ fun HomeScreen(
                             productListState.value.productList.subList(18, 23)
                         } else {
                             emptyList()
-                        }
+                        },
+                        animatedVisibilityScope = animatedVisibilityScope
                     )
                 }
             }
@@ -336,27 +342,28 @@ fun HomeScreen(
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-private fun HomeScreenPreview() {
-    HomeScreen(
-        context = LocalContext.current,
-        onClickCategory = {
-
-        },
-        onClickProductCard = {
-
-        },
-        onClickArticleCard = {
-
-        },
-        onClickSeeAllNewsButton = {
-
-        },
-        onClickSearchBar = {
-
-        },
-        productViewModel = hiltViewModel(),
-        newsViewModel = hiltViewModel()
-    )
-}
+//@Preview(showSystemUi = true, showBackground = true)
+//@Composable
+//private fun HomeScreenPreview() {
+//    HomeScreen(
+//        context = LocalContext.current,
+//        onClickCategory = {
+//
+//        },
+//        onClickProductCard = {
+//
+//        },
+//        onClickArticleCard = {
+//
+//        },
+//        onClickSeeAllNewsButton = {
+//
+//        },
+//        onClickSearchBar = {
+//
+//        },
+//        productViewModel = hiltViewModel(),
+//        newsViewModel = hiltViewModel(),
+//        animatedVisibilityScope =
+//    )
+//}

@@ -1,6 +1,9 @@
 package com.flexath.findit.main.presentation.screens.search
 
 import android.content.Context
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -39,10 +42,12 @@ import com.flexath.findit.main.presentation.view_model.ProductViewModel
 import com.flexath.findit.main.presentation.view_model.SearchViewModel
 import com.flexath.findit.theme.textColorPrimary
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SearchScreen(
+fun SharedTransitionScope.SearchScreen(
     context: Context,
     modifier: Modifier = Modifier,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     onClickBackButton: () -> Unit,
     onClickProductCard: (Int) -> Unit,
     event: (SearchEvent) -> Unit,
@@ -178,7 +183,8 @@ fun SearchScreen(
                     onClickVerticalDots = {
                         productActionBottomSheetShow = true
                     },
-                    productItemList = featuredProductListState.value.productList
+                    productItemList = featuredProductListState.value.productList,
+                    animatedVisibilityScope = animatedVisibilityScope
                 )
 
                 Spacer(modifier = Modifier.height(LargePadding2))
@@ -187,21 +193,21 @@ fun SearchScreen(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun SearchScreenPreview() {
-    SearchScreen(
-        context = LocalContext.current,
-        onClickBackButton = {
-
-        },
-        onClickProductCard = {
-
-        },
-        event = {
-
-        },
-        productViewModel = hiltViewModel(),
-        searchViewModel = hiltViewModel()
-    )
-}
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//private fun SharedTransitionScope.SearchScreenPreview() {
+//    SearchScreen(
+//        context = LocalContext.current,
+//        onClickBackButton = {
+//
+//        },
+//        onClickProductCard = {
+//
+//        },
+//        event = {
+//
+//        },
+//        productViewModel = hiltViewModel(),
+//        searchViewModel = hiltViewModel(),
+//    )
+//}

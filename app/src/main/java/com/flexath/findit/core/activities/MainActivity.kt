@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     if(startSubGraph.isNotEmpty()) {
                         NavGraph(
-                            startDestination = startSubGraph
+                            startDestination = Route.MainSubGraph.route
                         )
                     }
                 }
