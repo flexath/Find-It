@@ -21,3 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "Find It"
 include(":app")
+include(":auth")
+include(":core")
+include(":major")
+include(":news")
+include(":resources")

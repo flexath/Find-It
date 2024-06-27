@@ -64,6 +64,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":core"))
+    implementation(project(":resources"))
+    implementation(project(":major"))
+    implementation(project(":auth"))
+    implementation(project(":news"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -73,14 +78,14 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.material.icons.extended)
 
     // For Shared Element Transition
     implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.junit)
-    testImplementation(libs.junit.v412)
-    testImplementation(libs.junit.junit.v412)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -100,19 +105,15 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.android.compiler)
     androidTestImplementation(libs.junit)
-    androidTestImplementation(libs.kotlinx.coroutines.test.v151)
     androidTestImplementation(libs.androidx.core.testing.v210)
     androidTestImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit.v113)
     androidTestImplementation(libs.core.ktx)
     androidTestImplementation(libs.mockwebserver)
-    androidTestImplementation(libs.mockk.android)
     androidTestImplementation(libs.androidx.runner)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.androidx.constraintlayout.compose)
-    implementation(libs.androidx.material.icons.extended)
 
     // Retrofit
     implementation(libs.retrofit)
